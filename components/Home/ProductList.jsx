@@ -4,9 +4,11 @@ import { Colors } from "@/constants/Colors";
 import { collection, limit, query, getDocs } from "firebase/firestore";
 import { db } from "@/configs/FirebaseConfig";
 import ProductCard from "../../components/Home/ProductCard";
+import { useRouter } from "expo-router";
 
-export default function ProductList() {
+export default function ProductList({ listName }) {
   const [productList, setProductList] = useState([]);
+  const router = useRouter();
 
   const GetProductList = async () => {
     setProductList([]);
@@ -31,11 +33,12 @@ export default function ProductList() {
           marginTop: 10,
         }}
       >
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>Products</Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>{listName}</Text>
         <Text
           style={{
             color: Colors.primary,
           }}
+          onPress={() => router.push("/productList/" + listName)}
         >
           View All
         </Text>

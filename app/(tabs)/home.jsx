@@ -9,8 +9,8 @@ export default function home() {
     <ScrollView>
       <Header />
       <Slider />
-      <ProductList />
-      <ProductList />
+      <ProductList listName="Products 1" />
+      <ProductList listName="Products 2" />
     </ScrollView>
   );
 }

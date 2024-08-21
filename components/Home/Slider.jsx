@@ -19,8 +19,6 @@ export default function Slider() {
     GetSliderList();
   }, []);
 
-  console.log(sliderList);
-
   return (
     <View>
       <Text

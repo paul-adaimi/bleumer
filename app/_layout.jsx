@@ -38,9 +38,9 @@ if (!publishableKey) {
 
 export default function RootLayout() {
   return (
-    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+    <ClerkProvider publishableKey={publishableKey}>
       <SignedIn>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ headerBackTitle: "Home", headerShown: false }}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
       </SignedIn>
