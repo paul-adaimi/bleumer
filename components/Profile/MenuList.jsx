@@ -11,7 +11,7 @@ export default function MenuList() {
       id: 1,
       name: "My Addresses",
       icon: require("./../../assets/images/addresses-icon.png"),
-      path: "addAddress",
+      path: "addresses",
     },
     {
       id: 2,

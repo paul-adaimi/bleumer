@@ -2,6 +2,7 @@ import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import { Stack } from "expo-router";
 import LoginScreen from "../components/LoginScreen";
 import * as SecureStore from "expo-secure-store";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
 const tokenCache = {
   async getToken(key) {
@@ -36,17 +37,23 @@ if (!publishableKey) {
   );
 }
 
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
   return (
-    <ClerkProvider publishableKey={publishableKey}>
-      <SignedIn>
-        <Stack screenOptions={{ headerBackTitle: "Home", headerShown: false }}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </SignedIn>
-      <SignedOut>
-        <LoginScreen />
-      </SignedOut>
-    </ClerkProvider>
+    <QueryClientProvider client={queryClient}>
+      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+        <SignedIn>
+          <Stack
+            screenOptions={{ headerBackTitle: "Home", headerShown: false }}
+          >
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </SignedIn>
+        <SignedOut>
+          <LoginScreen />
+        </SignedOut>
+      </ClerkProvider>
+    </QueryClientProvider>
   );
 }
