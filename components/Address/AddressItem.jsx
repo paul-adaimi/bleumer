@@ -3,9 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useUser } from "@clerk/clerk-expo";
 import { useMutation, useQueryClient } from "react-query";
 import deleteUserAddress from "../../app/queries/deleteUserAddress";
+import { useNavigation } from "expo-router";
 
-const AddressItem = ({ address, index }) => {
+const AddressItem = ({ address, index, allAddresses }) => {
   const { user } = useUser();
+  const navigation = useNavigation();
 
   const queryClient = useQueryClient();
 
@@ -15,7 +17,12 @@ const AddressItem = ({ address, index }) => {
     },
   });
 
-  const onEdit = () => {};
+  const onEdit = () => {
+    navigation.navigate("profileMenu/editAddress", {
+      index,
+      allAddresses,
+    });
+  };
 
   return (
     <View style={styles.container}>

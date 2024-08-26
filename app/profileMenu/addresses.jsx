@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "expo-router";
 import {
   View,
@@ -21,7 +21,7 @@ const AddressList = () => {
   const {
     data: addresses,
     error,
-    isLoading,
+    isFetching,
   } = useQuery("addresses", async () => fetchUserAddresses(user.id));
 
   const navigation = useNavigation();
@@ -34,21 +34,29 @@ const AddressList = () => {
     });
   }, []);
 
-  if (isLoading) {
+  if (isFetching) {
     return <Text>Loading addresses...</Text>;
   }
 
-  //   if (addresses.length === 0) {
-  //     return <Text>No addresses found.</Text>;
-  //   }
-
   return (
     <View style={{ height: "100%" }}>
+      {!addresses.length && (
+        <View
+          style={{
+            marginTop: 15,
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Text>No addresses found.</Text>
+        </View>
+      )}
       <FlatList
         data={addresses}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <AddressItem index={index} address={item} />
+          <AddressItem allAddresses={addresses} index={index} address={item} />
         )}
       />
       <View
@@ -66,7 +74,6 @@ const AddressList = () => {
           onPress={() => router.push("/profileMenu/addAddress")}
         >
           <Text style={{ textAlign: "center", color: "#FFF" }}>
-            {" "}
             Add Address
           </Text>
         </TouchableOpacity>

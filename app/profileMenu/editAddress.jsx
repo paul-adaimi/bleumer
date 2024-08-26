@@ -5,19 +5,24 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "@/configs/FirebaseConfig";
 import { useQueryClient } from "react-query";
 import AddressForm from "../../components/Address/AddressForm";
+import { useRoute } from "@react-navigation/native";
 
-export default function addAddress() {
+export default function editAddress() {
+  const route = useRoute();
   const navigation = useNavigation();
   const queryClient = useQueryClient();
+  const { index, allAddresses } = route.params;
 
   const { user } = useUser();
 
-  const createAddress = useCallback(
+  const onEditAddress = useCallback(
     async (addressValues) => {
+      const addresses = [...allAddresses];
+      addresses[index] = addressValues;
       const userRef = doc(db, "Users", user.id);
 
       await updateDoc(userRef, {
-        addresses: arrayUnion(addressValues),
+        addresses,
       });
 
       queryClient.invalidateQueries("addresses");
@@ -28,7 +33,7 @@ export default function addAddress() {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: "Add New Address",
+      headerTitle: "Edit Address",
       headerShown: true,
       headerBackTitle: "Addresses",
     });
@@ -36,15 +41,10 @@ export default function addAddress() {
 
   return (
     <AddressForm
-      title="Add New Address"
-      buttonText="Add Address"
-      initialValues={{
-        name: "",
-        city: "",
-        street: "",
-        number: "",
-      }}
-      onSubmit={createAddress}
+      title="Edit Address"
+      buttonText="Edit Address"
+      initialValues={allAddresses[index]}
+      onSubmit={onEditAddress}
     />
   );
 }
