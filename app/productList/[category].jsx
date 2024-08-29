@@ -13,11 +13,22 @@ export default function ProductListByCategory() {
 
   const getProductListByCategory = async () => {
     setProductList([]);
-    const q = query(collection(db, "Products"), limit(10));
+    const q = query(collection(db, "Products"));
     const querySnapshot = await getDocs(q);
+
+    const products = [];
+
     querySnapshot.forEach((doc) => {
-      setProductList((prev) => [...prev, doc.data()]);
+      const productUuid = doc.id;
+      const productData = doc.data();
+
+      products.push({
+        id: productUuid,
+        ...productData,
+      });
     });
+
+    setProductList(products);
   };
 
   useEffect(() => {
@@ -28,14 +39,12 @@ export default function ProductListByCategory() {
     getProductListByCategory();
   }, []);
 
-  console.log(productList);
-
   return (
     <View>
       <FlatList
         data={productList}
-        renderItem={({ item, index }) => (
-          <ProductListCard product={item} key={index} />
+        renderItem={({ item }) => (
+          <ProductListCard product={item} key={item.id} />
         )}
       />
     </View>

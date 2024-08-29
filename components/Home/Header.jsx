@@ -1,11 +1,23 @@
-import { View, Image, Text, TextInput } from "react-native";
-import React from "react";
-import { useUser } from "@clerk/clerk-expo";
+import { View, Text, TextInput } from "react-native";
+import React, { useMemo } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { useCart } from "../CartProvider";
 
 export default function Header() {
-  const { user } = useUser();
+  const { totalItemCount } = useCart();
+
+  const totalCountFinal = useMemo(
+    () => (totalItemCount > 99 ? "99+" : totalItemCount),
+    [totalItemCount]
+  );
+
+  const countBadgeRight = useMemo(() => {
+    if (totalItemCount < 9) return -10;
+    else if (totalItemCount < 100) return -15;
+    else return -25;
+  }, [totalItemCount]);
+
   return (
     <View
       style={{
@@ -20,34 +32,66 @@ export default function Header() {
         style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "center",
-          gap: 10,
+          justifyContent: "space-between",
         }}
       >
-        <Image
-          source={{ uri: user?.imageUrl }}
+        <View
           style={{
-            width: 45,
-            height: 45,
-            borderRadius: 99,
+            marginTop: 20,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 5,
           }}
-        />
-        <View>
+        >
+          <Ionicons
+            style={{
+              borderColor: Colors.white,
+            }}
+            name="location-sharp"
+            size={24}
+            color={Colors.white}
+          />
           <Text
             style={{
               color: "#FFF",
+              fontSize: 17,
             }}
           >
-            Welcome,
+            Paul's House
           </Text>
-          <Text
+        </View>
+        <View
+          style={{
+            marginRight: 10,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <View
             style={{
-              color: "#FFF",
-              fontSize: 19,
+              backgroundColor: Colors.gray,
+              position: "absolute",
+              paddingHorizontal: 4,
+              paddingVertical: 2,
+              right: countBadgeRight,
+              borderRadius: 10,
+              zIndex: 100,
             }}
           >
-            {user.fullName}
-          </Text>
+            <Text style={{ color: Colors.white }}>{totalCountFinal}</Text>
+          </View>
+          <Ionicons
+            style={{
+              padding: 5,
+              borderRadius: 10,
+              borderWidth: 2,
+              borderColor: Colors.white,
+            }}
+            name="cart-outline"
+            size={24}
+            color={Colors.white}
+          />
         </View>
       </View>
       <View

@@ -8,29 +8,18 @@ import {
 } from "react-native";
 import { Colors } from "@/constants/Colors";
 
-const NumericInput = () => {
-  const [value, setValue] = useState(0);
-
-  const increment = () => {
-    setValue((prevValue) => prevValue + 1);
-  };
-
-  const decrement = () => {
-    setValue((prevValue) => (prevValue > 0 ? prevValue - 1 : 0));
-  };
-
+const NumericInput = ({ value, onIncrement, onDecrement }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={decrement}>
+      <TouchableOpacity style={styles.button} onPress={onDecrement}>
         <Text style={styles.buttonText}>-</Text>
       </TouchableOpacity>
       <TextInput
         style={styles.input}
         value={String(value)}
-        onChangeText={(text) => setValue(parseInt(text) || 0)}
         keyboardType="numeric"
       />
-      <TouchableOpacity style={styles.button} onPress={increment}>
+      <TouchableOpacity style={styles.button} onPress={onIncrement}>
         <Text style={styles.buttonText}>+</Text>
       </TouchableOpacity>
     </View>

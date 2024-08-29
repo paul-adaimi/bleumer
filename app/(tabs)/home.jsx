@@ -6,11 +6,17 @@ import ProductList from "../../components/Home/ProductList";
 
 export default function home() {
   return (
-    <ScrollView>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <Header />
-      <Slider />
-      <ProductList listName="Products 1" />
-      <ProductList listName="Products 2" />
-    </ScrollView>
+      <ScrollView>
+        <Slider />
+        <ProductList listName="Products 1" />
+        <ProductList listName="Products 2" />
+      </ScrollView>
+    </View>
   );
 }

@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import LoginScreen from "../components/LoginScreen";
 import * as SecureStore from "expo-secure-store";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { CartProvider } from "@/components/CartProvider";
 
 const tokenCache = {
   async getToken(key) {
@@ -44,11 +45,13 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
         <SignedIn>
-          <Stack
-            screenOptions={{ headerBackTitle: "Home", headerShown: false }}
-          >
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
+          <CartProvider>
+            <Stack
+              screenOptions={{ headerBackTitle: "Home", headerShown: false }}
+            >
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </CartProvider>
         </SignedIn>
         <SignedOut>
           <LoginScreen />
