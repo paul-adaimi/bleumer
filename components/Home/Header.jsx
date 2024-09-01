@@ -1,11 +1,13 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import React, { useMemo } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
+import { useNavigation } from "expo-router";
 
 export default function Header() {
   const { totalItemCount } = useCart();
+  const navigation = useNavigation();
 
   const totalCountFinal = useMemo(
     () => (totalItemCount > 99 ? "99+" : totalItemCount),
@@ -61,12 +63,13 @@ export default function Header() {
             Paul's House
           </Text>
         </View>
-        <View
+        <TouchableOpacity
           style={{
             marginRight: 10,
             display: "flex",
             justifyContent: "center",
           }}
+          onPress={() => navigation.navigate("cart")}
         >
           <View
             style={{
@@ -92,7 +95,7 @@ export default function Header() {
             size={24}
             color={Colors.white}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <View
         style={{

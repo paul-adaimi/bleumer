@@ -4,29 +4,25 @@ import { Colors } from "@/constants/Colors";
 import NumericInput from "../NumericInput";
 import { useCart } from "../CartProvider";
 
-export default function ProductListCard({ product }) {
-  const { cart, addToCart, updateItemCount } = useCart();
+export default function CartCard({ cartItem }) {
+  const { cart, updateItemCount } = useCart();
 
   const handleIncrement = () => {
-    const newCount = (cart[product.id]?.count || 0) + 1;
-    if (cart[product.id]) {
-      updateItemCount(product.id, newCount);
-    } else {
-      addToCart(product.id, { ...product, count: 1 });
-    }
+    const newCount = cart[cartItem.id].count + 1;
+    updateItemCount(cartItem.id, newCount);
   };
 
   const handleDecrement = () => {
-    const newCount = (cart[product.id]?.count || 0) - 1;
+    const newCount = (cart[cartItem.id]?.count || 0) - 1;
     if (newCount > 0) {
-      updateItemCount(product.id, newCount);
+      updateItemCount(cartItem.id, newCount);
     } else {
-      updateItemCount(product.id, 0); // This will remove the item if newCount is 0
+      updateItemCount(cartItem.id, 0); // This will remove the item if newCount is 0
     }
   };
 
-  const productCount = cart[product.id]?.count || 0;
-  const totalPrice = productCount * product.price;
+  const productCount = cart[cartItem.id]?.count || 0;
+  const totalPrice = productCount * cartItem.price;
 
   return (
     <View
@@ -53,37 +49,35 @@ export default function ProductListCard({ product }) {
       >
         <Image
           style={{
-            width: 120,
-            height: 120,
+            width: 70,
+            height: 70,
             borderRadius: 15,
           }}
-          source={{ uri: product.imageUrl }}
+          source={{ uri: cartItem.imageUrl }}
         />
       </View>
 
-      <View style={{ flex: 1, gap: 7 }}>
+      <View style={{ flex: 1, gap: 2 }}>
         <Text
           style={{
-            fontWeight: "bold",
-            fontSize: 20,
+            fontSize: 16,
           }}
         >
-          {product.name}
-        </Text>
-        <Text
-          style={{
-            fontSize: 15,
-            color: Colors.gray,
-          }}
-        >
-          {product.about}
+          {cartItem.name}
         </Text>
         <Text
           style={{
             color: Colors.gray,
           }}
         >
-          {product.price}$ / Kilo
+          {cartItem.price}$ / Kilo
+        </Text>
+        <Text
+          style={{
+            marginTop: 10,
+          }}
+        >
+          Total: {totalPrice}$
         </Text>
         <View
           style={{
@@ -93,20 +87,19 @@ export default function ProductListCard({ product }) {
             alignItems: "flex-end",
             justifyContent: "space-between",
           }}
-        >
-          <NumericInput
-            value={productCount}
-            onIncrement={handleIncrement}
-            onDecrement={handleDecrement}
-          />
-          <Text
-            style={{
-              paddingRight: 15,
-            }}
-          >
-            Total: {totalPrice}$
-          </Text>
-        </View>
+        ></View>
+      </View>
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <NumericInput
+          value={productCount}
+          onIncrement={handleIncrement}
+          onDecrement={handleDecrement}
+        />
       </View>
     </View>
   );

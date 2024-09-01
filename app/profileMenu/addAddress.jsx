@@ -5,7 +5,6 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "@/configs/FirebaseConfig";
 import { useQueryClient } from "react-query";
 import AddressForm from "../../components/Address/AddressForm";
-import { saveData, getData } from "@/async-storage";
 
 export default function addAddress() {
   const navigation = useNavigation();
@@ -27,14 +26,7 @@ export default function addAddress() {
     [user.id, db]
   );
 
-  const getLocalData = async () => {
-    const data = await getData("hey");
-    console.log("my data");
-    console.log(data);
-  };
-
   useEffect(() => {
-    getLocalData();
     navigation.setOptions({
       headerTitle: "Add New Address",
       headerShown: true,

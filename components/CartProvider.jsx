@@ -95,6 +95,13 @@ export const CartProvider = ({ children }) => {
     return Object.values(cart).reduce((total, item) => total + item.count, 0);
   }, [cart]);
 
+  const subTotal = useMemo(() => {
+    return Object.values(cart).reduce(
+      (total, item) => total + item.count * item.price,
+      0
+    );
+  }, [cart]);
+
   return (
     <CartContext.Provider
       value={{
@@ -103,6 +110,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         updateItemCount,
         totalItemCount,
+        subTotal,
       }}
     >
       {children}
