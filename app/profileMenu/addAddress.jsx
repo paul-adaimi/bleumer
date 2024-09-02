@@ -43,6 +43,7 @@ export default function addAddress() {
         city: "",
         street: "",
         number: "",
+        coordinates: null,
       }}
       onSubmit={createAddress}
     />

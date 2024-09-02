@@ -12,30 +12,38 @@ export default function AddressForm({
   buttonText,
 }) {
   const [initialRegion, setInitialRegion] = useState(null);
-  const [markerCoordinate, setMarkerCoordinate] = useState(null);
 
   const [addressValues, setAddressValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-
+    if (initialValues.coordinates) {
       setInitialRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: initialValues.coordinates.latitude,
+        longitude: initialValues.coordinates.longitude,
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       });
-    };
+    } else {
+      const getLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access location was denied");
+          return;
+        }
 
-    getLocation();
+        let location = await Location.getCurrentPositionAsync({});
+
+        setInitialRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        });
+      };
+
+      getLocation();
+    }
   }, []);
 
   const handleInputChange = (fieldName, value) => {
@@ -55,7 +63,7 @@ export default function AddressForm({
   const handleSubmit = () => {
     let newErrors = {};
 
-    Object.keys(addressValues).forEach((key) => {
+    ["name", "city", "street", "number"].forEach((key) => {
       if (!addressValues[key]?.trim()) {
         newErrors[key] = "This field is required";
       }
@@ -70,7 +78,10 @@ export default function AddressForm({
 
   handleMapPress = (event) => {
     const { coordinate } = event.nativeEvent;
-    setMarkerCoordinate(coordinate);
+    setAddressValues((prevValues) => ({
+      ...prevValues,
+      coordinates: coordinate,
+    }));
   };
 
   return (
@@ -93,9 +104,9 @@ export default function AddressForm({
           initialRegion={initialRegion}
           onPress={handleMapPress}
         >
-          {markerCoordinate && (
+          {addressValues.coordinates && (
             <Marker
-              coordinate={markerCoordinate}
+              coordinate={addressValues.coordinates}
               title="Your Location"
               description="Accurately place the marker"
             />
@@ -144,10 +155,12 @@ export default function AddressForm({
 
       <View>
         <TouchableOpacity
-          disabled={!markerCoordinate}
+          disabled={!addressValues.coordinates}
           onPress={handleSubmit}
           style={{
-            backgroundColor: markerCoordinate ? Colors.primary : "#D3D3D3",
+            backgroundColor: addressValues.coordinates
+              ? Colors.primary
+              : "#D3D3D3",
             padding: 16,
             borderRadius: 5,
             marginBottom: 15,

@@ -5,7 +5,6 @@ import LoginScreen from "../components/LoginScreen";
 import * as SecureStore from "expo-secure-store";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { CartProvider } from "@/components/CartProvider";
-import * as Location from "expo-location";
 
 const tokenCache = {
   async getToken(key) {
@@ -43,17 +42,6 @@ if (!publishableKey) {
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  useEffect(() => {
-    const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-    };
-
-    getLocation();
-  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
