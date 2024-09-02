@@ -1,13 +1,15 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
 import { useNavigation } from "expo-router";
+import { useAddress } from "../AddressProvider";
 
 export default function Header() {
   const { totalItemCount } = useCart();
   const navigation = useNavigation();
+  const { currentAddress } = useAddress();
 
   const totalCountFinal = useMemo(
     () => (totalItemCount > 99 ? "99+" : totalItemCount),
@@ -60,7 +62,7 @@ export default function Header() {
               fontSize: 17,
             }}
           >
-            Paul's House
+            {currentAddress?.name}
           </Text>
         </View>
         <TouchableOpacity

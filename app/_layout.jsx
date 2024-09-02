@@ -5,6 +5,7 @@ import LoginScreen from "../components/LoginScreen";
 import * as SecureStore from "expo-secure-store";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { CartProvider } from "@/components/CartProvider";
+import { AddressProvider } from "@/components/AddressProvider";
 
 const tokenCache = {
   async getToken(key) {
@@ -46,13 +47,15 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
         <SignedIn>
-          <CartProvider>
-            <Stack
-              screenOptions={{ headerBackTitle: "Home", headerShown: false }}
-            >
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
-          </CartProvider>
+          <AddressProvider>
+            <CartProvider>
+              <Stack
+                screenOptions={{ headerBackTitle: "Home", headerShown: false }}
+              >
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              </Stack>
+            </CartProvider>
+          </AddressProvider>
         </SignedIn>
         <SignedOut>
           <LoginScreen />
