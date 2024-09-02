@@ -1,8 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import CustomTextInput from "../../components/CustomTextInput";
+import * as Location from "expo-location";
 
 export default function AddressForm({
   initialValues,
@@ -10,8 +11,32 @@ export default function AddressForm({
   title,
   buttonText,
 }) {
+  const [initialRegion, setInitialRegion] = useState(null);
+  const [markerCoordinate, setMarkerCoordinate] = useState(null);
+
   const [addressValues, setAddressValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+
+      setInitialRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      });
+    };
+
+    getLocation();
+  }, []);
 
   const handleInputChange = (fieldName, value) => {
     setAddressValues((prevValues) => ({
@@ -43,6 +68,11 @@ export default function AddressForm({
     }
   };
 
+  handleMapPress = (event) => {
+    const { coordinate } = event.nativeEvent;
+    setMarkerCoordinate(coordinate);
+  };
+
   return (
     <View
       style={{
@@ -60,45 +90,64 @@ export default function AddressForm({
         <MapView
           style={{ width: "100%", height: 300, marginTop: 10 }}
           showsUserLocation
-          showsMyLocationButton
-        />
+          initialRegion={initialRegion}
+          onPress={handleMapPress}
+        >
+          {markerCoordinate && (
+            <Marker
+              coordinate={markerCoordinate}
+              title="Your Location"
+              description="Accurately place the marker"
+            />
+          )}
+        </MapView>
+        <Text
+          style={{
+            marginLeft: 5,
+            marginTop: 5,
+            color: Colors.gray,
+          }}
+        >
+          Place the marker in order to continue
+        </Text>
         <View style={{ display: "flex", marginTop: 10 }}>
           <CustomTextInput
             key="name"
             value={addressValues.name || ""}
             placeholder="Address Name"
             onChangeText={(value) => handleInputChange("name", value)}
-            isError={!!errors.name}
+            error={errors.name}
           />
           <CustomTextInput
             key="city"
             value={addressValues.city || ""}
             placeholder="City"
             onChangeText={(value) => handleInputChange("city", value)}
-            isError={!!errors.city}
+            error={errors.city}
           />
           <CustomTextInput
             key="street"
             value={addressValues.street || ""}
             placeholder="Street / Building / Floor"
             onChangeText={(value) => handleInputChange("street", value)}
-            isError={!!errors.street}
+            error={errors.street}
           />
           <CustomTextInput
             key="number"
             value={addressValues.number || ""}
             placeholder="Phone Number"
             onChangeText={(value) => handleInputChange("number", value)}
-            isError={!!errors.number}
+            error={errors.number}
           />
         </View>
       </View>
 
       <View>
         <TouchableOpacity
+          disabled={!markerCoordinate}
           onPress={handleSubmit}
           style={{
-            backgroundColor: Colors.primary,
+            backgroundColor: markerCoordinate ? Colors.primary : "#D3D3D3",
             padding: 16,
             borderRadius: 5,
             marginBottom: 15,

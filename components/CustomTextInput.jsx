@@ -1,15 +1,15 @@
 import React from "react";
 import { TextInput, View, Text, StyleSheet } from "react-native";
 
-const CustomTextInput = ({ placeholder, isError, style, ...props }) => {
+const CustomTextInput = ({ placeholder, error, style, ...props }) => {
   return (
     <View style={styles.container}>
       <TextInput
         placeholder={placeholder}
-        style={[styles.input, style, isError && styles.errorInput]}
+        style={[styles.input, style, error && styles.errorInput]}
         {...props}
       />
-      {isError && <Text style={styles.errorText}>Error: Invalid input</Text>}
+      {error && <Text style={styles.errorText}>Error: {error}</Text>}
     </View>
   );
 };
