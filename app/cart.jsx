@@ -1,4 +1,4 @@
-import { View, FlatList, Text } from "react-native";
+import { View, FlatList, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "expo-router";
 import { useCart } from "../components/CartProvider";
@@ -19,45 +19,75 @@ export default function Cart() {
 
   const cartItems = Object.values(cart);
 
-  return (
-    <View>
-      <FlatList
-        data={cartItems}
-        renderItem={({ item }) => <CartCard cartItem={item} key={item.id} />}
-      />
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: Colors.gray,
-          borderStyle: "dashed",
-          marginTop: 10,
-          marginHorizontal: 10,
-        }}
-      />
+  const handleCheckout = () => {
+    navigation.navigate("checkout");
+  };
 
+  return (
+    <View
+      style={{
+        display: "flex",
+        height: "100%",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <View>
+        <FlatList
+          data={cartItems}
+          renderItem={({ item }) => <CartCard cartItem={item} key={item.id} />}
+        />
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: Colors.gray,
+            borderStyle: "dashed",
+            marginTop: 10,
+            marginHorizontal: 10,
+          }}
+        />
+
+        <View
+          style={{
+            padding: 10,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 16,
+            }}
+          >
+            Subtotal
+          </Text>
+          <Text
+            style={{
+              fontSize: 16,
+            }}
+          >
+            {subTotal}$
+          </Text>
+        </View>
+      </View>
       <View
         style={{
-          padding: 10,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
+          padding: 15,
         }}
       >
-        <Text
+        <TouchableOpacity
+          onPress={handleCheckout}
           style={{
-            fontWeight: "bold",
-            fontSize: 16,
+            backgroundColor: Colors.primary,
+            padding: 16,
+            borderRadius: 5,
+            marginBottom: 15,
           }}
         >
-          Subtotal
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-          }}
-        >
-          {subTotal}$
-        </Text>
+          <Text style={{ textAlign: "center", color: "#FFF" }}>Checkout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
