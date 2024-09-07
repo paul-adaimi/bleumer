@@ -79,15 +79,6 @@ export default function CartCard({ cartItem }) {
         >
           Total: {totalPrice}$
         </Text>
-        <View
-          style={{
-            marginTop: 5,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-          }}
-        ></View>
       </View>
       <View
         style={{

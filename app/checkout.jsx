@@ -7,13 +7,15 @@ import CustomTextInput from "../components/CustomTextInput";
 import { useCart } from "../components/CartProvider";
 import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient, useMutation } from "react-query";
-import createOrder from "./queries/createOrder";
+import createOrder from "@/queries/createOrder";
+import { useAddress } from "../components/AddressProvider";
 
 export default function Checkout() {
   const navigation = useNavigation();
   const { cart, subTotal } = useCart();
   const { user } = useUser();
   const queryClient = useQueryClient();
+  const { currentAddress } = useAddress();
 
   useEffect(() => {
     navigation.setOptions({
@@ -24,11 +26,14 @@ export default function Checkout() {
   }, []);
 
   // TODO: Add animation instead
-  const { isLoading, mutate } = useMutation(() => createOrder(user.id, cart), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("orders");
-    },
-  });
+  const { isLoading, mutate } = useMutation(
+    () => createOrder(user.id, { cart, total: subTotal }, currentAddress),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("orders");
+      },
+    }
+  );
 
   if (isLoading) return <Text>loading...</Text>;
 
@@ -43,9 +48,10 @@ export default function Checkout() {
     >
       <View>
         <CheckoutCard title="Delivery Address">
-          <Text>Paul Adaimi</Text>
-          <Text>Matn - Lebanon</Text>
-          <Text>Biyada 12th street, 17th building, floor -1</Text>
+          <Text>{currentAddress.name}</Text>
+          <Text>{currentAddress.city}</Text>
+          <Text>{currentAddress.street}</Text>
+          <Text>{currentAddress.number}</Text>
           <TouchableOpacity
             style={{
               backgroundColor: Colors.primary,
@@ -78,7 +84,7 @@ export default function Checkout() {
             }}
           >
             <Text>Subtotal</Text>
-            <Text>$ 123</Text>
+            <Text>$ {subTotal}</Text>
           </View>
           <View
             style={{
@@ -89,7 +95,7 @@ export default function Checkout() {
             }}
           >
             <Text>Delivery Charge</Text>
-            <Text>$ 123</Text>
+            <Text>$ 0</Text>
           </View>
           <View
             style={{
@@ -100,7 +106,7 @@ export default function Checkout() {
             }}
           >
             <Text>Discount</Text>
-            <Text>- $ 123</Text>
+            <Text>- $ 0</Text>
           </View>
           <View
             style={{
@@ -119,7 +125,9 @@ export default function Checkout() {
             }}
           >
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>Total</Text>
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>$ 123</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              $ {subTotal}
+            </Text>
           </View>
         </CheckoutCard>
       </View>

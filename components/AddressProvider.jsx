@@ -8,7 +8,7 @@ import React, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "react-query";
 import { useUser } from "@clerk/clerk-expo";
-import fetchUserAddresses from "@/app/queries/fetchUserAddresses";
+import fetchUserAddresses from "@/queries/fetchUserAddresses";
 import * as Location from "expo-location";
 
 // Create a context for the address
@@ -33,7 +33,6 @@ export const AddressProvider = ({ children }) => {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    console.log(location);
     const closestAddress = findClosestAddress(addresses ?? [], {
       longitude: location.coords.longitude,
       latitude: location.coords.latitude,

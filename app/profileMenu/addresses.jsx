@@ -11,7 +11,7 @@ import { useQuery } from "react-query";
 import { useUser } from "@clerk/clerk-expo";
 import { Colors } from "@/constants/Colors";
 import AddressItem from "../../components/Address/AddressItem";
-import fetchUserAddresses from "../queries/fetchUserAddresses";
+import fetchUserAddresses from "@/queries/fetchUserAddresses";
 import { useRouter } from "expo-router";
 
 const AddressList = () => {

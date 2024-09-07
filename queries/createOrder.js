@@ -1,7 +1,7 @@
 import { doc, updateDoc, arrayUnion, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@/configs/FirebaseConfig";
 
-export default createOrder = async (userId, cart) => {
+export default createOrder = async (userId, { cart, total }, address) => {
   const userRef = doc(db, "Orders", userId);
 
   // Check if the document exists
@@ -13,8 +13,8 @@ export default createOrder = async (userId, cart) => {
   const order = {
     cart,
     orderTime: new Date().toISOString(),
-    address: "address here",
-    total: "Total here",
+    address: address,
+    total,
   };
 
   await updateDoc(userRef, {
