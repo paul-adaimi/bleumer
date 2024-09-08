@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Animated } from "react-native";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useNavigation } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import CheckoutCard from "../components/Cart/CheckoutCard";
@@ -9,8 +9,12 @@ import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient, useMutation } from "react-query";
 import createOrder from "@/queries/createOrder";
 import { useAddress } from "../components/AddressProvider";
+import ModalScreen from "../components/ModalScreen";
+import AddressesModal from "../components/Modals/Addresses";
 
 export default function Checkout() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const navigation = useNavigation();
   const { cart, subTotal } = useCart();
   const { user } = useUser();
@@ -46,6 +50,13 @@ export default function Checkout() {
         justifyContent: "space-between",
       }}
     >
+      <ModalScreen
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        title="Choose an Address"
+      >
+        <AddressesModal onClose={() => setIsModalVisible(false)} />
+      </ModalScreen>
       <View>
         <CheckoutCard title="Delivery Address">
           <Text>{currentAddress.name}</Text>
@@ -53,6 +64,7 @@ export default function Checkout() {
           <Text>{currentAddress.street}</Text>
           <Text>{currentAddress.number}</Text>
           <TouchableOpacity
+            onPress={() => setIsModalVisible(true)}
             style={{
               backgroundColor: Colors.primary,
               marginTop: 10,

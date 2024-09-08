@@ -1,12 +1,13 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Colors } from "@/constants/Colors";
 
-export default function ModalScreen({ isVisible, children, onClose }) {
+export default function ModalScreen({ isVisible, children, onClose, title }) {
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
       <View style={styles.modalContent}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Choose a sticker</Text>
+          <Text style={styles.title}>{title}</Text>
           <Pressable onPress={onClose}>
             <MaterialIcons name="close" color="#fff" size={22} />
           </Pressable>
@@ -19,17 +20,17 @@ export default function ModalScreen({ isVisible, children, onClose }) {
 
 const styles = StyleSheet.create({
   modalContent: {
-    height: "25%",
+    height: "75%",
     width: "100%",
-    backgroundColor: "#25292e",
+    backgroundColor: Colors.white,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     position: "absolute",
     bottom: 0,
   },
   titleContainer: {
-    height: "16%",
-    backgroundColor: "#464C55",
+    height: 75,
+    backgroundColor: Colors.primary,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 20,

@@ -61,6 +61,7 @@ export const AddressProvider = ({ children }) => {
   return (
     <AddressContext.Provider
       value={{
+        addresses,
         currentAddress,
         setCurrentAddress,
       }}

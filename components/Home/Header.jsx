@@ -5,8 +5,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
 import { useNavigation } from "expo-router";
 import { useAddress } from "../AddressProvider";
+import ModalScreen from "../ModalScreen";
+import AddressesModal from "../Modals/Addresses";
 
 export default function Header() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const { totalItemCount } = useCart();
   const navigation = useNavigation();
   const { currentAddress } = useAddress();
@@ -32,6 +36,13 @@ export default function Header() {
         borderBottomRightRadius: 20,
       }}
     >
+      <ModalScreen
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        title="Choose an Address"
+      >
+        <AddressesModal onClose={() => setIsModalVisible(false)} />
+      </ModalScreen>
       <View
         style={{
           display: "flex",
@@ -39,7 +50,8 @@ export default function Header() {
           justifyContent: "space-between",
         }}
       >
-        <View
+        <TouchableOpacity
+          onPress={() => setIsModalVisible(true)}
           style={{
             marginTop: 20,
             display: "flex",
@@ -64,7 +76,7 @@ export default function Header() {
           >
             {currentAddress?.name}
           </Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={{
             marginRight: 10,
