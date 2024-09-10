@@ -2,41 +2,24 @@ import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import ProductListCard from "../../components/ProductList/ProductListCard";
-import { collection, limit, query, getDocs } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
+import { useQuery } from "react-query";
+import fetchProducts from "@/queries/fetchProducts";
 
 export default function ProductListByCategory() {
-  const [productList, setProductList] = useState([]);
-
   const navigation = useNavigation();
   const { category } = useLocalSearchParams();
 
-  const getProductListByCategory = async () => {
-    setProductList([]);
-    const q = query(collection(db, "Products"));
-    const querySnapshot = await getDocs(q);
-
-    const products = [];
-
-    querySnapshot.forEach((doc) => {
-      const productUuid = doc.id;
-      const productData = doc.data();
-
-      products.push({
-        id: productUuid,
-        ...productData,
-      });
-    });
-
-    setProductList(products);
-  };
+  const {
+    data: productList,
+    error,
+    isFetching,
+  } = useQuery("products", async () => fetchProducts());
 
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
       headerTitle: category,
     });
-    getProductListByCategory();
   }, []);
 
   return (

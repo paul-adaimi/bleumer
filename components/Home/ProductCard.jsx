@@ -2,8 +2,32 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { useCart } from "../CartProvider";
+import NumericInput from "../NumericInput";
 
 export default function ProductCard({ product }) {
+  const { cart, addToCart, updateItemCount } = useCart();
+
+  const productCount = cart[product.id]?.count || 0;
+
+  const handleIncrement = () => {
+    const newCount = (cart[product.id]?.count || 0) + 1;
+    if (cart[product.id]) {
+      updateItemCount(product.id, newCount);
+    } else {
+      addToCart(product.id, { ...product, count: 1 });
+    }
+  };
+
+  const handleDecrement = () => {
+    const newCount = (cart[product.id]?.count || 0) - 1;
+    if (newCount > 0) {
+      updateItemCount(product.id, newCount);
+    } else {
+      updateItemCount(product.id, 0);
+    }
+  };
+
   return (
     <View
       style={{
@@ -59,18 +83,11 @@ export default function ProductCard({ product }) {
           >
             ${product.price}
           </Text>
-          <TouchableOpacity
-            style={{
-              backgroundColor: Colors.primary,
-              padding: 5,
-              borderRadius: 5,
-            }}
-          >
-            <Text style={{ textAlign: "center", color: "#FFF" }}>
-              {" "}
-              Add to Cart
-            </Text>
-          </TouchableOpacity>
+          <NumericInput
+            value={productCount}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+          />
         </View>
       </View>
     </View>

@@ -1,27 +1,20 @@
 import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
-import { collection, limit, query, getDocs } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
 import ProductCard from "../../components/Home/ProductCard";
 import { useRouter } from "expo-router";
+import fetchProducts from "@/queries/fetchProducts";
+import { useQuery } from "react-query";
 
 export default function ProductList({ listName }) {
-  const [productList, setProductList] = useState([]);
   const router = useRouter();
 
-  const GetProductList = async () => {
-    setProductList([]);
-    const q = query(collection(db, "Products"), limit(10));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setProductList((prev) => [...prev, doc.data()]);
-    });
-  };
+  const {
+    data: productList,
+    error,
+    isFetching,
+  } = useQuery("products", async () => fetchProducts());
 
-  useEffect(() => {
-    GetProductList();
-  }, []);
   return (
     <View>
       <View

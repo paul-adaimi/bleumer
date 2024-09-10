@@ -82,8 +82,16 @@ export default function Header() {
             marginRight: 10,
             display: "flex",
             justifyContent: "center",
+            backgroundColor: totalItemCount
+              ? Colors.primary
+              : Colors.primaryShade,
+            paddingHorizontal: 5,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: Colors.white,
           }}
           onPress={() => navigation.navigate("cart")}
+          disabled={!totalItemCount}
         >
           <View
             style={{
@@ -98,17 +106,7 @@ export default function Header() {
           >
             <Text style={{ color: Colors.white }}>{totalCountFinal}</Text>
           </View>
-          <Ionicons
-            style={{
-              padding: 5,
-              borderRadius: 10,
-              borderWidth: 2,
-              borderColor: Colors.white,
-            }}
-            name="cart-outline"
-            size={24}
-            color={Colors.white}
-          />
+          <Ionicons name="cart-outline" size={24} color={Colors.white} />
         </TouchableOpacity>
       </View>
       <View

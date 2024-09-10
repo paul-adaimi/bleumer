@@ -11,25 +11,25 @@ export default function MenuList() {
       id: 1,
       name: "My Addresses",
       icon: require("./../../assets/images/addresses-icon.png"),
-      path: "addresses",
+      onPress: () => router.push("/profileMenu/addresses"),
     },
     {
       id: 2,
       name: "My Favorites",
       icon: require("./../../assets/images/favorites-icon.png"),
-      path: "",
+      onPress: () => {},
     },
     {
       id: 3,
       name: "Share App",
       icon: require("./../../assets/images/share-icon.png"),
-      path: "",
+      onPress: () => {},
     },
     {
       id: 4,
       name: "Logout",
       icon: require("./../../assets/images/logout-icon.png"),
-      path: "",
+      onPress: () => {},
     },
   ];
 
@@ -54,7 +54,7 @@ export default function MenuList() {
               backgroundColor: "#FFF",
               borderColor: Colors.primary,
             }}
-            onPress={() => router.push("/profileMenu/" + item.path)}
+            onPress={item.onPress}
           >
             <Image
               source={item.icon}
