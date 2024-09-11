@@ -19,6 +19,12 @@ export default function Cart() {
 
   const cartItems = Object.values(cart);
 
+  useEffect(() => {
+    if (!cartItems.length) {
+      navigation.goBack();
+    }
+  }, [cart]);
+
   const handleCheckout = () => {
     navigation.navigate("checkout");
   };

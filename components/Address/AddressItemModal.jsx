@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 
-const AddressItem = ({ address, isSelected, onClick }) => {
+const AddressItemModal = ({ address, isSelected, onClick }) => {
   return (
     <TouchableOpacity
       style={{
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddressItem;
+export default AddressItemModal;

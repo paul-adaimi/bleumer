@@ -1,18 +1,22 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { TextInput, View, Text, StyleSheet } from "react-native";
+import { Colors } from "@/constants/Colors";
 
-const CustomTextInput = ({ placeholder, error, style, ...props }) => {
-  return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder={placeholder}
-        style={[styles.input, style, error && styles.errorInput]}
-        {...props}
-      />
-      {error && <Text style={styles.errorText}>Error: {error}</Text>}
-    </View>
-  );
-};
+const CustomTextInput = forwardRef(
+  ({ placeholder, error, style, ...props }, ref) => {
+    return (
+      <View style={styles.container}>
+        <TextInput
+          placeholder={placeholder}
+          style={[styles.input, style, error && styles.errorInput]}
+          ref={ref}
+          {...props}
+        />
+        {error && <Text style={styles.errorText}>Error: {error}</Text>}
+      </View>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -24,9 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 17,
     backgroundColor: "#FFF",
-    borderColor: "#007BFF", // Replace this with Colors.primary if you have a color palette
-  },
-  errorInput: {
+    borderColor: Colors.primary,
     borderColor: "red",
   },
   errorText: {

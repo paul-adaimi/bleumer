@@ -6,6 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { CartProvider } from "@/components/CartProvider";
 import { AddressProvider } from "@/components/AddressProvider";
+import { Provider as PaperProvider } from "react-native-paper";
 
 const tokenCache = {
   async getToken(key) {
@@ -46,20 +47,28 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-        <SignedIn>
-          <AddressProvider>
-            <CartProvider>
-              <Stack
-                screenOptions={{ headerBackTitle: "Home", headerShown: false }}
-              >
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              </Stack>
-            </CartProvider>
-          </AddressProvider>
-        </SignedIn>
-        <SignedOut>
-          <LoginScreen />
-        </SignedOut>
+        <PaperProvider>
+          <SignedIn>
+            <AddressProvider>
+              <CartProvider>
+                <Stack
+                  screenOptions={{
+                    headerBackTitle: "Home",
+                    headerShown: false,
+                  }}
+                >
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false }}
+                  />
+                </Stack>
+              </CartProvider>
+            </AddressProvider>
+          </SignedIn>
+          <SignedOut>
+            <LoginScreen />
+          </SignedOut>
+        </PaperProvider>
       </ClerkProvider>
     </QueryClientProvider>
   );

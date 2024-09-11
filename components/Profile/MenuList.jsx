@@ -2,8 +2,10 @@ import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function MenuList() {
+  const { signOut } = useAuth();
   const router = useRouter();
 
   const menuList = [
@@ -29,7 +31,7 @@ export default function MenuList() {
       id: 4,
       name: "Logout",
       icon: require("./../../assets/images/logout-icon.png"),
-      onPress: () => {},
+      onPress: () => signOut(),
     },
   ];
 

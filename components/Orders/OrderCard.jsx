@@ -1,9 +1,12 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import React, { useMemo, useState } from "react";
 import { Colors } from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { Snackbar, Portal } from "react-native-paper";
 
-export default function OrderCard({ order }) {
+export default function OrderCard({ order, onReorder, onRemoveItems }) {
+  const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
+
   const date = new Date(order.orderTime);
   const options = {
     weekday: "long", // Full day name
@@ -34,6 +37,11 @@ export default function OrderCard({ order }) {
       <Text style={{ flex: 10, textAlign: "left" }}>{item.name}</Text>
     </View>
   ));
+
+  const allItemsCount = useMemo(
+    () => orderItems.reduce((total, item) => (total += item.count), 0),
+    [orderItems]
+  );
 
   return (
     <View
@@ -71,7 +79,11 @@ export default function OrderCard({ order }) {
         </View>
         <Text style={{ marginTop: 10 }}>Total: $ {order.total}</Text>
       </View>
-      <View
+      <TouchableOpacity
+        onPress={() => {
+          setPortalSnackbarVisible(true);
+          onReorder(order);
+        }}
         style={{
           alignSelf: "flex-start",
           display: "flex",
@@ -85,14 +97,46 @@ export default function OrderCard({ order }) {
             color: Colors.primary,
           }}
         >
-          Re-order
+          Add to cart
         </Text>
         <Ionicons
           name="refresh-circle-outline"
           size={24}
           color={Colors.primary}
         />
-      </View>
+      </TouchableOpacity>
+
+      <Portal>
+        <Snackbar
+          style={{
+            backgroundColor: Colors.primary,
+          }}
+          visible={portalSnackbarVisible}
+          onDismiss={() => setPortalSnackbarVisible(false)}
+          onIconPress={() => setPortalSnackbarVisible(false)}
+          action={{
+            label: "undo",
+            onPress: () => {
+              onRemoveItems(order);
+            },
+            style: {
+              backgroundColor: Colors.primaryLight,
+            },
+            labelStyle: {
+              color: Colors.white,
+            },
+          }}
+        >
+          <Text
+            style={{
+              color: "#FFF",
+            }}
+          >
+            {allItemsCount} {allItemsCount == 1 ? "item" : "items"} added to
+            cart
+          </Text>
+        </Snackbar>
+      </Portal>
     </View>
   );
 }

@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useUser } from "@clerk/clerk-expo";
 import { useMutation, useQueryClient } from "react-query";
 import deleteUserAddress from "@/queries/deleteUserAddress";
 import { useNavigation } from "expo-router";
+import { Button, Dialog, Portal } from "react-native-paper";
 
 const AddressItem = ({ address, index, allAddresses }) => {
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
+
   const { user } = useUser();
   const navigation = useNavigation();
 
@@ -34,10 +37,27 @@ const AddressItem = ({ address, index, allAddresses }) => {
         <TouchableOpacity onPress={onEdit}>
           <Text style={styles.editButton}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteAddress.mutate()}>
+        <TouchableOpacity onPress={() => setIsDialogVisible(true)}>
           <Text style={styles.deleteButton}>Delete</Text>
         </TouchableOpacity>
       </View>
+      <Portal>
+        <Dialog
+          visible={isDialogVisible}
+          onDismiss={() => setIsDialogVisible(false)}
+        >
+          <Dialog.Title>Delete Address</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">
+              Are you sure you want to delete the address {address.name}?
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setIsDialogVisible(false)}>Cancel</Button>
+            <Button onPress={() => deleteAddress.mutate()}>Ok</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
