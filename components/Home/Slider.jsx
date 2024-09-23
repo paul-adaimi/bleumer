@@ -1,23 +1,14 @@
 import { View, Text, FlatList, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import { collection, getDocs, query } from "firebase/firestore";
-import { db } from "../../configs/FirebaseConfig";
+import React from "react";
+import { useQuery } from "react-query";
+import fetchSliders from "@/queries/fetchSliders";
 
 export default function Slider() {
-  const [sliderList, setSliderList] = useState([]);
-
-  const GetSliderList = async () => {
-    setSliderList([]);
-    const q = query(collection(db, "Slider"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setSliderList((prev) => [...prev, doc.data()]);
-    });
-  };
-
-  useEffect(() => {
-    GetSliderList();
-  }, []);
+  const {
+    data: sliderList,
+    error,
+    isFetching,
+  } = useQuery("sliders", async () => fetchSliders());
 
   return (
     <View>

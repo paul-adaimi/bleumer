@@ -9,11 +9,15 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Colors } from "@/constants/Colors";
 import MapView, { Marker } from "react-native-maps";
 import CustomTextInput from "../../components/CustomTextInput";
 import * as Location from "expo-location";
+import CustomPicker from "../CustomPicker";
+import { useQuery } from "react-query";
+import fetchAreas from "@/queries/fetchAreas";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function AddressForm({
   initialValues,
@@ -21,6 +25,21 @@ export default function AddressForm({
   title,
   buttonText,
 }) {
+  const {
+    data: areas,
+    error,
+    isFetching,
+  } = useQuery("areas", async () => fetchAreas());
+
+  const options = useMemo(
+    () =>
+      areas.map((area) => ({
+        label: area.name,
+        value: area,
+      })),
+    [areas]
+  );
+
   const [initialRegion, setInitialRegion] = useState(null);
   const [screenHeight] = useState(Dimensions.get("window").height);
 
@@ -35,7 +54,7 @@ export default function AddressForm({
     const input = inputRefs.current[index];
 
     const scrollToFocusedInput = (keyboardHeight) => {
-      const availableSpace = screenHeight - (keyboardHeight + 100); // 100 is for the navigation header
+      const availableSpace = screenHeight - (keyboardHeight + 130); // 100 is for the navigation header
 
       input.measureLayout(scrollViewRef.current, (x, y, width, height) => {
         scrollViewRef.current.scrollTo({
@@ -99,11 +118,15 @@ export default function AddressForm({
   const handleSubmit = () => {
     let newErrors = {};
 
-    ["name", "city", "street", "number"].forEach((key) => {
+    ["name", "street", "number"].forEach((key) => {
       if (!addressValues[key]?.trim()) {
         newErrors[key] = "This field is required";
       }
     });
+
+    if (!addressValues.city) {
+      newErrors.city = "This field is required";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -128,108 +151,136 @@ export default function AddressForm({
       }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          ref={scrollViewRef}
+        <View
           style={{
-            flexGrow: 1,
+            padding: 20,
+            flex: 1,
           }}
         >
-          <View
+          <ScrollView
+            ref={scrollViewRef}
             style={{
-              padding: 20,
-              display: "flex",
-              height: "100%",
-              justifyContent: "space-between",
+              flexGrow: 1,
             }}
           >
-            <View>
-              <Text style={{ fontWeight: "bold", fontSize: 25 }}>{title}</Text>
-              <Text style={{ color: Colors.gray }}>
-                Fill all details in order to add new address
-              </Text>
-              <MapView
-                style={{ width: "100%", height: 300, marginTop: 10 }}
-                showsUserLocation
-                initialRegion={initialRegion}
-                onPress={handleMapPress}
-              >
-                {addressValues.coordinates && (
-                  <Marker
-                    coordinate={addressValues.coordinates}
-                    title="Your Location"
-                    description="Accurately place the marker"
+            <View
+              style={{
+                paddingBottom: 80,
+              }}
+            >
+              <View>
+                <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+                  {title}
+                </Text>
+                <Text style={{ color: Colors.gray }}>
+                  Fill all details in order to add new address
+                </Text>
+                <MapView
+                  style={{ width: "100%", height: 300, marginTop: 10 }}
+                  showsUserLocation
+                  initialRegion={initialRegion}
+                  onPress={handleMapPress}
+                >
+                  {addressValues.coordinates && (
+                    <Marker
+                      coordinate={addressValues.coordinates}
+                      title="Your Location"
+                      description="Accurately place the marker"
+                    />
+                  )}
+                </MapView>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    marginTop: 5,
+                    color: Colors.gray,
+                  }}
+                >
+                  Place the marker in order to continue
+                </Text>
+                <View style={{ display: "flex", marginTop: 10 }}>
+                  <CustomTextInput
+                    key="name"
+                    value={addressValues.name || ""}
+                    placeholder="Address Name"
+                    onChangeText={(value) => handleInputChange("name", value)}
+                    onFocus={() => scrollToInput(0)}
+                    ref={(el) => (inputRefs.current[0] = el)}
+                    error={errors.name}
                   />
-                )}
-              </MapView>
-              <Text
-                style={{
-                  marginLeft: 5,
-                  marginTop: 5,
-                  color: Colors.gray,
-                }}
-              >
-                Place the marker in order to continue
-              </Text>
-              <View style={{ display: "flex", marginTop: 10 }}>
-                <CustomTextInput
-                  key="name"
-                  value={addressValues.name || ""}
-                  placeholder="Address Name"
-                  onChangeText={(value) => handleInputChange("name", value)}
-                  onFocus={() => scrollToInput(0)}
-                  ref={(el) => (inputRefs.current[0] = el)}
-                  error={errors.name}
-                />
-                <CustomTextInput
-                  key="city"
-                  value={addressValues.city || ""}
-                  placeholder="City"
-                  onChangeText={(value) => handleInputChange("city", value)}
-                  onFocus={() => scrollToInput(1)}
-                  ref={(el) => (inputRefs.current[1] = el)}
-                  error={errors.city}
-                />
-                <CustomTextInput
-                  key="street"
-                  value={addressValues.street || ""}
-                  placeholder="Street / Building / Floor"
-                  onChangeText={(value) => handleInputChange("street", value)}
-                  onFocus={() => scrollToInput(2)}
-                  ref={(el) => (inputRefs.current[2] = el)}
-                  error={errors.street}
-                />
-                <CustomTextInput
-                  key="number"
-                  value={addressValues.number || ""}
-                  placeholder="Phone Number"
-                  onChangeText={(value) => handleInputChange("number", value)}
-                  onFocus={() => scrollToInput(3)}
-                  ref={(el) => (inputRefs.current[3] = el)}
-                  error={errors.number}
-                />
+                  <CustomPicker
+                    key="city"
+                    placeholder="Select an area"
+                    items={options}
+                    selectedValue={addressValues.city}
+                    onValueChange={(value) => handleInputChange("city", value)}
+                    error={errors.city}
+                  />
+                  {addressValues.city.businessDays > 1 && (
+                    <View
+                      style={{
+                        marginTop: 5,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Ionicons
+                        name="warning-outline"
+                        size={18}
+                        color={Colors.warningGold}
+                      />
+                      <Text style={{ color: Colors.warningGold, fontSize: 15 }}>
+                        This order will take {addressValues.city.businessDays}{" "}
+                        business days to deliver.
+                      </Text>
+                    </View>
+                  )}
+                  <CustomTextInput
+                    key="street"
+                    value={addressValues.street || ""}
+                    placeholder="Street / Building / Floor"
+                    onChangeText={(value) => handleInputChange("street", value)}
+                    onFocus={() => scrollToInput(2)}
+                    ref={(el) => (inputRefs.current[2] = el)}
+                    error={errors.street}
+                  />
+                  <CustomTextInput
+                    key="number"
+                    value={addressValues.number || ""}
+                    placeholder="Phone Number"
+                    onChangeText={(value) => handleInputChange("number", value)}
+                    onFocus={() => scrollToInput(3)}
+                    ref={(el) => (inputRefs.current[3] = el)}
+                    error={errors.number}
+                  />
+                </View>
               </View>
             </View>
-
-            <View>
-              <TouchableOpacity
-                disabled={!addressValues.coordinates}
-                onPress={handleSubmit}
-                style={{
-                  backgroundColor: addressValues.coordinates
-                    ? Colors.primary
-                    : "#D3D3D3",
-                  padding: 16,
-                  borderRadius: 5,
-                  marginBottom: 15,
-                }}
-              >
-                <Text style={{ textAlign: "center", color: "#FFF" }}>
-                  {buttonText}
-                </Text>
-              </TouchableOpacity>
-            </View>
+          </ScrollView>
+          <View
+            style={{
+              position: "relative",
+              bottom: 20,
+            }}
+          >
+            <TouchableOpacity
+              disabled={!addressValues.coordinates}
+              onPress={handleSubmit}
+              style={{
+                backgroundColor: addressValues.coordinates
+                  ? Colors.primary
+                  : "#D3D3D3",
+                padding: 16,
+                borderRadius: 5,
+              }}
+            >
+              <Text style={{ textAlign: "center", color: "#FFF" }}>
+                {buttonText}
+              </Text>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
+        </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

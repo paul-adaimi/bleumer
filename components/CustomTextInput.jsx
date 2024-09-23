@@ -29,12 +29,14 @@ const styles = StyleSheet.create({
     fontSize: 17,
     backgroundColor: "#FFF",
     borderColor: Colors.primary,
-    borderColor: "red",
   },
   errorText: {
     color: "red",
     marginTop: 5,
     fontSize: 14,
+  },
+  errorInput: {
+    borderColor: "red",
   },
 });
 

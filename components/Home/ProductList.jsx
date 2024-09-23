@@ -9,6 +9,7 @@ import { useQuery } from "react-query";
 export default function ProductList({ listName }) {
   const router = useRouter();
 
+  // TODO: pass as prop
   const {
     data: productList,
     error,

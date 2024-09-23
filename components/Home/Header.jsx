@@ -8,7 +8,7 @@ import { useAddress } from "../AddressProvider";
 import ModalScreen from "../ModalScreen";
 import AddressesModal from "../Modals/Addresses";
 
-export default function Header() {
+export default function Header({ searchText, setSearchText }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const { totalItemCount } = useCart();
@@ -124,6 +124,8 @@ export default function Header() {
       >
         <Ionicons name="search" size={24} color={Colors.primary} />
         <TextInput
+          value={searchText || ""}
+          onChangeText={(value) => setSearchText(value)}
           style={{
             fontSize: 16,
           }}
