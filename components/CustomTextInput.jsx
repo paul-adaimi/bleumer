@@ -3,9 +3,9 @@ import { TextInput, View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 const CustomTextInput = forwardRef(
-  ({ placeholder, error, style, ...props }, ref) => {
+  ({ placeholder, error, style, containerStyle, ...props }, ref) => {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         <TextInput
           placeholder={placeholder}
           style={[styles.input, style, error && styles.errorInput]}

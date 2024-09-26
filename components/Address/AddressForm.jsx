@@ -33,10 +33,12 @@ export default function AddressForm({
 
   const options = useMemo(
     () =>
-      areas.map((area) => ({
-        label: area.name,
-        value: area,
-      })),
+      areas
+        ? areas.map((area) => ({
+            label: area.name,
+            value: area,
+          }))
+        : [],
     [areas]
   );
 
@@ -245,15 +247,44 @@ export default function AddressForm({
                     ref={(el) => (inputRefs.current[2] = el)}
                     error={errors.street}
                   />
-                  <CustomTextInput
-                    key="number"
-                    value={addressValues.number || ""}
-                    placeholder="Phone Number"
-                    onChangeText={(value) => handleInputChange("number", value)}
-                    onFocus={() => scrollToInput(3)}
-                    ref={(el) => (inputRefs.current[3] = el)}
-                    error={errors.number}
-                  />
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomTextInput
+                      key="number"
+                      keyboardType="numeric"
+                      value={"+961"}
+                      editable={false}
+                    />
+                    {/* <Text
+                      style={{
+                        marginTop: 10,
+                        fontSize: 16,
+                      }}
+                    >
+                      +961
+                    </Text> */}
+                    <CustomTextInput
+                      key="number"
+                      keyboardType="numeric"
+                      value={addressValues.number || ""}
+                      placeholder="Phone Number"
+                      onChangeText={(value) =>
+                        handleInputChange("number", value)
+                      }
+                      onFocus={() => scrollToInput(3)}
+                      ref={(el) => (inputRefs.current[3] = el)}
+                      error={errors.number}
+                      containerStyle={{
+                        flex: 1,
+                        marginLeft: 10,
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
             </View>

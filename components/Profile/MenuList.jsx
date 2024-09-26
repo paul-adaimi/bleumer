@@ -3,6 +3,8 @@ import React from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
+import { Ionicons } from "@expo/vector-icons";
+import { Linking } from "react-native";
 
 export default function MenuList() {
   const { signOut } = useAuth();
@@ -12,25 +14,28 @@ export default function MenuList() {
     {
       id: 1,
       name: "My Addresses",
-      icon: require("./../../assets/images/addresses-icon.png"),
+      icon: "list",
       onPress: () => router.push("/profileMenu/addresses"),
     },
     {
       id: 2,
       name: "My Favorites",
-      icon: require("./../../assets/images/favorites-icon.png"),
+      icon: "star-outline",
       onPress: () => {},
     },
     {
       id: 3,
-      name: "Share App",
-      icon: require("./../../assets/images/share-icon.png"),
-      onPress: () => {},
+      name: "Call",
+      icon: "call-outline",
+      onPress: () => {
+        const phoneNumber = "+96171740227";
+        Linking.openURL(`tel:${phoneNumber}`);
+      },
     },
     {
       id: 4,
       name: "Logout",
-      icon: require("./../../assets/images/logout-icon.png"),
+      icon: "log-out-outline",
       onPress: () => signOut(),
     },
   ];
@@ -58,14 +63,27 @@ export default function MenuList() {
             }}
             onPress={item.onPress}
           >
-            <Image
+            <View
+              style={{
+                borderRadius: 5,
+                padding: 5,
+                backgroundColor: Colors.primary,
+              }}
+            >
+              <Ionicons
+                name={item.icon}
+                size={40}
+                color={Colors.white}
+              ></Ionicons>
+            </View>
+            {/* <Image
               source={item.icon}
               style={{
                 width: 50,
                 height: 50,
               }}
-            />
-            <Text style={{ fontSize: 16, fontWeight: "700", flex: 1 }}>
+            /> */}
+            <Text style={{ fontSize: 15, fontWeight: "700", flex: 1 }}>
               {item.name}
             </Text>
           </TouchableOpacity>
@@ -79,7 +97,6 @@ export default function MenuList() {
           color: Colors.gray,
         }}
       >
-        {" "}
         Developed by Paul Adaimi @ 2024
       </Text>
     </View>

@@ -91,6 +91,11 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // Function to empty the cart
+  const emptyCart = () => {
+    setCart({});
+  };
+
   const totalItemCount = useMemo(() => {
     return Object.values(cart).reduce((total, item) => total + item.count, 0);
   }, [cart]);
@@ -109,6 +114,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateItemCount,
+        emptyCart,
         totalItemCount,
         subTotal,
       }}

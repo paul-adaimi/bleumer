@@ -16,7 +16,7 @@ export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const navigation = useNavigation();
-  const { cart, subTotal } = useCart();
+  const { cart, subTotal, emptyCart } = useCart();
   const { user } = useUser();
   const queryClient = useQueryClient();
   const { currentAddress } = useAddress();
@@ -35,6 +35,8 @@ export default function Checkout() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("orders");
+        emptyCart();
+        navigation.navigate("orders");
       },
     }
   );
@@ -60,7 +62,7 @@ export default function Checkout() {
       <View>
         <CheckoutCard title="Delivery Address">
           <Text>{currentAddress.name}</Text>
-          <Text>{currentAddress.city}</Text>
+          <Text>{currentAddress.city.name}</Text>
           <Text>{currentAddress.street}</Text>
           <Text>{currentAddress.number}</Text>
           <TouchableOpacity

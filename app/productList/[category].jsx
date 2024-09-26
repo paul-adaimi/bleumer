@@ -4,6 +4,7 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import ProductListCard from "../../components/ProductList/ProductListCard";
 import { useQuery } from "react-query";
 import fetchProducts from "@/queries/fetchProducts";
+import Header from "@/components/Home/Header";
 
 export default function ProductListByCategory() {
   const navigation = useNavigation();
@@ -15,15 +16,9 @@ export default function ProductListByCategory() {
     isFetching,
   } = useQuery("products", async () => fetchProducts());
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: category,
-    });
-  }, []);
-
   return (
     <View>
+      <Header title={category} />
       <FlatList
         data={productList}
         renderItem={({ item }) => (

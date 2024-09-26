@@ -1,22 +1,10 @@
 import { View, FlatList } from "react-native";
 import React from "react";
-import { useQuery } from "react-query";
-import { useUser } from "@clerk/clerk-expo";
-import fetchUserOrders from "@/queries/fetchUserOrders";
 import OrderCard from "./OrderCard";
 import { useCart } from "../CartProvider";
 
-export default function OrderList() {
-  // TODO: change order list bottom up
-  const { user } = useUser();
-
+export default function OrderList({ orders }) {
   const { cart, addToCart, updateItemCount } = useCart();
-
-  const {
-    data: orders,
-    error,
-    isFetching,
-  } = useQuery("orders", async () => fetchUserOrders(user.id));
 
   const onReorder = (order) => {
     for (let cartItem of Object.values(order.cart)) {
@@ -32,11 +20,7 @@ export default function OrderList() {
   };
 
   return (
-    <View
-      style={{
-        padding: 10,
-      }}
-    >
+    <View>
       <FlatList
         data={orders}
         showsVerticalScrollIndicator={false}

@@ -1,4 +1,10 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import React, { useMemo, useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,7 +14,7 @@ import { useAddress } from "../AddressProvider";
 import ModalScreen from "../ModalScreen";
 import AddressesModal from "../Modals/Addresses";
 
-export default function Header({ searchText, setSearchText }) {
+export default function Header({ searchText, setSearchText, title }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const { totalItemCount } = useCart();
@@ -109,29 +115,69 @@ export default function Header({ searchText, setSearchText }) {
           <Ionicons name="cart-outline" size={24} color={Colors.white} />
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 10,
-          alignItems: "center",
-          backgroundColor: "#FFF",
-          padding: 10,
-          marginVertical: 10,
-          marginTop: 15,
-          borderRadius: 8,
-        }}
-      >
-        <Ionicons name="search" size={24} color={Colors.primary} />
-        <TextInput
-          value={searchText || ""}
-          onChangeText={(value) => setSearchText(value)}
+      {setSearchText && (
+        <View
           style={{
-            fontSize: 16,
+            display: "flex",
+            flexDirection: "row",
+            gap: 10,
+            alignItems: "center",
+            backgroundColor: "#FFF",
+            padding: 10,
+            marginVertical: 10,
+            marginTop: 15,
+            borderRadius: 8,
           }}
-          placeholder="Search..."
-        />
-      </View>
+        >
+          <Ionicons name="search" size={24} color={Colors.primary} />
+          <TextInput
+            value={searchText || ""}
+            onChangeText={(value) => setSearchText(value)}
+            style={{
+              fontSize: 16,
+            }}
+            placeholder="Search..."
+          />
+        </View>
+      )}
+      {title && (
+        <View
+          style={{
+            marginTop: 15,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="chevron-back" size={24} color={Colors.white} />
+            <Text
+              style={{ fontSize: 16, fontWeight: "600", color: Colors.white }}
+            >
+              Home
+            </Text>
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontWeight: "700",
+              fontSize: 16,
+              color: Colors.white,
+              position: "absolute", // Absolutely position the text
+              left: "50%", // Move to 50% of the width
+              transform: [{ translateX: -45 }], // Center it based on screen width
+            }}
+          >
+            {title}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }

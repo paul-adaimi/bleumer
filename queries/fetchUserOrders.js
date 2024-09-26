@@ -6,7 +6,8 @@ export default fetchUserOrders = async (userId) => {
   const userSnap = await getDoc(userRef);
 
   if (userSnap.exists()) {
-    return userSnap.data().orders || [];
+    const orders = userSnap.data().orders || [];
+    return orders.reverse();
   } else {
     throw new Error("User not found");
   }
