@@ -31,7 +31,7 @@ export default function ProductCard({ product }) {
   return (
     <View
       style={{
-        marginLeft: 20,
+        marginRight: 20,
         padding: 10,
         backgroundColor: "#FFF",
         borderRadius: 15,

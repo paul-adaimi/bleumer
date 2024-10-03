@@ -64,6 +64,7 @@ export const AddressProvider = ({ children }) => {
         addresses,
         currentAddress,
         setCurrentAddress,
+        isFetching,
       }}
     >
       {children}

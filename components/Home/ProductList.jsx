@@ -6,21 +6,16 @@ import { useRouter } from "expo-router";
 import fetchProducts from "@/queries/fetchProducts";
 import { useQuery } from "react-query";
 
-export default function ProductList({ listName }) {
+export default function ProductList({ listName, productList }) {
   const router = useRouter();
-
-  // TODO: pass as prop
-  const {
-    data: productList,
-    error,
-    isFetching,
-  } = useQuery("products", async () => fetchProducts());
 
   return (
     <View>
       <View
         style={{
           padding: 20,
+          paddingLeft: 0,
+          paddingBottom: 5,
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",

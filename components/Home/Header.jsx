@@ -13,13 +13,19 @@ import { useNavigation } from "expo-router";
 import { useAddress } from "../AddressProvider";
 import ModalScreen from "../ModalScreen";
 import AddressesModal from "../Modals/Addresses";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
-export default function Header({ searchText, setSearchText, title }) {
+export default function Header({
+  searchText,
+  setSearchText,
+  title,
+  isLoading,
+}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const { totalItemCount } = useCart();
   const navigation = useNavigation();
-  const { currentAddress } = useAddress();
+  const { currentAddress, isFetching: isAddressLoading } = useAddress();
 
   const totalCountFinal = useMemo(
     () => (totalItemCount > 99 ? "99+" : totalItemCount),
@@ -56,66 +62,94 @@ export default function Header({ searchText, setSearchText, title }) {
           justifyContent: "space-between",
         }}
       >
-        <TouchableOpacity
-          onPress={() => setIsModalVisible(true)}
-          style={{
-            marginTop: 20,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 5,
-          }}
-        >
-          <Ionicons
+        {isAddressLoading && (
+          <View style={{ marginTop: 20 }}>
+            <SkeletonPlaceholder borderRadius={4}>
+              <SkeletonPlaceholder.Item width={100} height={30} />
+            </SkeletonPlaceholder>
+          </View>
+        )}
+        {!isAddressLoading && (
+          <TouchableOpacity
+            onPress={() => setIsModalVisible(true)}
             style={{
+              marginTop: 20,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+            }}
+          >
+            <Ionicons
+              style={{
+                borderColor: Colors.white,
+              }}
+              name="location-sharp"
+              size={24}
+              color={Colors.white}
+            />
+            <Text
+              style={{
+                color: "#FFF",
+                fontSize: 17,
+              }}
+            >
+              {currentAddress?.name}
+            </Text>
+          </TouchableOpacity>
+        )}
+        {isLoading && (
+          <SkeletonPlaceholder borderRadius={4}>
+            <SkeletonPlaceholder.Item width={40} height={40} />
+          </SkeletonPlaceholder>
+        )}
+        {!isLoading && (
+          <TouchableOpacity
+            style={{
+              marginRight: 10,
+              display: "flex",
+              justifyContent: "center",
+              backgroundColor: totalItemCount
+                ? Colors.primary
+                : Colors.primaryShade,
+              paddingHorizontal: 5,
+              borderRadius: 10,
+              borderWidth: 2,
               borderColor: Colors.white,
             }}
-            name="location-sharp"
-            size={24}
-            color={Colors.white}
-          />
-          <Text
-            style={{
-              color: "#FFF",
-              fontSize: 17,
-            }}
+            onPress={() => navigation.navigate("cart")}
+            disabled={!totalItemCount}
           >
-            {currentAddress?.name}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            marginRight: 10,
-            display: "flex",
-            justifyContent: "center",
-            backgroundColor: totalItemCount
-              ? Colors.primary
-              : Colors.primaryShade,
-            paddingHorizontal: 5,
-            borderRadius: 10,
-            borderWidth: 2,
-            borderColor: Colors.white,
-          }}
-          onPress={() => navigation.navigate("cart")}
-          disabled={!totalItemCount}
-        >
-          <View
-            style={{
-              backgroundColor: Colors.gray,
-              position: "absolute",
-              paddingHorizontal: 4,
-              paddingVertical: 2,
-              right: countBadgeRight,
-              borderRadius: 10,
-              zIndex: 100,
-            }}
-          >
-            <Text style={{ color: Colors.white }}>{totalCountFinal}</Text>
-          </View>
-          <Ionicons name="cart-outline" size={24} color={Colors.white} />
-        </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: Colors.gray,
+                position: "absolute",
+                paddingHorizontal: 4,
+                paddingVertical: 2,
+                right: countBadgeRight,
+                borderRadius: 10,
+                zIndex: 100,
+              }}
+            >
+              <Text style={{ color: Colors.white }}>{totalCountFinal}</Text>
+            </View>
+            <Ionicons name="cart-outline" size={24} color={Colors.white} />
+          </TouchableOpacity>
+        )}
       </View>
-      {setSearchText && (
+      {isLoading && (
+        <View
+          style={{
+            marginTop: 15,
+            marginVertical: 10,
+          }}
+        >
+          <SkeletonPlaceholder borderRadius={4}>
+            <SkeletonPlaceholder.Item width={"100%"} height={40} />
+          </SkeletonPlaceholder>
+        </View>
+      )}
+      {setSearchText && !isLoading && (
         <View
           style={{
             display: "flex",
@@ -140,7 +174,7 @@ export default function Header({ searchText, setSearchText, title }) {
           />
         </View>
       )}
-      {title && (
+      {title && !isLoading && (
         <View
           style={{
             marginTop: 15,

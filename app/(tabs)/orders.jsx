@@ -1,10 +1,11 @@
 import { View, Text } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigation } from "expo-router";
 import OrderList from "../../components/Orders/OrderList";
 import { useQuery } from "react-query";
 import { useUser } from "@clerk/clerk-expo";
 import fetchUserOrders from "@/queries/fetchUserOrders";
+import OrderLoading from "../../components/Orders/OrderLoading";
 
 export default function orders() {
   const navigation = useNavigation();
@@ -24,15 +25,11 @@ export default function orders() {
     });
   }, []);
 
-  return (
-    <View
-      style={{
-        padding: 10,
-      }}
-    >
-      {orders?.length ? (
-        <OrderList orders={orders} />
-      ) : (
+  const orderContent = useMemo(() => {
+    if (isFetching) return <OrderLoading />;
+    else if (orders?.length) return <OrderList orders={orders} />;
+    else
+      return (
         <Text
           style={{
             textAlign: "center",
@@ -40,7 +37,16 @@ export default function orders() {
         >
           You haven't placed any orders yet
         </Text>
-      )}
+      );
+  });
+
+  return (
+    <View
+      style={{
+        padding: 10,
+      }}
+    >
+      {orderContent}
     </View>
   );
 }
