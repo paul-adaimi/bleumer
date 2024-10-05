@@ -14,13 +14,10 @@ import { useAddress } from "../AddressProvider";
 import ModalScreen from "../ModalScreen";
 import AddressesModal from "../Modals/Addresses";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-import { CopilotStep, walkthroughable } from "react-native-copilot";
 import { Tip, showTip, closeTip } from "react-native-tip";
 
-// TODO: Change copilot steps and texts
-
-const CopilotTouchableOpacity = walkthroughable(TouchableOpacity);
-const CopilotView = walkthroughable(View);
+// TODO: Change Tip steps and texts
+// TODO: Change tip when disabled
 
 export default function Header({
   searchText,
@@ -78,12 +75,16 @@ export default function Header({
           </View>
         )}
         {!isAddressLoading && (
-          <CopilotStep
-            text="Click here to add or change an address"
-            order={1}
-            name="hello"
+          <Tip
+            id="address"
+            title="Add Address"
+            body="Click here to add or change an address."
+            showItemPulseAnimation
+            pulseColor={Colors.primary}
+            dismissable={false}
+            onPressItem={() => {}}
           >
-            <CopilotTouchableOpacity
+            <TouchableOpacity
               onPress={() => setIsModalVisible(true)}
               style={{
                 display: "flex",
@@ -108,8 +109,8 @@ export default function Header({
               >
                 {currentAddress ? currentAddress.name : "No address found!"}
               </Text>
-            </CopilotTouchableOpacity>
-          </CopilotStep>
+            </TouchableOpacity>
+          </Tip>
         )}
         {isLoading && (
           <SkeletonPlaceholder borderRadius={4}>
@@ -117,57 +118,52 @@ export default function Header({
           </SkeletonPlaceholder>
         )}
         {!isLoading && (
-          <CopilotStep
-            text="Click here to check your cart"
-            order={2}
-            name="cart"
+          <Tip
+            id="cart"
+            title="Cart"
+            body="Click here to check your items in the cart"
+            showItemPulseAnimation
+            pulseColor={Colors.primary}
+            dismissable={false}
+            onPressItem={() => {}}
           >
-            <Tip
-              id="heart"
-              title="Add Address"
-              body="Please add an address before checking your cart"
-              showItemPulseAnimation
-              pulseColor={Colors.primary}
-              active={true}
+            <TouchableOpacity
+              style={{
+                marginRight: 10,
+                display: "flex",
+                justifyContent: "center",
+                backgroundColor:
+                  totalItemCount && currentAddress
+                    ? Colors.primary
+                    : Colors.primaryShade,
+                paddingHorizontal: 5,
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor: Colors.white,
+                height: 40,
+              }}
+              onPress={() => {
+                if (totalItemCount && currentAddress)
+                  navigation.navigate("cart");
+                else showTip("cart");
+              }}
             >
-              <CopilotTouchableOpacity
+              <View
                 style={{
-                  marginRight: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  backgroundColor:
-                    totalItemCount && currentAddress
-                      ? Colors.primary
-                      : Colors.primaryShade,
-                  paddingHorizontal: 5,
+                  backgroundColor: Colors.gray,
+                  position: "absolute",
+                  paddingHorizontal: 4,
+                  paddingVertical: 2,
+                  right: countBadgeRight,
                   borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: Colors.white,
-                  height: 40,
-                }}
-                onPress={() => {
-                  if (totalItemCount && currentAddress)
-                    navigation.navigate("cart");
-                  else showTip("heart");
+                  zIndex: 100,
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: Colors.gray,
-                    position: "absolute",
-                    paddingHorizontal: 4,
-                    paddingVertical: 2,
-                    right: countBadgeRight,
-                    borderRadius: 10,
-                    zIndex: 100,
-                  }}
-                >
-                  <Text style={{ color: Colors.white }}>{totalCountFinal}</Text>
-                </View>
-                <Ionicons name="cart-outline" size={24} color={Colors.white} />
-              </CopilotTouchableOpacity>
-            </Tip>
-          </CopilotStep>
+                <Text style={{ color: Colors.white }}>{totalCountFinal}</Text>
+              </View>
+              <Ionicons name="cart-outline" size={24} color={Colors.white} />
+            </TouchableOpacity>
+          </Tip>
         )}
       </View>
       {isLoading && (
@@ -183,12 +179,16 @@ export default function Header({
         </View>
       )}
       {setSearchText && !isLoading && (
-        <CopilotStep
-          text="Search for your favorite items!"
-          order={3}
-          name="search"
+        <Tip
+          id="search"
+          title="Search"
+          body="Search for your favorite items here"
+          showItemPulseAnimation
+          pulseColor={Colors.primary}
+          dismissable={false}
+          onPressItem={() => {}}
         >
-          <CopilotView
+          <View
             style={{
               display: "flex",
               flexDirection: "row",
@@ -210,8 +210,8 @@ export default function Header({
               }}
               placeholder="Search..."
             />
-          </CopilotView>
-        </CopilotStep>
+          </View>
+        </Tip>
       )}
       {title && !isLoading && (
         <View
@@ -237,20 +237,18 @@ export default function Header({
               Home
             </Text>
           </TouchableOpacity>
-          <Tip title="Title" body="body" active={true}>
-            <Text
-              style={{
-                fontWeight: "700",
-                fontSize: 16,
-                color: Colors.white,
-                position: "absolute", // Absolutely position the text
-                left: "50%", // Move to 50% of the width
-                transform: [{ translateX: -45 }], // Center it based on screen width
-              }}
-            >
-              {title}
-            </Text>
-          </Tip>
+          <Text
+            style={{
+              fontWeight: "700",
+              fontSize: 16,
+              color: Colors.white,
+              position: "absolute", // Absolutely position the text
+              left: "50%", // Move to 50% of the width
+              transform: [{ translateX: -45 }], // Center it based on screen width
+            }}
+          >
+            {title}
+          </Text>
         </View>
       )}
     </View>

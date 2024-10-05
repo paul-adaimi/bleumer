@@ -1,30 +1,19 @@
 import { View, Text, FlatList, Image } from "react-native";
 import React from "react";
-import { Tip } from "react-native-tip";
-import { Colors } from "@/constants/Colors";
 
 export default function Slider({ sliderList }) {
   return (
     <View>
-      <Tip
-        id="test"
-        title="Special"
-        body="For you"
-        showItemPulseAnimation
-        pulseColor={Colors.primary}
-        active={true}
+      <Text
+        style={{
+          fontWeight: "bold",
+          fontSize: 20,
+          marginBottom: 5,
+          marginLeft: 20,
+        }}
       >
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: 20,
-            marginBottom: 5,
-            marginLeft: 20,
-          }}
-        >
-          # Special for You
-        </Text>
-      </Tip>
+        # Special for You
+      </Text>
       <FlatList
         data={sliderList}
         horizontal={true}

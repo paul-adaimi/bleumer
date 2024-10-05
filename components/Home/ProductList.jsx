@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import ProductCard from "../../components/Home/ProductCard";
 import { useRouter } from "expo-router";
-import { CopilotStep, walkthroughable } from "react-native-copilot";
+import { Tip } from "react-native-tip";
 
-const CopilotText = walkthroughable(Text);
-
-export default function ProductList({ listName, productList, isWalkthrough }) {
+export default function ProductList({
+  listName,
+  productList,
+  index: listIndex,
+}) {
   const router = useRouter();
 
   return (
@@ -24,21 +26,24 @@ export default function ProductList({ listName, productList, isWalkthrough }) {
         }}
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>{listName}</Text>
-        <CopilotStep
-          text="Click here to view all products"
-          order={5}
-          name="ViewAll"
-          active={!!isWalkthrough}
+        <Tip
+          id={`view-all-${listIndex}`}
+          title="View All"
+          body="Click here to view all the products"
+          showItemPulseAnimation
+          pulseColor={Colors.primary}
+          dismissable={false}
+          onPressItem={() => {}}
         >
-          <CopilotText
+          <Text
             style={{
               color: Colors.primary,
             }}
             onPress={() => router.push("/productList/" + listName)}
           >
             View All
-          </CopilotText>
-        </CopilotStep>
+          </Text>
+        </Tip>
       </View>
       <FlatList
         data={productList}
@@ -46,8 +51,8 @@ export default function ProductList({ listName, productList, isWalkthrough }) {
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
           <ProductCard
-            isWalkthrough={isWalkthrough}
-            isFirst={index == 0}
+            listIndex={listIndex}
+            index={index}
             key={index}
             product={item}
           />

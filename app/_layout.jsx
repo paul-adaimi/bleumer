@@ -7,9 +7,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { CartProvider } from "@/components/CartProvider";
 import { AddressProvider } from "@/components/AddressProvider";
 import { Provider as PaperProvider } from "react-native-paper";
-import { CopilotProvider } from "react-native-copilot";
 import TipProvider from "react-native-tip";
-import { SafeAreaView } from "react-native";
 
 const tokenCache = {
   async getToken(key) {
@@ -48,33 +46,31 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
   return (
-    <CopilotProvider overlay="view">
-      <QueryClientProvider client={queryClient}>
-        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-          <PaperProvider>
-            <SignedIn>
-              <AddressProvider>
-                <CartProvider>
-                  <Stack
-                    screenOptions={{
-                      headerBackTitle: "Home",
-                      headerShown: false,
-                    }}
-                  >
-                    <Stack.Screen
-                      name="(tabs)"
-                      options={{ headerShown: false }}
-                    />
-                  </Stack>
-                </CartProvider>
-              </AddressProvider>
-            </SignedIn>
-            <SignedOut>
-              <LoginScreen />
-            </SignedOut>
-          </PaperProvider>
-        </ClerkProvider>
-      </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+        <PaperProvider>
+          <SignedIn>
+            <AddressProvider>
+              <CartProvider>
+                <Stack
+                  screenOptions={{
+                    headerBackTitle: "Home",
+                    headerShown: false,
+                  }}
+                >
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false }}
+                  />
+                </Stack>
+              </CartProvider>
+            </AddressProvider>
+          </SignedIn>
+          <SignedOut>
+            <LoginScreen />
+          </SignedOut>
+        </PaperProvider>
+      </ClerkProvider>
       <TipProvider
         overlayOpacity={0.8}
         titleStyle={{
@@ -94,6 +90,6 @@ export default function RootLayout() {
         prevNextTextStyle={{}}
         prevNextButtonStyle={{}}
       />
-    </CopilotProvider>
+    </QueryClientProvider>
   );
 }

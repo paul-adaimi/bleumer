@@ -9,13 +9,36 @@ import ProductListCard from "@/components/ProductList/ProductListCard";
 import ProductsLoading from "@/components/Home/ProductsLoading";
 import SliderLoading from "@/components/Home/SliderLoading";
 import fetchSliders from "@/queries/fetchSliders";
-import { useCopilot } from "react-native-copilot";
 import { showTipTour } from "react-native-tip";
+
+const tour = [
+  {
+    id: "address",
+    nextId: "search",
+  },
+  {
+    id: "search",
+    prevId: "address",
+    nextId: "numeric-input-0-0",
+  },
+  {
+    id: "numeric-input-0-0",
+    prevId: "search",
+    nextId: "view-all-0",
+  },
+  {
+    id: "view-all-0",
+    prevId: "numeric-input-0-0",
+    nextId: "cart",
+  },
+  {
+    id: "cart",
+    prevId: "view-all-0",
+  },
+];
 
 export default function home() {
   const [searchText, setSearchText] = useState("");
-
-  const { start } = useCopilot();
 
   const { data: productList, isFetching: isFetchingProducts } = useQuery(
     "products",
@@ -29,34 +52,7 @@ export default function home() {
 
   useEffect(() => {
     if (productList && sliderList) {
-      // start();
-      showTipTour([
-        {
-          id: "heart",
-          nextId: "test",
-        },
-        {
-          id: "test",
-          prevId: "tab1",
-          nextId: "heart",
-          delay: 300,
-          nextAction: () => navigation.navigate("AnotherScreen"),
-          prevAction: () => navigation.navigate("HomeScreen"),
-        },
-        {
-          id: "heart",
-          prevId: "tab2",
-          nextId: "top-left",
-          delay: 300,
-          nextAction: () => navigation.navigate("HomeScreen"),
-        },
-        {
-          id: "top-left",
-          prevId: "heart",
-          delay: 300,
-          prevAction: () => navigation.navigate("AnotherScreen"),
-        },
-      ]);
+      showTipTour(tour);
     }
   }, [productList, sliderList]);
 
@@ -104,11 +100,15 @@ export default function home() {
           ) : (
             <>
               <ProductList
-                isWalkthrough={true}
+                index={0}
                 productList={productList}
                 listName="Products 1"
               />
-              <ProductList productList={productList} listName="Products 2" />
+              <ProductList
+                index={1}
+                productList={productList}
+                listName="Products 2"
+              />
               <View style={{ height: 40 }}></View>
             </>
           )}
