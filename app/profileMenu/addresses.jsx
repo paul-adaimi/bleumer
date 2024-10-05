@@ -7,22 +7,16 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { useQuery } from "react-query";
-import { useUser } from "@clerk/clerk-expo";
 import { Colors } from "@/constants/Colors";
 import AddressItem from "../../components/Address/AddressItem";
-import fetchUserAddresses from "@/queries/fetchUserAddresses";
 import { useRouter } from "expo-router";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import { useAddress } from "@/components/AddressProvider";
 
 const AddressList = () => {
-  const { user } = useUser();
   const router = useRouter();
 
-  const {
-    data: addresses,
-    error,
-    isFetching,
-  } = useQuery("addresses", async () => fetchUserAddresses(user.id));
+  const { addresses, isFetching } = useAddress();
 
   const navigation = useNavigation();
 
@@ -35,7 +29,34 @@ const AddressList = () => {
   }, []);
 
   if (isFetching) {
-    return <Text>Loading addresses...</Text>;
+    let loadingPage = [];
+    for (let i = 0; i < 20; i++) {
+      loadingPage.push(
+        <View key={i}>
+          <SkeletonPlaceholder.Item
+            marginVertical={10}
+            width={"100%"}
+            height={40}
+            borderBottomWidth={1}
+            borderBottomColor={"#ccc"}
+          />
+          <View
+            style={{
+              width: "100%",
+              borderBottomWidth: 1,
+              borderBottomColor: "#ccc",
+            }}
+          />
+        </View>
+      );
+    }
+    return (
+      <View style={{ padding: 15 }}>
+        <SkeletonPlaceholder borderRadius={4}>
+          {loadingPage}
+        </SkeletonPlaceholder>
+      </View>
+    );
   }
 
   return (

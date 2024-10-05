@@ -2,12 +2,12 @@ import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import React from "react";
 import { useAddress } from "../AddressProvider";
 import { useNavigation } from "expo-router";
-import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import AddressItemModal from "../Address/AddressItemModal";
 
 export default function AddressesModal({ onClose }) {
-  const { addresses, currentAddress, setCurrentAddress } = useAddress();
+  const { addresses, currentAddress, setCurrentAddress, isFetching } =
+    useAddress();
 
   const navigation = useNavigation();
 
@@ -43,22 +43,25 @@ export default function AddressesModal({ onClose }) {
           Add New Address
         </Text>
       </TouchableOpacity>
-      <FlatList
-        data={addresses}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <AddressItemModal
-            allAddresses={addresses}
-            onClick={() => {
-              setCurrentAddress(item);
-              onClose();
-            }}
-            isSelected={currentAddress === item}
-            key={index}
-            address={item}
-          />
-        )}
-      />
+
+      {!isFetching && (
+        <FlatList
+          data={addresses}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <AddressItemModal
+              allAddresses={addresses}
+              onClick={() => {
+                setCurrentAddress(item);
+                onClose();
+              }}
+              isSelected={currentAddress === item}
+              key={index}
+              address={item}
+            />
+          )}
+        />
+      )}
     </View>
   );
 }

@@ -38,7 +38,7 @@ export default function orders() {
           You haven't placed any orders yet
         </Text>
       );
-  });
+  }, [isFetching, orders, orders?.length]);
 
   return (
     <View

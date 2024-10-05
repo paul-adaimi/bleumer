@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import ProductCard from "../../components/Home/ProductCard";
 import { useRouter } from "expo-router";
-import fetchProducts from "@/queries/fetchProducts";
-import { useQuery } from "react-query";
+import { CopilotStep, walkthroughable } from "react-native-copilot";
 
-export default function ProductList({ listName, productList }) {
+const CopilotText = walkthroughable(Text);
+
+export default function ProductList({ listName, productList, isWalkthrough }) {
   const router = useRouter();
 
   return (
@@ -14,30 +15,42 @@ export default function ProductList({ listName, productList }) {
       <View
         style={{
           padding: 20,
-          paddingLeft: 0,
           paddingBottom: 5,
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          alignItems: "baseline",
           marginTop: 10,
         }}
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>{listName}</Text>
-        <Text
-          style={{
-            color: Colors.primary,
-          }}
-          onPress={() => router.push("/productList/" + listName)}
+        <CopilotStep
+          text="Click here to view all products"
+          order={5}
+          name="ViewAll"
+          active={!!isWalkthrough}
         >
-          View All
-        </Text>
+          <CopilotText
+            style={{
+              color: Colors.primary,
+            }}
+            onPress={() => router.push("/productList/" + listName)}
+          >
+            View All
+          </CopilotText>
+        </CopilotStep>
       </View>
       <FlatList
         data={productList}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
-          <ProductCard key={index} product={item} />
+          <ProductCard
+            isWalkthrough={isWalkthrough}
+            isFirst={index == 0}
+            key={index}
+            product={item}
+          />
         )}
       />
     </View>

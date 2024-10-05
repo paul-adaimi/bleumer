@@ -4,8 +4,11 @@ import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
 import NumericInput from "../NumericInput";
+import { CopilotStep, walkthroughable } from "react-native-copilot";
 
-export default function ProductCard({ product }) {
+const CopilotView = walkthroughable(View);
+
+export default function ProductCard({ product, isFirst, isWalkthrough }) {
   const { cart, addToCart, updateItemCount } = useCart();
 
   const productCount = cart[product.id]?.count || 0;
@@ -31,6 +34,7 @@ export default function ProductCard({ product }) {
   return (
     <View
       style={{
+        marginLeft: isFirst ? 20 : 0,
         marginRight: 20,
         padding: 10,
         backgroundColor: "#FFF",
@@ -83,11 +87,20 @@ export default function ProductCard({ product }) {
           >
             ${product.price}
           </Text>
-          <NumericInput
-            value={productCount}
-            onIncrement={handleIncrement}
-            onDecrement={handleDecrement}
-          />
+          <CopilotStep
+            text="Add or remove items to start shopping!"
+            order={4}
+            name="addItems"
+            active={!!isFirst && !!isWalkthrough}
+          >
+            <CopilotView>
+              <NumericInput
+                value={productCount}
+                onIncrement={handleIncrement}
+                onDecrement={handleDecrement}
+              />
+            </CopilotView>
+          </CopilotStep>
         </View>
       </View>
     </View>
