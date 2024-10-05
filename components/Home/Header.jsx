@@ -15,9 +15,11 @@ import ModalScreen from "../ModalScreen";
 import AddressesModal from "../Modals/Addresses";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";
+import { useTour } from "../TourProvider";
 
 // TODO: Change Tip steps and texts
 // TODO: Change tip when disabled
+// TODO: Add CartTipProvider
 
 export default function Header({
   searchText,
@@ -26,6 +28,7 @@ export default function Header({
   isLoading,
 }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { isInTour, setIsInTour } = useTour();
 
   const { totalItemCount } = useCart();
   const navigation = useNavigation();
@@ -92,6 +95,7 @@ export default function Header({
                 alignItems: "center",
                 gap: 5,
               }}
+              disabled={isInTour}
             >
               <Ionicons
                 style={{
@@ -121,13 +125,24 @@ export default function Header({
           <Tip
             id="cart"
             title="Cart"
-            body="Click here to check your items in the cart"
+            body={
+              isInTour
+                ? "Click here to check your items in the cart"
+                : currentAddress
+                ? "Add items to cart before accessing cart"
+                : "Add an Address before accessing cart"
+            }
             showItemPulseAnimation
             pulseColor={Colors.primary}
-            dismissable={false}
+            dismissable={true}
+            onDismiss={() => {
+              setIsInTour(false);
+              closeTip();
+            }}
             onPressItem={() => {}}
           >
             <TouchableOpacity
+              disabled={isInTour}
               style={{
                 marginRight: 10,
                 display: "flex",
@@ -203,6 +218,7 @@ export default function Header({
           >
             <Ionicons name="search" size={24} color={Colors.primary} />
             <TextInput
+              editable={!isInTour}
               value={searchText || ""}
               onChangeText={(value) => setSearchText(value)}
               style={{

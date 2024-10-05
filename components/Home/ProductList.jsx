@@ -4,6 +4,7 @@ import { Colors } from "@/constants/Colors";
 import ProductCard from "../../components/Home/ProductCard";
 import { useRouter } from "expo-router";
 import { Tip } from "react-native-tip";
+import { useTour } from "../TourProvider";
 
 export default function ProductList({
   listName,
@@ -11,6 +12,8 @@ export default function ProductList({
   index: listIndex,
 }) {
   const router = useRouter();
+
+  const { isInTour } = useTour();
 
   return (
     <View>
@@ -40,6 +43,7 @@ export default function ProductList({
               color: Colors.primary,
             }}
             onPress={() => router.push("/productList/" + listName)}
+            disabled={isInTour}
           >
             View All
           </Text>

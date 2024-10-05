@@ -10,32 +10,7 @@ import ProductsLoading from "@/components/Home/ProductsLoading";
 import SliderLoading from "@/components/Home/SliderLoading";
 import fetchSliders from "@/queries/fetchSliders";
 import { showTipTour } from "react-native-tip";
-
-const tour = [
-  {
-    id: "address",
-    nextId: "search",
-  },
-  {
-    id: "search",
-    prevId: "address",
-    nextId: "numeric-input-0-0",
-  },
-  {
-    id: "numeric-input-0-0",
-    prevId: "search",
-    nextId: "view-all-0",
-  },
-  {
-    id: "view-all-0",
-    prevId: "numeric-input-0-0",
-    nextId: "cart",
-  },
-  {
-    id: "cart",
-    prevId: "view-all-0",
-  },
-];
+import { useTour } from "@/components/TourProvider";
 
 export default function home() {
   const [searchText, setSearchText] = useState("");
@@ -48,6 +23,31 @@ export default function home() {
   const { data: sliderList, isFetching: isFetchingSlider } = useQuery(
     "sliders",
     async () => fetchSliders()
+  );
+
+  const tour = useMemo(
+    () => [
+      {
+        id: "address",
+        nextId: "search",
+      },
+      {
+        id: "search",
+        nextId: "numeric-input-0-0",
+      },
+      {
+        id: "numeric-input-0-0",
+        nextId: "view-all-0",
+      },
+      {
+        id: "view-all-0",
+        nextId: "cart",
+      },
+      {
+        id: "cart",
+      },
+    ],
+    []
   );
 
   useEffect(() => {

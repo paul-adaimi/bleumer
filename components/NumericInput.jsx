@@ -8,18 +8,27 @@ import {
 } from "react-native";
 import { Colors } from "@/constants/Colors";
 
-const NumericInput = ({ value, onIncrement, onDecrement }) => {
+const NumericInput = ({ value, onIncrement, onDecrement, disabled }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={onDecrement}>
+      <TouchableOpacity
+        disabled={disabled}
+        style={styles.button}
+        onPress={onDecrement}
+      >
         <Text style={styles.buttonText}>-</Text>
       </TouchableOpacity>
       <TextInput
+        editable={false}
         style={styles.input}
         value={String(value)}
         keyboardType="numeric"
       />
-      <TouchableOpacity style={styles.button} onPress={onIncrement}>
+      <TouchableOpacity
+        disabled={disabled}
+        style={styles.button}
+        onPress={onIncrement}
+      >
         <Text style={styles.buttonText}>+</Text>
       </TouchableOpacity>
     </View>

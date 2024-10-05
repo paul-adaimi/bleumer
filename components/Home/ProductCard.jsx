@@ -5,9 +5,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
 import NumericInput from "../NumericInput";
 import { Tip } from "react-native-tip";
+import { useTour } from "../TourProvider";
 
 export default function ProductCard({ product, index, listIndex }) {
   const { cart, addToCart, updateItemCount } = useCart();
+  const { isInTour } = useTour();
 
   const isFirst = index == 0;
 
@@ -101,6 +103,7 @@ export default function ProductCard({ product, index, listIndex }) {
                 value={productCount}
                 onIncrement={handleIncrement}
                 onDecrement={handleDecrement}
+                disabled={isInTour}
               />
             </View>
           </Tip>
