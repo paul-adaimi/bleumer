@@ -18,8 +18,6 @@ import { Tip, showTip, closeTip } from "react-native-tip";
 import { useTour } from "../TourProvider";
 
 // TODO: Change Tip steps and texts
-// TODO: Change tip when disabled
-// TODO: Add CartTipProvider
 
 export default function Header({
   searchText,
@@ -60,7 +58,10 @@ export default function Header({
         onClose={() => setIsModalVisible(false)}
         title="Choose an Address"
       >
-        <AddressesModal onClose={() => setIsModalVisible(false)} />
+        <AddressesModal
+          backTitle={title ? title : "Home"}
+          onClose={() => setIsModalVisible(false)}
+        />
       </ModalScreen>
       <View
         style={{
@@ -81,7 +82,7 @@ export default function Header({
           <Tip
             id="address"
             title="Add Address"
-            body="Click here to add or change an address."
+            body="Tap here to add or update your address."
             showItemPulseAnimation
             pulseColor={Colors.primary}
             dismissable={false}
@@ -127,7 +128,7 @@ export default function Header({
             title="Cart"
             body={
               isInTour
-                ? "Click here to check your items in the cart"
+                ? "Tap here to view the items in your cart."
                 : currentAddress
                 ? "Add items to cart before accessing cart"
                 : "Add an Address before accessing cart"
@@ -197,7 +198,7 @@ export default function Header({
         <Tip
           id="search"
           title="Search"
-          body="Search for your favorite items here"
+          body="Find your favorite items by searching here."
           showItemPulseAnimation
           pulseColor={Colors.primary}
           dismissable={false}

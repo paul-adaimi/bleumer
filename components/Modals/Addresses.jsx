@@ -5,14 +5,16 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import AddressItemModal from "../Address/AddressItemModal";
 
-export default function AddressesModal({ onClose }) {
+export default function AddressesModal({ onClose, backTitle }) {
   const { addresses, currentAddress, setCurrentAddress, isFetching } =
     useAddress();
 
   const navigation = useNavigation();
 
   const addAddressHandler = () => {
-    navigation.navigate("profileMenu/addAddress");
+    navigation.navigate("profileMenu/addAddress", {
+      backTitle,
+    });
     onClose();
   };
 

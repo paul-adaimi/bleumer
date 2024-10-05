@@ -57,7 +57,10 @@ export default function Checkout() {
         onClose={() => setIsModalVisible(false)}
         title="Choose an Address"
       >
-        <AddressesModal onClose={() => setIsModalVisible(false)} />
+        <AddressesModal
+          backTitle="Checkout"
+          onClose={() => setIsModalVisible(false)}
+        />
       </ModalScreen>
       <View>
         <CheckoutCard title="Delivery Address">

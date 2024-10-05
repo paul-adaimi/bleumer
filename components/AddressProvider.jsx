@@ -6,10 +6,14 @@ import React, {
   useCallback,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { useUser } from "@clerk/clerk-expo";
 import fetchUserAddresses from "@/queries/fetchUserAddresses";
 import * as Location from "expo-location";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "@/configs/FirebaseConfig";
+import { useQueryClient } from "react-query";
+import deleteUserAddress from "@/queries/deleteUserAddress";
 
 // Create a context for the address
 const AddressContext = createContext();
@@ -18,19 +22,27 @@ const AddressContext = createContext();
 
 // Create a provider component
 export const AddressProvider = ({ children }) => {
+  const [isForceLoading, setIsForceLoading] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
   const [currentAddress, setCurrentAddress] = useState({});
+
+  const queryClient = useQueryClient();
   const { user } = useUser();
 
   const {
     data: addresses,
     error,
     isFetching,
+    isLoading,
   } = useQuery("addresses", async () => fetchUserAddresses(user.id));
 
   const getLocation = useCallback(async () => {
+    setIsLocationLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       setCurrentAddress(addresses?.[0]);
+      setIsLocationLoading(false);
       return;
     }
 
@@ -41,6 +53,7 @@ export const AddressProvider = ({ children }) => {
     });
     setCurrentAddress(closestAddress);
     await AsyncStorage.setItem("address", JSON.stringify(closestAddress));
+    setIsLocationLoading(false);
   }, [addresses]);
 
   // Load address data from AsyncStorage when the app starts
@@ -54,11 +67,53 @@ export const AddressProvider = ({ children }) => {
         await getLocation();
       } catch (error) {
         console.error("Failed to load address data:", error);
+      } finally {
+        setHasLoaded(true);
       }
     };
 
-    loadAddressData();
+    if (!isLoading && !hasLoaded) {
+      loadAddressData();
+    }
   }, [getLocation]);
+
+  const createAddress = useCallback(
+    async (addressValues) => {
+      const userRef = doc(db, "Users", user.id);
+
+      await updateDoc(userRef, {
+        addresses: arrayUnion(addressValues),
+      });
+
+      await queryClient.invalidateQueries("addresses");
+      const updatedAddresses = queryClient.getQueryData("addresses");
+
+      const newCurrentAddress = updatedAddresses.find(
+        (address) => address.id === addressValues.id
+      );
+
+      if (newCurrentAddress) {
+        setCurrentAddress(newCurrentAddress);
+      }
+    },
+    [user.id, db]
+  );
+
+  const deleteAddress = useMutation({
+    mutationFn: async (index) => {
+      setIsForceLoading(true);
+      await deleteUserAddress(user.id, index);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries("addresses");
+    },
+    onSettled: () => {
+      setIsForceLoading(false);
+    },
+  });
+
+  // TODO: if deleted address is current, getLocation again
+  // TODO: Handle delete is ugly
 
   return (
     <AddressContext.Provider
@@ -66,7 +121,9 @@ export const AddressProvider = ({ children }) => {
         addresses,
         currentAddress,
         setCurrentAddress,
-        isFetching,
+        createAddress,
+        deleteAddress,
+        isFetching: isLocationLoading || isFetching || isForceLoading,
       }}
     >
       {children}

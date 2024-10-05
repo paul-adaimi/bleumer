@@ -15,6 +15,8 @@ import { useTour } from "@/components/TourProvider";
 export default function home() {
   const [searchText, setSearchText] = useState("");
 
+  const { setIsInTour } = useTour();
+
   const { data: productList, isFetching: isFetchingProducts } = useQuery(
     "products",
     async () => fetchProducts()
@@ -52,7 +54,8 @@ export default function home() {
 
   useEffect(() => {
     if (productList && sliderList) {
-      showTipTour(tour);
+      // setIsInTour(true);
+      // showTipTour(tour);
     }
   }, [productList, sliderList]);
 

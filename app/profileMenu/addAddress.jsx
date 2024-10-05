@@ -1,36 +1,30 @@
 import React, { useEffect, useCallback } from "react";
 import { useNavigation } from "expo-router";
-import { useUser } from "@clerk/clerk-expo";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
-import { useQueryClient } from "react-query";
 import AddressForm from "../../components/Address/AddressForm";
+import { useRoute } from "@react-navigation/native";
+import { useAddress } from "../../components/AddressProvider";
 
 export default function addAddress() {
   const navigation = useNavigation();
-  const queryClient = useQueryClient();
+  const route = useRoute();
 
-  const { user } = useUser();
+  const { backTitle } = route.params;
 
-  const createAddress = useCallback(
+  const { createAddress } = useAddress();
+
+  const createAddressAndGoBack = useCallback(
     async (addressValues) => {
-      const userRef = doc(db, "Users", user.id);
-
-      await updateDoc(userRef, {
-        addresses: arrayUnion(addressValues),
-      });
-
-      queryClient.invalidateQueries("addresses");
+      await createAddress(addressValues);
       navigation.goBack();
     },
-    [user.id, db]
+    [navigation]
   );
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: "Add New Address",
       headerShown: true,
-      headerBackTitle: "Addresses",
+      headerBackTitle: backTitle ? backTitle : "Addresses",
     });
   }, []);
 
@@ -45,7 +39,7 @@ export default function addAddress() {
         number: "",
         coordinates: null,
       }}
-      onSubmit={createAddress}
+      onSubmit={createAddressAndGoBack}
     />
   );
 }

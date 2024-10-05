@@ -92,7 +92,7 @@ export default function ProductCard({ product, index, listIndex }) {
           <Tip
             id={`numeric-input-${listIndex}-${index}`}
             title="Add or Remove Items"
-            body="Press the +/- to add or remove items from your cart"
+            body="Use the +/- buttons to adjust the quantity of items in your cart."
             showItemPulseAnimation
             pulseColor={Colors.primary}
             dismissable={false}

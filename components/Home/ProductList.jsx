@@ -32,7 +32,7 @@ export default function ProductList({
         <Tip
           id={`view-all-${listIndex}`}
           title="View All"
-          body="Click here to view all the products"
+          body="Tap here to explore all available products."
           showItemPulseAnimation
           pulseColor={Colors.primary}
           dismissable={false}

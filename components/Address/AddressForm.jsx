@@ -18,6 +18,7 @@ import CustomPicker from "../CustomPicker";
 import { useQuery } from "react-query";
 import fetchAreas from "@/queries/fetchAreas";
 import { Ionicons } from "@expo/vector-icons";
+import * as Crypto from "expo-crypto";
 
 export default function AddressForm({
   initialValues,
@@ -133,7 +134,10 @@ export default function AddressForm({
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      onSubmit(addressValues);
+      onSubmit({
+        ...addressValues,
+        id: Crypto.randomUUID(),
+      });
     }
   };
 
@@ -255,19 +259,11 @@ export default function AddressForm({
                     }}
                   >
                     <CustomTextInput
-                      key="number"
+                      key="pre-number"
                       keyboardType="numeric"
                       value={"+961"}
                       editable={false}
                     />
-                    {/* <Text
-                      style={{
-                        marginTop: 10,
-                        fontSize: 16,
-                      }}
-                    >
-                      +961
-                    </Text> */}
                     <CustomTextInput
                       key="number"
                       keyboardType="numeric"

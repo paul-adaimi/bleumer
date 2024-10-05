@@ -1,24 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useUser } from "@clerk/clerk-expo";
-import { useMutation, useQueryClient } from "react-query";
-import deleteUserAddress from "@/queries/deleteUserAddress";
 import { useNavigation } from "expo-router";
 import { Button, Dialog, Portal } from "react-native-paper";
+import { useAddress } from "../AddressProvider";
 
 const AddressItem = ({ address, index, allAddresses }) => {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
 
-  const { user } = useUser();
   const navigation = useNavigation();
 
-  const queryClient = useQueryClient();
-
-  const deleteAddress = useMutation(() => deleteUserAddress(user.id, index), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("addresses");
-    },
-  });
+  const { deleteAddress } = useAddress();
 
   const onEdit = () => {
     navigation.navigate("profileMenu/editAddress", {
@@ -54,7 +45,14 @@ const AddressItem = ({ address, index, allAddresses }) => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setIsDialogVisible(false)}>Cancel</Button>
-            <Button onPress={() => deleteAddress.mutate()}>Ok</Button>
+            <Button
+              onPress={() => {
+                deleteAddress.mutate(index);
+                setIsDialogVisible(false);
+              }}
+            >
+              Ok
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
