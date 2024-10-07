@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, FlatList } from "react-native";
+import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "../../components/Home/Header";
 import Slider from "../../components/Home/Slider";
@@ -88,7 +88,11 @@ export default function home() {
       );
     else
       return (
-        <View>
+        <ScrollView
+          style={{
+            paddingTop: 20,
+          }}
+        >
           {isFetchingSlider ? (
             <SliderLoading />
           ) : (
@@ -115,7 +119,7 @@ export default function home() {
               <View style={{ height: 40 }}></View>
             </>
           )}
-        </View>
+        </ScrollView>
       );
   }, [
     isFetchingProducts,
@@ -137,13 +141,8 @@ export default function home() {
         searchText={searchText}
         setSearchText={setSearchText}
       />
-      <ScrollView
-        style={{
-          paddingTop: 20,
-        }}
-      >
-        {homeContent}
-      </ScrollView>
+
+      {homeContent}
     </View>
   );
 }

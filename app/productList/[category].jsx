@@ -8,7 +8,6 @@ import Header from "@/components/Home/Header";
 
 export default function ProductListByCategory() {
   // TODO: Change the back button text after opening the cart from here
-  const navigation = useNavigation();
   const { category } = useLocalSearchParams();
 
   const {
@@ -18,13 +17,12 @@ export default function ProductListByCategory() {
   } = useQuery("products", async () => fetchProducts());
 
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Header title={category} />
       <FlatList
         data={productList}
-        renderItem={({ item }) => (
-          <ProductListCard product={item} key={item.id} />
-        )}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <ProductListCard product={item} />}
       />
     </View>
   );

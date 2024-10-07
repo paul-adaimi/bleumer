@@ -18,7 +18,6 @@ import CustomPicker from "../CustomPicker";
 import { useQuery } from "react-query";
 import fetchAreas from "@/queries/fetchAreas";
 import { Ionicons } from "@expo/vector-icons";
-import * as Crypto from "expo-crypto";
 
 export default function AddressForm({
   initialValues,
@@ -46,7 +45,7 @@ export default function AddressForm({
   const [initialRegion, setInitialRegion] = useState(null);
   const [screenHeight] = useState(Dimensions.get("window").height);
 
-  const [addressValues, setAddressValues] = useState(initialValues);
+  const [addressValues, setAddressValues] = useState({ ...initialValues });
   const [errors, setErrors] = useState({});
 
   const scrollViewRef = useRef(null);
@@ -134,10 +133,7 @@ export default function AddressForm({
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      onSubmit({
-        ...addressValues,
-        id: Crypto.randomUUID(),
-      });
+      onSubmit(addressValues);
     }
   };
 

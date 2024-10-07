@@ -43,6 +43,17 @@ export default function Header({
     else return -25;
   }, [totalItemCount]);
 
+  const isCartDisabled = useMemo(
+    () => !totalItemCount || !currentAddress || isAddressLoading
+  );
+
+  const cartTipBody = useMemo(() => {
+    if (isInTour) return "Tap here to view the items in your cart.";
+    else if (isAddressLoading) return "Please wait for address to be loaded";
+    else if (!currentAddress) return "Add an Address before accessing cart";
+    else return "Add items to cart before accessing cart";
+  });
+
   return (
     <View
       style={{
@@ -87,6 +98,7 @@ export default function Header({
             pulseColor={Colors.primary}
             dismissable={false}
             onPressItem={() => {}}
+            active={false}
           >
             <TouchableOpacity
               onPress={() => setIsModalVisible(true)}
@@ -126,13 +138,7 @@ export default function Header({
           <Tip
             id="cart"
             title="Cart"
-            body={
-              isInTour
-                ? "Tap here to view the items in your cart."
-                : currentAddress
-                ? "Add items to cart before accessing cart"
-                : "Add an Address before accessing cart"
-            }
+            body={cartTipBody}
             showItemPulseAnimation
             pulseColor={Colors.primary}
             dismissable={true}
@@ -148,10 +154,9 @@ export default function Header({
                 marginRight: 10,
                 display: "flex",
                 justifyContent: "center",
-                backgroundColor:
-                  totalItemCount && currentAddress
-                    ? Colors.primary
-                    : Colors.primaryShade,
+                backgroundColor: isCartDisabled
+                  ? Colors.primaryShade
+                  : Colors.primary,
                 paddingHorizontal: 5,
                 borderRadius: 10,
                 borderWidth: 2,
@@ -159,8 +164,7 @@ export default function Header({
                 height: 40,
               }}
               onPress={() => {
-                if (totalItemCount && currentAddress)
-                  navigation.navigate("cart");
+                if (!isCartDisabled) navigation.navigate("cart");
                 else showTip("cart");
               }}
             >
@@ -202,6 +206,7 @@ export default function Header({
           showItemPulseAnimation
           pulseColor={Colors.primary}
           dismissable={false}
+          active={false}
           onPressItem={() => {}}
         >
           <View

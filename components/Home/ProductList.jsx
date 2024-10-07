@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import ProductCard from "../../components/Home/ProductCard";
@@ -37,16 +37,20 @@ export default function ProductList({
           pulseColor={Colors.primary}
           dismissable={false}
           onPressItem={() => {}}
+          active={false}
         >
-          <Text
-            style={{
-              color: Colors.primary,
-            }}
+          <TouchableOpacity
             onPress={() => router.push("/productList/" + listName)}
             disabled={isInTour}
           >
-            View All
-          </Text>
+            <Text
+              style={{
+                color: Colors.primary,
+              }}
+            >
+              View All
+            </Text>
+          </TouchableOpacity>
         </Tip>
       </View>
       <FlatList

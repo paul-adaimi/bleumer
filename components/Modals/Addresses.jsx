@@ -52,7 +52,6 @@ export default function AddressesModal({ onClose, backTitle }) {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
             <AddressItemModal
-              allAddresses={addresses}
               onClick={() => {
                 setCurrentAddress(item);
                 onClose();

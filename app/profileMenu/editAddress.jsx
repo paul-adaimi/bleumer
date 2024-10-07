@@ -6,29 +6,23 @@ import { db } from "@/configs/FirebaseConfig";
 import { useQueryClient } from "react-query";
 import AddressForm from "../../components/Address/AddressForm";
 import { useRoute } from "@react-navigation/native";
+import { useAddress } from "../../components/AddressProvider";
 
 export default function editAddress() {
   const route = useRoute();
   const navigation = useNavigation();
   const queryClient = useQueryClient();
-  const { index, allAddresses } = route.params;
+  const { addresses: allAddresses, editAddress } = useAddress();
+  const { address } = route.params;
 
   const { user } = useUser();
 
-  const onEditAddress = useCallback(
-    async (addressValues) => {
-      const addresses = [...allAddresses];
-      addresses[index] = addressValues;
-      const userRef = doc(db, "Users", user.id);
-
-      await updateDoc(userRef, {
-        addresses,
-      });
-
-      queryClient.invalidateQueries("addresses");
+  const editAddressAndGoBack = useCallback(
+    (addressValues) => {
+      editAddress.mutate(addressValues);
       navigation.goBack();
     },
-    [user.id, db]
+    [navigation]
   );
 
   useEffect(() => {
@@ -43,8 +37,8 @@ export default function editAddress() {
     <AddressForm
       title="Edit Address"
       buttonText="Edit Address"
-      initialValues={allAddresses[index]}
-      onSubmit={onEditAddress}
+      initialValues={address}
+      onSubmit={editAddressAndGoBack}
     />
   );
 }

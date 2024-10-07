@@ -77,7 +77,7 @@ const AddressList = () => {
         data={addresses}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <AddressItem allAddresses={addresses} index={index} address={item} />
+          <AddressItem index={index} address={item} />
         )}
       />
       <View

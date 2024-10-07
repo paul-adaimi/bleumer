@@ -3,6 +3,7 @@ import { useNavigation } from "expo-router";
 import AddressForm from "../../components/Address/AddressForm";
 import { useRoute } from "@react-navigation/native";
 import { useAddress } from "../../components/AddressProvider";
+import * as Crypto from "expo-crypto";
 
 export default function addAddress() {
   const navigation = useNavigation();
@@ -13,8 +14,8 @@ export default function addAddress() {
   const { createAddress } = useAddress();
 
   const createAddressAndGoBack = useCallback(
-    async (addressValues) => {
-      await createAddress(addressValues);
+    (addressValues) => {
+      createAddress(addressValues);
       navigation.goBack();
     },
     [navigation]
@@ -38,6 +39,7 @@ export default function addAddress() {
         street: "",
         number: "",
         coordinates: null,
+        id: Crypto.randomUUID(),
       }}
       onSubmit={createAddressAndGoBack}
     />

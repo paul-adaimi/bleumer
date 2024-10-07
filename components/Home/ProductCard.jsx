@@ -97,6 +97,7 @@ export default function ProductCard({ product, index, listIndex }) {
             pulseColor={Colors.primary}
             dismissable={false}
             onPressItem={() => {}}
+            active={false}
           >
             <View>
               <NumericInput

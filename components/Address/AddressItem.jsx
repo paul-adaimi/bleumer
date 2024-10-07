@@ -4,7 +4,7 @@ import { useNavigation } from "expo-router";
 import { Button, Dialog, Portal } from "react-native-paper";
 import { useAddress } from "../AddressProvider";
 
-const AddressItem = ({ address, index, allAddresses }) => {
+const AddressItem = ({ address }) => {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
 
   const navigation = useNavigation();
@@ -13,8 +13,7 @@ const AddressItem = ({ address, index, allAddresses }) => {
 
   const onEdit = () => {
     navigation.navigate("profileMenu/editAddress", {
-      index,
-      allAddresses,
+      address,
     });
   };
 
@@ -47,7 +46,7 @@ const AddressItem = ({ address, index, allAddresses }) => {
             <Button onPress={() => setIsDialogVisible(false)}>Cancel</Button>
             <Button
               onPress={() => {
-                deleteAddress.mutate(index);
+                deleteAddress.mutate(address);
                 setIsDialogVisible(false);
               }}
             >

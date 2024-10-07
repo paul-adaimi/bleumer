@@ -45,6 +45,8 @@ if (!publishableKey) {
 
 const queryClient = new QueryClient();
 
+// TODO: Add tour after first sign in only
+
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
