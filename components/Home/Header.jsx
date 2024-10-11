@@ -62,6 +62,7 @@ export default function Header({
         backgroundColor: Colors.primary,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
+        opacity: 1,
       }}
     >
       <ModalScreen

@@ -65,7 +65,7 @@ export default function ProductListCard({ product }) {
         <Text
           style={{
             fontWeight: "bold",
-            fontSize: 20,
+            fontSize: 16,
           }}
         >
           {product.name}

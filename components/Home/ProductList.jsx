@@ -28,7 +28,11 @@ export default function ProductList({
           marginTop: 10,
         }}
       >
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>{listName}</Text>
+        <Text
+          style={{ fontSize: 20, fontWeight: "bold", color: Colors.primary }}
+        >
+          {listName}
+        </Text>
         <Tip
           id={`view-all-${listIndex}`}
           title="View All"
@@ -54,6 +58,7 @@ export default function ProductList({
         </Tip>
       </View>
       <FlatList
+        style={{ overflow: "visible" }}
         data={productList}
         horizontal={true}
         showsHorizontalScrollIndicator={false}

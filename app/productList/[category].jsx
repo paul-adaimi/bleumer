@@ -16,11 +16,15 @@ export default function ProductListByCategory() {
     isFetching,
   } = useQuery("products", async () => fetchProducts());
 
+  const list = productList?.filter(
+    (product) => product.category === category.toLowerCase()
+  );
+
   return (
     <View style={{ height: "100%" }}>
       <Header title={category} />
       <FlatList
-        data={productList}
+        data={list}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ProductListCard product={item} />}
       />

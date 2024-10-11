@@ -38,11 +38,6 @@ export default function home() {
     return productList?.filter((product) => product.category === "bundle");
   }, [productList]);
 
-  const { data: sliderList, isFetching: isFetchingSlider } = useQuery(
-    "sliders",
-    async () => fetchSliders()
-  );
-
   const tour = useMemo(
     () => [
       {
@@ -69,10 +64,10 @@ export default function home() {
   );
 
   useEffect(() => {
-    if (productList && sliderList && isInTour) {
+    if (productList && isInTour) {
       showTipTour(tour);
     }
-  }, [productList, sliderList]);
+  }, [productList]);
 
   // Filter productList based on searchText
   const filteredProducts = productList?.filter((product) =>
@@ -108,10 +103,10 @@ export default function home() {
             paddingTop: 20,
           }}
         >
-          {isFetchingSlider ? (
+          {isFetchingProducts ? (
             <SliderLoading />
           ) : (
-            <Slider sliderList={sliderList} />
+            <Slider sliderList={bundles} />
           )}
           {isFetchingProducts ? (
             <View style={{ marginLeft: 20 }}>
@@ -136,14 +131,7 @@ export default function home() {
           )}
         </ScrollView>
       );
-  }, [
-    isFetchingProducts,
-    isFetchingSlider,
-    filteredProducts,
-    productList,
-    sliderList,
-    searchText,
-  ]);
+  }, [isFetchingProducts, filteredProducts, productList, searchText]);
 
   return (
     <View
