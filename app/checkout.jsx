@@ -11,7 +11,10 @@ import createOrder from "@/queries/createOrder";
 import { useAddress } from "../components/AddressProvider";
 import ModalScreen from "../components/ModalScreen";
 import AddressesModal from "../components/Modals/Addresses";
+import LoadingButton from "../components/LoadingButton";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
+// TODO: Add status to order, default it to "pending" (will be used in the future)
 export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -19,7 +22,7 @@ export default function Checkout() {
   const { cart, subTotal, emptyCart } = useCart();
   const { user } = useUser();
   const queryClient = useQueryClient();
-  const { currentAddress } = useAddress();
+  const { currentAddress, isFetching: isAddressLoading } = useAddress();
 
   useEffect(() => {
     navigation.setOptions({
@@ -29,7 +32,6 @@ export default function Checkout() {
     });
   }, []);
 
-  // TODO: Add animation instead
   const { isLoading, mutate } = useMutation(
     () => createOrder(user.id, { cart, total: subTotal }, currentAddress),
     {
@@ -40,8 +42,6 @@ export default function Checkout() {
       },
     }
   );
-
-  if (isLoading) return <Text>loading...</Text>;
 
   return (
     <View
@@ -64,14 +64,41 @@ export default function Checkout() {
       </ModalScreen>
       <View>
         <CheckoutCard title="Delivery Address">
-          <Text>{currentAddress.name}</Text>
-          <Text>{currentAddress.city.name}</Text>
-          <Text>{currentAddress.street}</Text>
-          <Text>{currentAddress.number}</Text>
+          {isAddressLoading ? (
+            <SkeletonPlaceholder borderRadius={4}>
+              <SkeletonPlaceholder.Item width={"100%"} height={10} />
+              <SkeletonPlaceholder.Item
+                marginTop={2}
+                width={"100%"}
+                height={10}
+              />
+              <SkeletonPlaceholder.Item
+                marginTop={2}
+                width={"100%"}
+                height={10}
+              />
+              <SkeletonPlaceholder.Item
+                marginTop={2}
+                width={"100%"}
+                height={10}
+              />
+            </SkeletonPlaceholder>
+          ) : (
+            <>
+              <Text>{currentAddress.name}</Text>
+              <Text>{currentAddress.city.name}</Text>
+              <Text>{currentAddress.street}</Text>
+              <Text>{currentAddress.number}</Text>
+            </>
+          )}
+
           <TouchableOpacity
+            disabled={isAddressLoading}
             onPress={() => setIsModalVisible(true)}
             style={{
-              backgroundColor: Colors.primary,
+              backgroundColor: isAddressLoading
+                ? Colors.primaryShade
+                : Colors.primary,
               marginTop: 10,
               height: 25,
               borderRadius: 5,
@@ -153,15 +180,8 @@ export default function Checkout() {
           padding: 15,
         }}
       >
-        <TouchableOpacity
-          onPress={mutate}
-          style={{
-            backgroundColor: Colors.primary,
-            padding: 16,
-            borderRadius: 5,
-            marginBottom: 15,
-          }}
-        >
+        {/* TODO: Add disabled when address loading */}
+        <LoadingButton onPress={mutate} isLoading={isLoading}>
           <Text
             style={{
               textAlign: "center",
@@ -171,7 +191,7 @@ export default function Checkout() {
           >
             Place Order
           </Text>
-        </TouchableOpacity>
+        </LoadingButton>
       </View>
     </View>
   );

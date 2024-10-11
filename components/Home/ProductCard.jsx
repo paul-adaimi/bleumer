@@ -41,20 +41,10 @@ export default function ProductCard({ product, index, listIndex }) {
         padding: 10,
         backgroundColor: "#FFF",
         borderRadius: 15,
+        width: 220,
+        height: 227,
       }}
     >
-      <Ionicons
-        style={{
-          position: "absolute",
-          top: 15,
-          right: 15,
-          zIndex: 100,
-          opacity: 0.7,
-        }}
-        name="heart-outline"
-        size={35}
-        color={Colors.white}
-      />
       <Image
         source={{ uri: product?.imageUrl }}
         style={{
@@ -68,7 +58,10 @@ export default function ProductCard({ product, index, listIndex }) {
           style={{
             fontWeight: "bold",
             fontSize: 17,
+            height: 20,
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
           {product.name}
         </Text>

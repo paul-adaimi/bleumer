@@ -12,7 +12,7 @@ export default function Slider({ sliderList }) {
           marginLeft: 20,
         }}
       >
-        # Special for You
+        Bundles
       </Text>
       <FlatList
         data={sliderList}

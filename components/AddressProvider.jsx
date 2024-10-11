@@ -17,8 +17,6 @@ import updateUserAddresses from "@/queries/updateUserAddresses";
 // Create a context for the address
 const AddressContext = createContext();
 
-// TODO: Handle empty address
-
 // Create a provider component
 export const AddressProvider = ({ children }) => {
   const [isForceLoading, setIsForceLoading] = useState(false);

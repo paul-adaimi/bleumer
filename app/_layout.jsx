@@ -45,17 +45,15 @@ if (!publishableKey) {
 
 const queryClient = new QueryClient();
 
-// TODO: Add tour after first sign in only
-
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
         <PaperProvider>
-          <SignedIn>
-            <AddressProvider>
-              <CartProvider>
-                <TourProvider>
+          <TourProvider>
+            <SignedIn>
+              <AddressProvider>
+                <CartProvider>
                   <Stack
                     screenOptions={{
                       headerBackTitle: "Home",
@@ -67,13 +65,13 @@ export default function RootLayout() {
                       options={{ headerShown: false }}
                     />
                   </Stack>
-                </TourProvider>
-              </CartProvider>
-            </AddressProvider>
-          </SignedIn>
-          <SignedOut>
-            <LoginScreen />
-          </SignedOut>
+                </CartProvider>
+              </AddressProvider>
+            </SignedIn>
+            <SignedOut>
+              <LoginScreen />
+            </SignedOut>
+          </TourProvider>
         </PaperProvider>
       </ClerkProvider>
       <TipProvider

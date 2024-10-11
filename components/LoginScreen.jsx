@@ -1,14 +1,19 @@
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Colors } from "@/constants/Colors";
 import { useWarmUpBrowser } from "../hooks/useWarmUpBrowser";
 import * as WebBrowser from "expo-web-browser";
 import { useOAuth } from "@clerk/clerk-expo";
 import * as Linking from "expo-linking";
+import { useTour } from "./TourProvider";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen() {
+  const { setIsInTour } = useTour();
+  useEffect(() => {
+    setIsInTour(true);
+  }, []);
   useWarmUpBrowser();
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
 

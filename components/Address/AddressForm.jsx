@@ -19,6 +19,7 @@ import { useQuery } from "react-query";
 import fetchAreas from "@/queries/fetchAreas";
 import { Ionicons } from "@expo/vector-icons";
 
+// TODO: Add phone verification
 export default function AddressForm({
   initialValues,
   onSubmit,
@@ -50,6 +51,9 @@ export default function AddressForm({
 
   const scrollViewRef = useRef(null);
   const inputRefs = useRef([]);
+
+  // TODO: "select area" fix on edit
+  // TODO: phone number must be 8 numbers exactly
 
   // Function to scroll to the TextInput when it is focused
   const scrollToInput = (index) => {

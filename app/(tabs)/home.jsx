@@ -15,12 +15,28 @@ import { useTour } from "@/components/TourProvider";
 export default function home() {
   const [searchText, setSearchText] = useState("");
 
-  const { setIsInTour } = useTour();
+  const { isInTour } = useTour();
 
   const { data: productList, isFetching: isFetchingProducts } = useQuery(
     "products",
     async () => fetchProducts()
   );
+
+  const frozenProducts = useMemo(() => {
+    return productList
+      ?.filter((product) => product.category === "frozen")
+      .slice(0, 4);
+  }, [productList]);
+
+  const freshProducts = useMemo(() => {
+    return productList
+      ?.filter((product) => product.category === "fresh")
+      .slice(0, 4);
+  }, [productList]);
+
+  const bundles = useMemo(() => {
+    return productList?.filter((product) => product.category === "bundle");
+  }, [productList]);
 
   const { data: sliderList, isFetching: isFetchingSlider } = useQuery(
     "sliders",
@@ -53,9 +69,8 @@ export default function home() {
   );
 
   useEffect(() => {
-    if (productList && sliderList) {
-      // setIsInTour(true);
-      // showTipTour(tour);
+    if (productList && sliderList && isInTour) {
+      showTipTour(tour);
     }
   }, [productList, sliderList]);
 
@@ -108,13 +123,13 @@ export default function home() {
             <>
               <ProductList
                 index={0}
-                productList={productList}
-                listName="Products 1"
+                productList={freshProducts}
+                listName="Fresh"
               />
               <ProductList
                 index={1}
-                productList={productList}
-                listName="Products 2"
+                productList={frozenProducts}
+                listName="Frozen"
               />
               <View style={{ height: 40 }}></View>
             </>

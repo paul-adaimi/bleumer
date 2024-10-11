@@ -6,9 +6,12 @@ const TourContext = createContext();
 // Create the provider component
 export default TourProvider = ({ children }) => {
   const [isInTour, setIsInTour] = useState(false);
+  const [shouldShowTour, setShouldShowTour] = useState(false);
 
   return (
-    <TourContext.Provider value={{ isInTour, setIsInTour }}>
+    <TourContext.Provider
+      value={{ isInTour, setIsInTour, shouldShowTour, setShouldShowTour }}
+    >
       {children}
     </TourContext.Provider>
   );

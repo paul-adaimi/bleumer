@@ -266,7 +266,7 @@ export default function Header({
               color: Colors.white,
               position: "absolute", // Absolutely position the text
               left: "50%", // Move to 50% of the width
-              transform: [{ translateX: -45 }], // Center it based on screen width
+              transform: [{ translateX: -20 }], // Center it based on screen width
             }}
           >
             {title}
