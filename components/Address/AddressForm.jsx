@@ -19,7 +19,6 @@ import { useQuery } from "react-query";
 import fetchAreas from "@/queries/fetchAreas";
 import { Ionicons } from "@expo/vector-icons";
 
-// TODO: Add phone verification
 export default function AddressForm({
   initialValues,
   onSubmit,
@@ -237,8 +236,9 @@ export default function AddressForm({
                         color={Colors.warningGold}
                       />
                       <Text style={{ color: Colors.warningGold, fontSize: 15 }}>
-                        This order will take {addressValues.city.businessDays}{" "}
-                        business days to deliver.
+                        This order might take up to{" "}
+                        {addressValues.city.businessDays} business days to
+                        deliver.
                       </Text>
                     </View>
                   )}

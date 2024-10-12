@@ -29,7 +29,11 @@ export default function ProductList({
         }}
       >
         <Text
-          style={{ fontSize: 20, fontWeight: "bold", color: Colors.primary }}
+          style={{
+            fontSize: 20,
+            fontWeight: "600",
+            color: Colors.primary,
+          }}
         >
           {listName}
         </Text>

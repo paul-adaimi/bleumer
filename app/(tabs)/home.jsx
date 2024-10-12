@@ -8,11 +8,11 @@ import { useQuery } from "react-query";
 import ProductListCard from "@/components/ProductList/ProductListCard";
 import ProductsLoading from "@/components/Home/ProductsLoading";
 import SliderLoading from "@/components/Home/SliderLoading";
-import fetchSliders from "@/queries/fetchSliders";
 import { showTipTour } from "react-native-tip";
 import { useTour } from "@/components/TourProvider";
 
 export default function home() {
+  // TODO: download images after load
   const [searchText, setSearchText] = useState("");
 
   const { isInTour } = useTour();
@@ -34,6 +34,7 @@ export default function home() {
       .slice(0, 4);
   }, [productList]);
 
+  // TODO: Make Clickable
   const bundles = useMemo(() => {
     return productList?.filter((product) => product.category === "bundle");
   }, [productList]);

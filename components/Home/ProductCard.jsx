@@ -43,39 +43,20 @@ export default function ProductCard({ product, index, listIndex }) {
         borderRadius: 15,
         width: 220,
         height: 227,
-
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.4,
-        shadowRadius: 3.84,
-        // Shadow for Android
-        elevation: 5,
       }}
     >
-      <View
+      <Image
+        source={{ uri: product?.imageUrl }}
         style={{
-          // Shadow for iOS
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.4,
-          shadowRadius: 3.84,
-          // Shadow for Android
-          elevation: 5,
+          width: 200,
+          height: 130,
+          borderRadius: 15,
         }}
-      >
-        <Image
-          source={{ uri: product?.imageUrl }}
-          style={{
-            width: 200,
-            height: 130,
-            borderRadius: 15,
-          }}
-        />
-      </View>
+      />
       <View style={{ marginTop: 7 }}>
         <Text
           style={{
-            fontWeight: "bold",
+            fontWeight: "600",
             fontSize: 16,
             color: Colors.primary,
           }}

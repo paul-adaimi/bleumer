@@ -165,7 +165,8 @@ export default function Header({
                 height: 40,
               }}
               onPress={() => {
-                if (!isCartDisabled) navigation.navigate("cart");
+                if (!isCartDisabled)
+                  navigation.navigate("cart", { from: title ? title : "Home" });
                 else showTip("cart");
               }}
             >

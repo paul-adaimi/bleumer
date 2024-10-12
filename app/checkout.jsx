@@ -14,7 +14,6 @@ import AddressesModal from "../components/Modals/Addresses";
 import LoadingButton from "../components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
-// TODO: Add status to order, default it to "pending" (will be used in the future)
 export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -32,8 +31,21 @@ export default function Checkout() {
     });
   }, []);
 
+  const expectedDeliveryTime = addBusinessDays(
+    new Date(),
+    currentAddress.city.businessDays
+  );
+
   const { isLoading, mutate } = useMutation(
-    () => createOrder(user.id, { cart, total: subTotal }, currentAddress),
+    () =>
+      createOrder(user.id, {
+        cart,
+        orderTime: new Date().toISOString(),
+        expectedDeliveryTime: expectedDeliveryTime.toISOString(),
+        address: address,
+        total,
+        status: "pending",
+      }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("orders");
@@ -111,10 +123,10 @@ export default function Checkout() {
           </TouchableOpacity>
         </CheckoutCard>
         <CheckoutCard title="Delivery Day">
-          <Text>Monday September 2, 2024</Text>
+          <Text>{formatDate(expectedDeliveryTime)}</Text>
         </CheckoutCard>
         <CheckoutCard title="Payment Method">
-          <Text> Only cash available at the moment</Text>
+          <Text> Only cash on delivery available at the moment.</Text>
         </CheckoutCard>
         <CheckoutCard title="Promo Code">
           <CustomTextInput />
@@ -180,8 +192,11 @@ export default function Checkout() {
           padding: 15,
         }}
       >
-        {/* TODO: Add disabled when address loading */}
-        <LoadingButton onPress={mutate} isLoading={isLoading}>
+        <LoadingButton
+          onPress={mutate}
+          isLoading={isLoading}
+          disabled={isAddressLoading}
+        >
           <Text
             style={{
               textAlign: "center",
@@ -195,4 +210,33 @@ export default function Checkout() {
       </View>
     </View>
   );
+}
+
+function addBusinessDays(date, days) {
+  let currentDate = new Date(date);
+  let addedDays = 0;
+
+  while (addedDays < days) {
+    currentDate.setDate(currentDate.getDate() + 1);
+
+    // Get the current day of the week (0 = Sunday, 6 = Saturday)
+    const dayOfWeek = currentDate.getDay();
+
+    // Only count the day if it's a weekday (Monday to Friday)
+    if (dayOfWeek !== 0) {
+      addedDays++;
+    }
+  }
+
+  return currentDate;
+}
+
+function formatDate(date) {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
 }

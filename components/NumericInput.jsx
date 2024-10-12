@@ -13,7 +13,11 @@ const NumericInput = ({ value, onIncrement, onDecrement, disabled }) => {
     <View style={styles.container}>
       <TouchableOpacity
         disabled={disabled}
-        style={styles.button}
+        style={{
+          ...styles.button,
+          borderTopLeftRadius: 4,
+          borderBottomLeftRadius: 4,
+        }}
         onPress={onDecrement}
       >
         <Text style={styles.buttonText}>-</Text>
@@ -23,10 +27,15 @@ const NumericInput = ({ value, onIncrement, onDecrement, disabled }) => {
         style={styles.input}
         value={String(value)}
         keyboardType="numeric"
+        color={Colors.primary}
       />
       <TouchableOpacity
         disabled={disabled}
-        style={styles.button}
+        style={{
+          ...styles.button,
+          borderTopRightRadius: 4,
+          borderBottomRightRadius: 4,
+        }}
         onPress={onIncrement}
       >
         <Text style={styles.buttonText}>+</Text>
@@ -40,7 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: Colors.primary,
     borderRadius: 4,
     width: 100,
     height: 30,
@@ -58,7 +67,6 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 40,
     textAlign: "center",
     fontSize: 15,
   },

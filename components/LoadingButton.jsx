@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { Colors } from "../constants/Colors";
 
-const LoadingButton = ({ onPress, isLoading, children }) => {
+const LoadingButton = ({ onPress, isLoading, children, disabled }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const LoadingButton = ({ onPress, isLoading, children }) => {
     <TouchableOpacity
       onPress={onPress}
       style={styles.buttonContainer}
-      disabled={isLoading} // Disable button while loading
+      disabled={isLoading || disabled}
     >
       <View
         style={{
@@ -47,7 +47,8 @@ const LoadingButton = ({ onPress, isLoading, children }) => {
           bottom: 0,
           borderRadius: 5,
           overflow: "hidden",
-          backgroundColor: isLoading ? Colors.primaryShade : Colors.primary,
+          backgroundColor:
+            isLoading || disabled ? Colors.primaryShade : Colors.primary,
         }}
       >
         <View style={[styles.loadingFill, { width: `${progress}%` }]} />

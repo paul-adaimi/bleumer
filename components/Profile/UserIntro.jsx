@@ -24,8 +24,10 @@ export default function UserIntro() {
           borderColor: Colors.primary,
         }}
       />
-      <Text style={{ fontWeight: "bold", fontSize: 20 }}>{user.fullName}</Text>
-      <Text style={{ fontSize: 16 }}>
+      <Text style={{ fontWeight: "bold", fontSize: 20, color: Colors.primary }}>
+        {user.fullName}
+      </Text>
+      <Text style={{ fontSize: 16, color: Colors.primary }}>
         {user?.primaryEmailAddress.emailAddress}
       </Text>
     </View>

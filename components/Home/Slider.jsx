@@ -7,7 +7,7 @@ export default function Slider({ sliderList }) {
     <View>
       <Text
         style={{
-          fontWeight: "bold",
+          fontWeight: "600",
           fontSize: 20,
           marginBottom: 5,
           marginLeft: 20,

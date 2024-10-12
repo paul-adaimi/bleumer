@@ -7,7 +7,6 @@ import fetchProducts from "@/queries/fetchProducts";
 import Header from "@/components/Home/Header";
 
 export default function ProductListByCategory() {
-  // TODO: Change the back button text after opening the cart from here
   const { category } = useLocalSearchParams();
 
   const {

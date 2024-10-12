@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { Linking } from "react-native";
+import MenuItem from "./MenuItem";
 
 export default function MenuList() {
   const { signOut } = useAuth();
@@ -16,12 +17,6 @@ export default function MenuList() {
       name: "My Addresses",
       icon: "list",
       onPress: () => router.push("/profileMenu/addresses"),
-    },
-    {
-      id: 2,
-      name: "My Favorites",
-      icon: "star-outline",
-      onPress: () => {},
     },
     {
       id: 3,
@@ -44,49 +39,12 @@ export default function MenuList() {
     <View style={{ marginTop: 50 }}>
       <FlatList
         data={menuList}
-        numColumns={2}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            key={index}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
-              flex: 1,
-              padding: 10,
-              borderRadius: 15,
-              borderWidth: 1,
-              margin: 10,
-              backgroundColor: "#FFF",
-              borderColor: Colors.primary,
-            }}
+        renderItem={({ item }) => (
+          <MenuItem
             onPress={item.onPress}
-          >
-            <View
-              style={{
-                borderRadius: 5,
-                padding: 5,
-                backgroundColor: Colors.primary,
-              }}
-            >
-              <Ionicons
-                name={item.icon}
-                size={40}
-                color={Colors.white}
-              ></Ionicons>
-            </View>
-            {/* <Image
-              source={item.icon}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            /> */}
-            <Text style={{ fontSize: 15, fontWeight: "700", flex: 1 }}>
-              {item.name}
-            </Text>
-          </TouchableOpacity>
+            title={item.name}
+            iconName={item.icon}
+          />
         )}
       />
 
