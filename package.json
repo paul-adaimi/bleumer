@@ -47,7 +47,8 @@
     "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-tip": "^0.0.25",
     "react-native-web": "~0.19.10",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

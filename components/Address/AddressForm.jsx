@@ -18,6 +18,24 @@ import CustomPicker from "../CustomPicker";
 import { useQuery } from "react-query";
 import fetchAreas from "@/queries/fetchAreas";
 import { Ionicons } from "@expo/vector-icons";
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+const addressValidationSchema = Yup.object({
+  name: Yup.string()
+    .min(3, "Must be between 3 and 15 characters")
+    .max(15, "Must be between 3 and 15 characters")
+    .required("This field is required"),
+  street: Yup.string()
+    .min(5, "Must be between 5 characters or more")
+    .required("This field is required"),
+  number: Yup.string()
+    .min(8, "Must be 8 exactly 8 digits")
+    .max(8, "Must be 8 exactly 8 digits")
+    .required("This field is required"),
+  city: Yup.object().required("This field is required"),
+  coordinates: Yup.object().required("Must place the marker on the map"),
+});
 
 export default function AddressForm({
   initialValues,
@@ -45,14 +63,8 @@ export default function AddressForm({
   const [initialRegion, setInitialRegion] = useState(null);
   const [screenHeight] = useState(Dimensions.get("window").height);
 
-  const [addressValues, setAddressValues] = useState({ ...initialValues });
-  const [errors, setErrors] = useState({});
-
   const scrollViewRef = useRef(null);
   const inputRefs = useRef([]);
-
-  // TODO: "select area" fix on edit
-  // TODO: phone number must be 8 numbers exactly
 
   // Function to scroll to the TextInput when it is focused
   const scrollToInput = (index) => {
@@ -106,48 +118,6 @@ export default function AddressForm({
     }
   }, []);
 
-  const handleInputChange = (fieldName, value) => {
-    setAddressValues((prevValues) => ({
-      ...prevValues,
-      [fieldName]: value,
-    }));
-
-    if (errors[fieldName]) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [fieldName]: null,
-      }));
-    }
-  };
-
-  const handleSubmit = () => {
-    let newErrors = {};
-
-    ["name", "street", "number"].forEach((key) => {
-      if (!addressValues[key]?.trim()) {
-        newErrors[key] = "This field is required";
-      }
-    });
-
-    if (!addressValues.city) {
-      newErrors.city = "This field is required";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      onSubmit(addressValues);
-    }
-  };
-
-  handleMapPress = (event) => {
-    const { coordinate } = event.nativeEvent;
-    setAddressValues((prevValues) => ({
-      ...prevValues,
-      coordinates: coordinate,
-    }));
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -162,151 +132,187 @@ export default function AddressForm({
             flex: 1,
           }}
         >
-          <ScrollView
-            ref={scrollViewRef}
-            style={{
-              flexGrow: 1,
-            }}
+          <Formik
+            initialValues={{ ...initialValues }}
+            onSubmit={(values) => onSubmit(values)}
+            validationSchema={addressValidationSchema}
           >
-            <View
-              style={{
-                paddingBottom: 80,
-              }}
-            >
-              <View>
-                <Text style={{ fontWeight: "bold", fontSize: 25 }}>
-                  {title}
-                </Text>
-                <Text style={{ color: Colors.gray }}>
-                  Fill all details in order to add new address
-                </Text>
-                <MapView
-                  style={{ width: "100%", height: 300, marginTop: 10 }}
-                  showsUserLocation
-                  initialRegion={initialRegion}
-                  onPress={handleMapPress}
-                >
-                  {addressValues.coordinates && (
-                    <Marker
-                      coordinate={addressValues.coordinates}
-                      title="Your Location"
-                      description="Accurately place the marker"
-                    />
-                  )}
-                </MapView>
-                <Text
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              setFieldValue,
+            }) => (
+              <>
+                <ScrollView
+                  ref={scrollViewRef}
                   style={{
-                    marginLeft: 5,
-                    marginTop: 5,
-                    color: Colors.gray,
+                    flexGrow: 1,
                   }}
                 >
-                  Place the marker in order to continue
-                </Text>
-                <View style={{ display: "flex", marginTop: 10 }}>
-                  <CustomTextInput
-                    key="name"
-                    value={addressValues.name || ""}
-                    placeholder="Address Name"
-                    onChangeText={(value) => handleInputChange("name", value)}
-                    onFocus={() => scrollToInput(0)}
-                    ref={(el) => (inputRefs.current[0] = el)}
-                    error={errors.name}
-                  />
-                  <CustomPicker
-                    key="city"
-                    placeholder="Select an area"
-                    items={options}
-                    selectedValue={addressValues.city}
-                    onValueChange={(value) => handleInputChange("city", value)}
-                    error={errors.city}
-                  />
-                  {addressValues.city.businessDays > 1 && (
-                    <View
-                      style={{
-                        marginTop: 5,
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Ionicons
-                        name="warning-outline"
-                        size={18}
-                        color={Colors.warningGold}
-                      />
-                      <Text style={{ color: Colors.warningGold, fontSize: 15 }}>
-                        This order might take up to{" "}
-                        {addressValues.city.businessDays} business days to
-                        deliver.
-                      </Text>
-                    </View>
-                  )}
-                  <CustomTextInput
-                    key="street"
-                    value={addressValues.street || ""}
-                    placeholder="Street / Building / Floor"
-                    onChangeText={(value) => handleInputChange("street", value)}
-                    onFocus={() => scrollToInput(2)}
-                    ref={(el) => (inputRefs.current[2] = el)}
-                    error={errors.street}
-                  />
                   <View
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
+                      paddingBottom: 80,
                     }}
                   >
-                    <CustomTextInput
-                      key="pre-number"
-                      keyboardType="numeric"
-                      value={"+961"}
-                      editable={false}
-                    />
-                    <CustomTextInput
-                      key="number"
-                      keyboardType="numeric"
-                      value={addressValues.number || ""}
-                      placeholder="Phone Number"
-                      onChangeText={(value) =>
-                        handleInputChange("number", value)
-                      }
-                      onFocus={() => scrollToInput(3)}
-                      ref={(el) => (inputRefs.current[3] = el)}
-                      error={errors.number}
-                      containerStyle={{
-                        flex: 1,
-                        marginLeft: 10,
-                      }}
-                    />
+                    <View>
+                      <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+                        {title}
+                      </Text>
+                      <Text style={{ color: Colors.gray, marginTop: 5 }}>
+                        Place marker & fill all details in order to continue
+                      </Text>
+                      <MapView
+                        style={{
+                          width: "100%",
+                          height: 300,
+                          marginTop: 10,
+                          borderWidth: errors.coordinates ? 1 : 0,
+                          borderColor: "red",
+                        }}
+                        showsUserLocation
+                        initialRegion={initialRegion}
+                        onPress={(event) => {
+                          const { coordinate } = event.nativeEvent;
+                          setFieldValue("coordinates", coordinate);
+                        }}
+                      >
+                        {values.coordinates && (
+                          <Marker
+                            coordinate={values.coordinates}
+                            title="Your Location"
+                            description="Accurately place the marker"
+                          />
+                        )}
+                      </MapView>
+                      {errors.coordinates && (
+                        <Text
+                          style={{
+                            color: "red",
+                            paddingTop: 5,
+                            fontSize: 14,
+                          }}
+                        >
+                          Error: {errors.coordinates}
+                        </Text>
+                      )}
+                      <View style={{ display: "flex", marginTop: 10 }}>
+                        <CustomTextInput
+                          name="name"
+                          value={values.name}
+                          placeholder="Address Name"
+                          onChangeText={handleChange("name")}
+                          onFocus={() => scrollToInput(0)}
+                          onBlur={handleBlur("name")}
+                          ref={(el) => (inputRefs.current[0] = el)}
+                          error={touched.name && errors.name}
+                        />
+                        <CustomPicker
+                          name="city"
+                          placeholder="Select an area"
+                          items={options}
+                          selectedValue={values.city}
+                          onValueChange={(value) =>
+                            setFieldValue("city", value)
+                          }
+                          error={touched.city && errors.city}
+                        />
+                        {values.city.businessDays > 1 && (
+                          <View
+                            style={{
+                              marginTop: 5,
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Ionicons
+                              name="warning-outline"
+                              size={18}
+                              color={Colors.warningGold}
+                            />
+                            <Text
+                              style={{
+                                color: Colors.warningGold,
+                                fontSize: 15,
+                              }}
+                            >
+                              This order might take up to
+                              {values.city.businessDays} business days to
+                              deliver.
+                            </Text>
+                          </View>
+                        )}
+                        <CustomTextInput
+                          id="name"
+                          name="name"
+                          value={values.street}
+                          placeholder="Street / Building / Floor"
+                          onChangeText={handleChange("street")}
+                          onBlur={handleBlur("street")}
+                          onFocus={() => scrollToInput(2)}
+                          ref={(el) => (inputRefs.current[2] = el)}
+                          error={touched.street && errors.street}
+                        />
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "baseline",
+                          }}
+                        >
+                          <CustomTextInput
+                            key="pre-number"
+                            keyboardType="numeric"
+                            value={"+961"}
+                            editable={false}
+                          />
+                          <CustomTextInput
+                            id="number"
+                            name="number"
+                            keyboardType="numeric"
+                            value={values.number}
+                            placeholder="Phone Number"
+                            onChangeText={handleChange("number")}
+                            onFocus={() => scrollToInput(3)}
+                            onBlur={handleBlur("number")}
+                            ref={(el) => (inputRefs.current[3] = el)}
+                            error={touched.number && errors.number}
+                            containerStyle={{
+                              flex: 1,
+                              marginLeft: 10,
+                            }}
+                          />
+                        </View>
+                      </View>
+                    </View>
                   </View>
+                </ScrollView>
+                <View
+                  style={{
+                    position: "relative",
+                    bottom: 20,
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    style={{
+                      backgroundColor: Colors.primary,
+                      padding: 16,
+                      borderRadius: 5,
+                    }}
+                  >
+                    <Text style={{ textAlign: "center", color: "#FFF" }}>
+                      {buttonText}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-              </View>
-            </View>
-          </ScrollView>
-          <View
-            style={{
-              position: "relative",
-              bottom: 20,
-            }}
-          >
-            <TouchableOpacity
-              disabled={!addressValues.coordinates}
-              onPress={handleSubmit}
-              style={{
-                backgroundColor: addressValues.coordinates
-                  ? Colors.primary
-                  : "#D3D3D3",
-                padding: 16,
-                borderRadius: 5,
-              }}
-            >
-              <Text style={{ textAlign: "center", color: "#FFF" }}>
-                {buttonText}
-              </Text>
-            </TouchableOpacity>
-          </View>
+              </>
+            )}
+          </Formik>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
