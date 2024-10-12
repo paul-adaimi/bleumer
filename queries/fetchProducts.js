@@ -17,5 +17,7 @@ export default fetchProducts = async () => {
     });
   });
 
+  products.sort((a, b) => a.name.localeCompare(b.name));
+
   return products;
 };

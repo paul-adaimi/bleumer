@@ -7,6 +7,7 @@ import { useUser } from "@clerk/clerk-expo";
 import fetchUserOrders from "@/queries/fetchUserOrders";
 import OrderLoading from "../../components/Orders/OrderLoading";
 
+// TODO: Remove the small gap
 export default function orders() {
   const navigation = useNavigation();
 

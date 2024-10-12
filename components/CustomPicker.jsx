@@ -25,10 +25,10 @@ const CustomPicker = forwardRef(
     ref
   ) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [selected, setSelected] = useState(selectedValue || "");
+
+    console.log("selectedValue", selectedValue);
 
     const handleSelect = (item) => {
-      setSelected(item.value);
       onValueChange?.(item.value);
       setModalVisible(false);
     };
@@ -44,9 +44,7 @@ const CustomPicker = forwardRef(
           <Text
             style={selectedValue ? styles.selectedText : styles.placeholder}
           >
-            {selected
-              ? items.find((item) => item.value === selected)?.label
-              : placeholder}
+            {selectedValue ? selectedValue.name : placeholder}
           </Text>
           {!selectedValue && (
             <Ionicons name="caret-down" size={24} color="#a9a9a9" />

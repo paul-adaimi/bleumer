@@ -1,12 +1,12 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
 import NumericInput from "../NumericInput";
 import { Tip } from "react-native-tip";
 import { useTour } from "../TourProvider";
 
+// TODO: Add weight info
 export default function ProductCard({ product, index, listIndex }) {
   const { cart, addToCart, updateItemCount } = useCart();
   const { isInTour } = useTour();
