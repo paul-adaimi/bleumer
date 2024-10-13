@@ -1,7 +1,8 @@
-import { View, Text, Image } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { useUser } from "@clerk/clerk-expo";
 import { Colors } from "@/constants/Colors";
+import { Image } from "react-native-expo-image-cache";
 
 export default function UserIntro() {
   const { user } = useUser();
@@ -15,7 +16,7 @@ export default function UserIntro() {
       }}
     >
       <Image
-        source={{ uri: user?.imageUrl }}
+        uri={user?.imageUrl}
         style={{
           width: 100,
           height: 100,

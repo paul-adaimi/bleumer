@@ -28,5 +28,6 @@ export const Colors = {
   primaryLight: "#2490D4",
   warningGold: "#FFC107",
   gray: "#8F8F8F",
+  darkGray: "#636363",
   white: "#FFF",
 };

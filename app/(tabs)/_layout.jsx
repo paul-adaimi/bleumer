@@ -17,6 +17,7 @@ export default function TabLayout() {
     if (!userSnap.exists()) {
       await setDoc(doc(db, "Users", user.id), {
         name: user.fullName,
+        promoCodes: [{ code: "BLEUMER20", discount: 20 }],
         addresses: [],
       });
     }

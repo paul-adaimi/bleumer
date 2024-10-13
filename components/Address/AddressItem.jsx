@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "expo-router";
 import { Button, Dialog, Portal } from "react-native-paper";
 import { useAddress } from "../AddressProvider";
+import { Colors } from "../../constants/Colors";
 
 const AddressItem = ({ address }) => {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
@@ -73,7 +74,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontWeight: "bold",
+    color: Colors.primary,
+    fontWeight: "600",
     fontSize: 18,
   },
   address: {

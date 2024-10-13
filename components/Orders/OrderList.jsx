@@ -24,9 +24,9 @@ export default function OrderList({ orders }) {
       <FlatList
         data={orders}
         showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         renderItem={({ item, index }) => (
           <OrderCard
+            isFirst={index == 0}
             onRemoveItems={onRemoveItems}
             onReorder={onReorder}
             key={index}

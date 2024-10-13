@@ -6,8 +6,8 @@ import { useQuery } from "react-query";
 import { useUser } from "@clerk/clerk-expo";
 import fetchUserOrders from "@/queries/fetchUserOrders";
 import OrderLoading from "../../components/Orders/OrderLoading";
+import { Colors } from "../../constants/Colors";
 
-// TODO: Remove the small gap
 export default function orders() {
   const navigation = useNavigation();
 
@@ -33,10 +33,13 @@ export default function orders() {
       return (
         <Text
           style={{
+            marginTop: 20,
+            fontSize: 16,
+            color: Colors.darkGray,
             textAlign: "center",
           }}
         >
-          You haven't placed any orders yet
+          You haven't placed any orders yet.
         </Text>
       );
   }, [isFetching, orders, orders?.length]);
@@ -44,7 +47,7 @@ export default function orders() {
   return (
     <View
       style={{
-        padding: 10,
+        paddingHorizontal: 10,
       }}
     >
       {orderContent}

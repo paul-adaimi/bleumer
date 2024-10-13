@@ -45,6 +45,7 @@ export default function Cart() {
     >
       <View>
         <FlatList
+          style={{ maxHeight: "80%" }}
           data={cartItems}
           renderItem={({ item }) => <CartCard cartItem={item} key={item.id} />}
         />

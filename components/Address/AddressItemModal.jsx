@@ -27,7 +27,15 @@ const AddressItemModal = ({ address, isSelected, onClick }) => {
         />
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{address.name}</Text>
+        <Text
+          style={{
+            color: isSelected ? Colors.primary : Colors.darkGray,
+            fontWeight: "600",
+            fontSize: 18,
+          }}
+        >
+          {address.name}
+        </Text>
         <Text style={styles.address}>{address.street}</Text>
       </View>
       <View style={styles.actionsContainer}></View>
@@ -40,11 +48,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
   },
-  title: {
-    fontSize: 18,
-  },
   address: {
-    color: "#888",
+    color: Colors.gray,
     fontSize: 16,
   },
   actionsContainer: {

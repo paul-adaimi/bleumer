@@ -20,7 +20,14 @@ export default function CheckoutCard({ children, title, style }) {
       }}
     >
       {title && (
-        <Text style={{ fontSize: 15, fontWeight: "bold", paddingBottom: 15 }}>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "bold",
+            paddingBottom: 15,
+            color: Colors.primary,
+          }}
+        >
           {title}
         </Text>
       )}

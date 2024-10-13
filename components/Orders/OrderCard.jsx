@@ -4,7 +4,12 @@ import { Colors } from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Snackbar, Portal } from "react-native-paper";
 
-export default function OrderCard({ order, onReorder, onRemoveItems }) {
+export default function OrderCard({
+  order,
+  onReorder,
+  onRemoveItems,
+  isFirst,
+}) {
   const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
 
   const date = new Date(order.orderTime);
@@ -30,7 +35,7 @@ export default function OrderCard({ order, onReorder, onRemoveItems }) {
         flexDirection: "row",
         justifyContent: "space-between", // Ensure space between the two texts
         alignItems: "center", // Align items vertically in the center
-        marginBottom: 5, // Optional: Add some space between rows
+        marginBottom: 5,
       }}
     >
       <Text style={{ flex: 1, color: Colors.primary }}>{item.count}</Text>
@@ -51,6 +56,8 @@ export default function OrderCard({ order, onReorder, onRemoveItems }) {
         backgroundColor: "#FFF",
         display: "flex",
         flexDirection: "row",
+        marginTop: isFirst ? 10 : 0,
+        marginBottom: 10,
       }}
     >
       <View style={{ flex: 1 }}>
@@ -68,7 +75,7 @@ export default function OrderCard({ order, onReorder, onRemoveItems }) {
             color: Colors.gray,
           }}
         >
-          Delivered on: {formattedDate}
+          Ordered on: {formattedDate}
         </Text>
         <View
           style={{

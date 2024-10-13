@@ -17,8 +17,6 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";
 import { useTour } from "../TourProvider";
 
-// TODO: Change Tip steps and texts
-
 export default function Header({
   searchText,
   setSearchText,
@@ -38,9 +36,9 @@ export default function Header({
   );
 
   const countBadgeRight = useMemo(() => {
-    if (totalItemCount < 9) return -10;
+    if (totalItemCount < 10) return -10;
     else if (totalItemCount < 100) return -15;
-    else return -25;
+    else return -28;
   }, [totalItemCount]);
 
   const isCartDisabled = useMemo(
@@ -174,14 +172,23 @@ export default function Header({
                 style={{
                   backgroundColor: Colors.gray,
                   position: "absolute",
-                  paddingHorizontal: 4,
+                  paddingHorizontal: 3,
                   paddingVertical: 2,
                   right: countBadgeRight,
                   borderRadius: 10,
                   zIndex: 100,
+                  minWidth: totalItemCount > 99 ? 34 : "auto",
                 }}
               >
-                <Text style={{ color: Colors.white }}>{totalCountFinal}</Text>
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    overflow: "hidden",
+                    color: Colors.white,
+                  }}
+                >
+                  {totalCountFinal}
+                </Text>
               </View>
               <Ionicons name="cart-outline" size={24} color={Colors.white} />
             </TouchableOpacity>

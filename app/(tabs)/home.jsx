@@ -12,7 +12,6 @@ import { showTipTour } from "react-native-tip";
 import { useTour } from "@/components/TourProvider";
 
 export default function home() {
-  // TODO: download images after load
   const [searchText, setSearchText] = useState("");
 
   const { isInTour } = useTour();

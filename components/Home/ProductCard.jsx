@@ -1,12 +1,12 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { useCart } from "../CartProvider";
 import NumericInput from "../NumericInput";
 import { Tip } from "react-native-tip";
 import { useTour } from "../TourProvider";
+import { Image } from "react-native-expo-image-cache";
 
-// TODO: Add weight info
 export default function ProductCard({ product, index, listIndex }) {
   const { cart, addToCart, updateItemCount } = useCart();
   const { isInTour } = useTour();
@@ -46,7 +46,7 @@ export default function ProductCard({ product, index, listIndex }) {
       }}
     >
       <Image
-        source={{ uri: product?.imageUrl }}
+        uri={product?.imageUrl}
         style={{
           width: 200,
           height: 130,
@@ -80,7 +80,7 @@ export default function ProductCard({ product, index, listIndex }) {
               color: Colors.gray,
             }}
           >
-            ${product.price}
+            ${product.price} / {product.weight}
           </Text>
           <Tip
             id={`numeric-input-${listIndex}-${index}`}

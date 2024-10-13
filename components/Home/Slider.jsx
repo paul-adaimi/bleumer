@@ -1,6 +1,7 @@
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
+import { Image } from "react-native-expo-image-cache";
 
 export default function Slider({ sliderList }) {
   return (
@@ -34,7 +35,7 @@ export default function Slider({ sliderList }) {
             }}
           >
             <Image
-              source={{ uri: item.imageUrl }}
+              uri={item.imageUrl}
               style={{
                 marginLeft: index == 0 ? 20 : 0,
                 width: 300,

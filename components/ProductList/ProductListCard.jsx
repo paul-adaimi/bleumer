@@ -1,8 +1,9 @@
-import { View, Text, Image } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import NumericInput from "../NumericInput";
 import { useCart } from "../CartProvider";
+import { Image } from "react-native-expo-image-cache";
 
 export default function ProductListCard({ product }) {
   const { cart, addToCart, updateItemCount } = useCart();
@@ -52,20 +53,21 @@ export default function ProductListCard({ product }) {
         }}
       >
         <Image
+          uri={product.imageUrl}
           style={{
-            width: 120,
-            height: 120,
+            width: 110,
+            height: 110,
             borderRadius: 15,
           }}
-          source={{ uri: product.imageUrl }}
         />
       </View>
 
       <View style={{ flex: 1, gap: 7 }}>
         <Text
           style={{
-            fontWeight: "bold",
-            fontSize: 16,
+            fontWeight: "600",
+            color: Colors.primary,
+            fontSize: product.name.length > 27 ? 15 : 16,
           }}
         >
           {product.name}
@@ -83,7 +85,7 @@ export default function ProductListCard({ product }) {
             color: Colors.gray,
           }}
         >
-          {product.price}$ / Kilo
+          {product.price}$ / {product.weight}
         </Text>
         <View
           style={{
@@ -102,6 +104,7 @@ export default function ProductListCard({ product }) {
           <Text
             style={{
               paddingRight: 15,
+              color: Colors.gray,
             }}
           >
             Total: {totalPrice}$

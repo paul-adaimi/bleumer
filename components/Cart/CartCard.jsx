@@ -1,8 +1,9 @@
-import { View, Text, Image } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import NumericInput from "../NumericInput";
 import { useCart } from "../CartProvider";
+import { Image } from "react-native-expo-image-cache";
 
 export default function CartCard({ cartItem }) {
   const { cart, updateItemCount } = useCart();
@@ -48,12 +49,12 @@ export default function CartCard({ cartItem }) {
         }}
       >
         <Image
+          uri={cartItem.imageUrl}
           style={{
             width: 70,
             height: 70,
             borderRadius: 15,
           }}
-          source={{ uri: cartItem.imageUrl }}
         />
       </View>
 

@@ -14,6 +14,7 @@ import AddressesModal from "../components/Modals/Addresses";
 import LoadingButton from "../components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
+// TODO: Add promo code check
 export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -111,7 +112,7 @@ export default function Checkout() {
               backgroundColor: isAddressLoading
                 ? Colors.primaryShade
                 : Colors.primary,
-              marginTop: 10,
+              marginTop: 20,
               height: 25,
               borderRadius: 5,
               display: "flex",
@@ -122,7 +123,7 @@ export default function Checkout() {
             <Text style={{ color: Colors.white }}>Change</Text>
           </TouchableOpacity>
         </CheckoutCard>
-        <CheckoutCard title="Delivery Day">
+        <CheckoutCard title="Expected Delivery Day">
           <Text>{formatDate(expectedDeliveryTime)}</Text>
         </CheckoutCard>
         <CheckoutCard title="Payment Method">
