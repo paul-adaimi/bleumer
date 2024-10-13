@@ -76,7 +76,7 @@ export default function ProductCard({ product, index, listIndex }) {
         >
           <Text
             style={{
-              fontSize: 15,
+              fontSize: 13,
               color: Colors.gray,
             }}
           >

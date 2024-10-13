@@ -27,6 +27,7 @@ export const Colors = {
   primaryShade: "#A3C9E1",
   primaryLight: "#2490D4",
   warningGold: "#FFC107",
+  lightGray: "#D3D3D3",
   gray: "#8F8F8F",
   darkGray: "#636363",
   white: "#FFF",

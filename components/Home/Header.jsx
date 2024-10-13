@@ -240,6 +240,7 @@ export default function Header({
                 fontSize: 16,
               }}
               placeholder="Search..."
+              placeholderTextColor={Colors.lightGray}
             />
           </View>
         </Tip>

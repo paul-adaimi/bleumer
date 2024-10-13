@@ -9,6 +9,7 @@ import { AddressProvider } from "@/components/AddressProvider";
 import { Provider as PaperProvider } from "react-native-paper";
 import TipProvider from "react-native-tip";
 import TourProvider from "@/components/TourProvider";
+import { UserProvider } from "@/components/UserProvider";
 
 const tokenCache = {
   async getToken(key) {
@@ -52,21 +53,23 @@ export default function RootLayout() {
         <PaperProvider>
           <TourProvider>
             <SignedIn>
-              <AddressProvider>
-                <CartProvider>
-                  <Stack
-                    screenOptions={{
-                      headerBackTitle: "Home",
-                      headerShown: false,
-                    }}
-                  >
-                    <Stack.Screen
-                      name="(tabs)"
-                      options={{ headerShown: false }}
-                    />
-                  </Stack>
-                </CartProvider>
-              </AddressProvider>
+              <UserProvider>
+                <AddressProvider>
+                  <CartProvider>
+                    <Stack
+                      screenOptions={{
+                        headerBackTitle: "Home",
+                        headerShown: false,
+                      }}
+                    >
+                      <Stack.Screen
+                        name="(tabs)"
+                        options={{ headerShown: false }}
+                      />
+                    </Stack>
+                  </CartProvider>
+                </AddressProvider>
+              </UserProvider>
             </SignedIn>
             <SignedOut>
               <LoginScreen />

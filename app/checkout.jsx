@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Animated } from "react-native";
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useMemo } from "react";
 import { useNavigation } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import CheckoutCard from "../components/Cart/CheckoutCard";
@@ -13,16 +13,47 @@ import ModalScreen from "../components/ModalScreen";
 import AddressesModal from "../components/Modals/Addresses";
 import LoadingButton from "../components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import { useUserContext } from "../components/UserProvider";
 
-// TODO: Add promo code check
 export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [isPromoApplied, setIsPromoApplied] = useState(false);
+  const [isPromoInvalid, setIsPromoInvalid] = useState(false);
+  const [discountedPrice, setDiscountedPrice] = useState(0);
 
   const navigation = useNavigation();
   const { cart, subTotal, emptyCart } = useCart();
   const { user } = useUser();
   const queryClient = useQueryClient();
   const { currentAddress, isFetching: isAddressLoading } = useAddress();
+
+  const { promoCodes, deletePromoCode } = useUserContext();
+
+  const totalPrice = useMemo(
+    () => subTotal - discountedPrice,
+    [subTotal, discountedPrice]
+  );
+
+  const checkAndApplyPromoCode = useCallback(
+    (appliedCode) => {
+      const code = promoCodes.find((promo) => promo.code === appliedCode);
+      if (code) {
+        setDiscountedPrice((code.discount / 100) * subTotal);
+        setIsPromoApplied(true);
+      } else {
+        setIsPromoInvalid(true);
+      }
+    },
+    [promoCodes, subTotal]
+  );
+
+  const onChangePromo = (text) => {
+    setPromoCode(text);
+    setIsPromoApplied(false);
+    setIsPromoInvalid(false);
+    setDiscountedPrice(0);
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -31,6 +62,14 @@ export default function Checkout() {
       headerBackTitle: "My Cart",
     });
   }, []);
+
+  // apply the first promo code directly
+  useEffect(() => {
+    if (promoCodes.length > 0) {
+      onChangePromo(promoCodes[0].code);
+      checkAndApplyPromoCode(promoCodes[0].code);
+    }
+  }, [promoCodes]);
 
   const expectedDeliveryTime = addBusinessDays(
     new Date(),
@@ -43,12 +82,15 @@ export default function Checkout() {
         cart,
         orderTime: new Date().toISOString(),
         expectedDeliveryTime: expectedDeliveryTime.toISOString(),
-        address: address,
-        total,
+        address: currentAddress,
+        promoCode: promoCode,
+        subTotal: subTotal,
+        total: totalPrice,
         status: "pending",
       }),
     {
       onSuccess: () => {
+        deletePromoCode(promoCode);
         queryClient.invalidateQueries("orders");
         emptyCart();
         navigation.navigate("orders");
@@ -130,7 +172,43 @@ export default function Checkout() {
           <Text> Only cash on delivery available at the moment.</Text>
         </CheckoutCard>
         <CheckoutCard title="Promo Code">
-          <CustomTextInput />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-end",
+            }}
+          >
+            <CustomTextInput
+              placeholder="Promo Code"
+              value={promoCode}
+              onChangeText={(text) => onChangePromo(text)}
+              containerStyle={{ flex: 1 }}
+            />
+            <TouchableOpacity
+              disabled={isPromoApplied}
+              onPress={() => checkAndApplyPromoCode(promoCode)}
+              style={{
+                backgroundColor: isPromoApplied
+                  ? Colors.primaryShade
+                  : Colors.primary,
+                height: 53,
+                marginLeft: 5,
+                padding: 10,
+                borderRadius: 5,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ color: Colors.white }}>Apply</Text>
+            </TouchableOpacity>
+          </View>
+          {isPromoInvalid && (
+            <Text style={{ color: "red", marginTop: 5 }}>
+              {" "}
+              This promocode is invalid!
+            </Text>
+          )}
         </CheckoutCard>
         <CheckoutCard>
           <View
@@ -154,17 +232,19 @@ export default function Checkout() {
             <Text>Delivery Charge</Text>
             <Text>$ 0</Text>
           </View>
-          <View
-            style={{
-              marginTop: 10,
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text>Discount</Text>
-            <Text>- $ 0</Text>
-          </View>
+          {!!discountedPrice && (
+            <View
+              style={{
+                marginTop: 10,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text>{promoCode}</Text>
+              <Text>- $ {discountedPrice}</Text>
+            </View>
+          )}
           <View
             style={{
               borderWidth: 1,
@@ -183,7 +263,7 @@ export default function Checkout() {
           >
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>Total</Text>
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-              $ {subTotal}
+              $ {totalPrice}
             </Text>
           </View>
         </CheckoutCard>

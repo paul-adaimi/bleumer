@@ -51,7 +51,7 @@ export default function LoginScreen() {
             borderWidth: 6,
             borderColor: "#000",
           }}
-          source={require("./../assets/images/dummy-app.png")}
+          source={require("./../assets/images/homepage-full.png")}
         />
       </View>
       <View style={styles.subContainer}>
