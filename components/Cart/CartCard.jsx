@@ -62,6 +62,7 @@ export default function CartCard({ cartItem }) {
         <Text
           style={{
             fontSize: 16,
+            color: Colors.primary,
           }}
         >
           {cartItem.name}
@@ -71,15 +72,16 @@ export default function CartCard({ cartItem }) {
             color: Colors.gray,
           }}
         >
-          {cartItem.price}$ / Kilo
+          Unit price: {cartItem.price}$
         </Text>
         <Text
           style={{
-            marginTop: 10,
+            color: Colors.gray,
           }}
         >
-          Total: {totalPrice}$
+          {cartItem.weight}
         </Text>
+        <Text>Total: {totalPrice}$</Text>
       </View>
       <View
         style={{

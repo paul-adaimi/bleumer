@@ -9,7 +9,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient, useMutation } from "react-query";
 import createOrder from "@/queries/createOrder";
 import { useAddress } from "../components/AddressProvider";
-import BottomModalDrawer from "../components/BottomModalDrawer";
+import BottomModalDrawer from "../components/Modals/BottomModalDrawer";
 import AddressesModal from "../components/Modals/Addresses";
 import LoadingButton from "../components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";

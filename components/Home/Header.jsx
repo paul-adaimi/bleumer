@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
 import { useNavigation } from "expo-router";
 import { useAddress } from "../AddressProvider";
-import BottomModalDrawer from "../BottomModalDrawer";
+import BottomModalDrawer from "../Modals/BottomModalDrawer";
 import AddressesModal from "../Modals/Addresses";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";

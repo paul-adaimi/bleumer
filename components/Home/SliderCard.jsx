@@ -1,6 +1,8 @@
 import { TouchableOpacity, Text } from "react-native";
 import React, { useState } from "react";
 import { Image } from "react-native-expo-image-cache";
+import MiddleModalScreen from "@/components/Modals/MiddleModalScreen";
+import ProductModal from "@/components/Modals/Product";
 
 export default function SliderCard({ slider, isFirst }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -30,6 +32,13 @@ export default function SliderCard({ slider, isFirst }) {
           }}
         />
       </TouchableOpacity>
+      <MiddleModalScreen
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        title={"Bundle"}
+      >
+        <ProductModal product={slider} />
+      </MiddleModalScreen>
     </>
   );
 }
