@@ -1,4 +1,11 @@
-import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import React, { useEffect } from "react";
 import { Colors } from "@/constants/Colors";
 import { useWarmUpBrowser } from "../hooks/useWarmUpBrowser";
@@ -8,6 +15,8 @@ import * as Linking from "expo-linking";
 import { useTour } from "./TourProvider";
 
 WebBrowser.maybeCompleteAuthSession();
+
+const screenWidth = Dimensions.get("window").width;
 
 export default function LoginScreen() {
   const { setIsInTour } = useTour();
@@ -35,14 +44,20 @@ export default function LoginScreen() {
   }, []);
 
   return (
-    <View style={{ height: "100%", backgroundColor: "#FFF" }}>
+    <View style={{ height: "100%", backgroundColor: "#FFF", padding: 30 }}>
       <View
         style={{
           display: "flex",
           alignItems: "center",
-          marginTop: 100,
         }}
       >
+        <Image
+          style={{
+            width: screenWidth - 80,
+            resizeMode: "contain",
+          }}
+          source={require("./../assets/images/bleumer-logo.jpg")}
+        />
         <Image
           style={{
             width: 220,
@@ -57,8 +72,10 @@ export default function LoginScreen() {
       <View style={styles.subContainer}>
         <Text style={{ fontSize: 30, textAlign: "center" }}>
           Your ultimate
-          <Text style={{ color: Colors.primary }}> Community Business </Text>
-          directory
+          <Text style={{ color: Colors.primary }}> Salmon </Text>
+        </Text>
+        <Text style={{ fontSize: 30, textAlign: "center" }}>
+          <Text style={{ color: Colors.primary }}>Delivery </Text>application
         </Text>
         <Text
           style={{
@@ -69,8 +86,8 @@ export default function LoginScreen() {
             marginTop: 50,
           }}
         >
-          Find your favorite business near you and post your own business to
-          your community
+          Sustainably sourced salmon, delivered fresh to your door. Quality
+          seafood you can trust.
         </Text>
         <TouchableOpacity onPress={onPress} style={styles.button}>
           <Text style={{ textAlign: "center", color: "#FFF" }}>
@@ -88,7 +105,7 @@ const styles = StyleSheet.create({
     marginTop: -20,
     elevation: 1,
     backgroundColor: "#FFF",
-    padding: 20,
+    paddingTop: 20,
   },
   button: {
     backgroundColor: Colors.primary,

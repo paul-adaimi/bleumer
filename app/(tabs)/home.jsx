@@ -69,8 +69,10 @@ export default function home() {
   }, [productList]);
 
   // Filter productList based on searchText
-  const filteredProducts = productList?.filter((product) =>
-    product.name.toLowerCase().includes(searchText.toLowerCase())
+  const filteredProducts = productList?.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchText.toLowerCase()) &&
+      product.category !== "bundle"
   );
 
   const homeContent = useMemo(() => {

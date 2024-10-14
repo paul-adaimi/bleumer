@@ -17,6 +17,7 @@ const MiddleModalScreen = ({
   button2Text = "Button 2", // Default text for the second button
   onButton1Press,
   onButton2Press,
+  button2Style,
   children,
   title,
 }) => {
@@ -52,7 +53,7 @@ const MiddleModalScreen = ({
 
               {onButton2Press && (
                 <TouchableOpacity
-                  style={styles.button2}
+                  style={[styles.button2, button2Style]}
                   onPress={onButton2Press}
                 >
                   <Text style={styles.buttonText}>{button2Text}</Text>
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   button1: {
     flex: 1,

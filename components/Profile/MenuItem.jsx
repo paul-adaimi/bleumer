@@ -18,13 +18,6 @@ export default function MenuItem({ onPress, title, iconName }) {
         margin: 10,
         backgroundColor: "#FFF",
         borderColor: Colors.primary,
-        // Shadow for iOS
-        shadowColor: Colors.primary,
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3.84,
-        // Shadow for Android
-        elevation: 5,
       }}
       onPress={onPress}
     >

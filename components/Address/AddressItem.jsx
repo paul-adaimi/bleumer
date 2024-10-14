@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "expo-router";
-import { Button, Dialog, Portal } from "react-native-paper";
 import { useAddress } from "../AddressProvider";
 import { Colors } from "../../constants/Colors";
+import MiddleModalScreen from "../Modals/MiddleModalScreen";
 
 const AddressItem = ({ address }) => {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
@@ -32,30 +32,21 @@ const AddressItem = ({ address }) => {
           <Text style={styles.deleteButton}>Delete</Text>
         </TouchableOpacity>
       </View>
-      <Portal>
-        <Dialog
-          visible={isDialogVisible}
-          onDismiss={() => setIsDialogVisible(false)}
-        >
-          <Dialog.Title>Delete Address</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">
-              Are you sure you want to delete the address {address.name}?
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setIsDialogVisible(false)}>Cancel</Button>
-            <Button
-              onPress={() => {
-                deleteAddress.mutate(address);
-                setIsDialogVisible(false);
-              }}
-            >
-              Ok
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <MiddleModalScreen
+        visible={isDialogVisible}
+        onClose={() => setIsDialogVisible(false)}
+        title="Delete Address"
+        button1Text="Cancel"
+        button2Text="Delete"
+        onButton1Press={() => setIsDialogVisible(false)}
+        onButton2Press={() => {
+          deleteAddress.mutate(address);
+          setIsDialogVisible(false);
+        }}
+        button2Style={{ backgroundColor: "#FF3B30" }}
+      >
+        <Text>Are you sure you want to delete this address?</Text>
+      </MiddleModalScreen>
     </View>
   );
 };
@@ -92,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   deleteButton: {
-    color: "red",
+    color: "#FF3B30",
     fontSize: 16,
   },
 });
