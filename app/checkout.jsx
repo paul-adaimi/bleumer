@@ -9,7 +9,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient, useMutation } from "react-query";
 import createOrder from "@/queries/createOrder";
 import { useAddress } from "../components/AddressProvider";
-import ModalScreen from "../components/ModalScreen";
+import BottomModalDrawer from "../components/BottomModalDrawer";
 import AddressesModal from "../components/Modals/Addresses";
 import LoadingButton from "../components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
@@ -107,7 +107,7 @@ export default function Checkout() {
         justifyContent: "space-between",
       }}
     >
-      <ModalScreen
+      <BottomModalDrawer
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         title="Choose an Address"
@@ -116,7 +116,7 @@ export default function Checkout() {
           backTitle="Checkout"
           onClose={() => setIsModalVisible(false)}
         />
-      </ModalScreen>
+      </BottomModalDrawer>
       <View>
         <CheckoutCard title="Delivery Address">
           {isAddressLoading ? (

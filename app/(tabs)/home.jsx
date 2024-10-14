@@ -33,7 +33,6 @@ export default function home() {
       .slice(0, 4);
   }, [productList]);
 
-  // TODO: Make Clickable
   const bundles = useMemo(() => {
     return productList?.filter((product) => product.category === "bundle");
   }, [productList]);

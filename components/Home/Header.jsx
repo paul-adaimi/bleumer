@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
 import { useNavigation } from "expo-router";
 import { useAddress } from "../AddressProvider";
-import ModalScreen from "../ModalScreen";
+import BottomModalDrawer from "../BottomModalDrawer";
 import AddressesModal from "../Modals/Addresses";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";
@@ -63,7 +63,7 @@ export default function Header({
         opacity: 1,
       }}
     >
-      <ModalScreen
+      <BottomModalDrawer
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         title="Choose an Address"
@@ -72,7 +72,7 @@ export default function Header({
           backTitle={title ? title : "Home"}
           onClose={() => setIsModalVisible(false)}
         />
-      </ModalScreen>
+      </BottomModalDrawer>
       <View
         style={{
           display: "flex",

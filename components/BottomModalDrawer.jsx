@@ -2,7 +2,12 @@ import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Colors } from "@/constants/Colors";
 
-export default function ModalScreen({ isVisible, children, onClose, title }) {
+export default function BottomModalDrawer({
+  isVisible,
+  children,
+  onClose,
+  title,
+}) {
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
       <View style={styles.modalContent}>

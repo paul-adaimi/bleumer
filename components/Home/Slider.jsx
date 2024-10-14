@@ -1,7 +1,7 @@
 import { View, Text, FlatList } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
-import { Image } from "react-native-expo-image-cache";
+import SliderCard from "./SliderCard";
 
 export default function Slider({ sliderList }) {
   return (
@@ -23,28 +23,7 @@ export default function Slider({ sliderList }) {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
-          <View
-            style={{
-              // Shadow for iOS
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.4,
-              shadowRadius: 3.84,
-              // Shadow for Android
-              elevation: 5,
-            }}
-          >
-            <Image
-              uri={item.imageUrl}
-              style={{
-                marginLeft: index == 0 ? 20 : 0,
-                width: 300,
-                height: 150,
-                borderRadius: 15,
-                marginRight: 20,
-              }}
-            />
-          </View>
+          <SliderCard slider={item} isFirst={index == 0} />
         )}
       />
     </View>
