@@ -26,8 +26,6 @@ const CustomPicker = forwardRef(
   ) => {
     const [modalVisible, setModalVisible] = useState(false);
 
-    console.log("selectedValue", selectedValue);
-
     const handleSelect = (item) => {
       onValueChange?.(item.value);
       setModalVisible(false);

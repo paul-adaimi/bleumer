@@ -37,6 +37,7 @@ const addressValidationSchema = Yup.object({
   coordinates: Yup.object().required("Must place the marker on the map"),
 });
 
+// TODO: check to add MAPS API for iphone users
 export default function AddressForm({
   initialValues,
   onSubmit,

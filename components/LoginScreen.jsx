@@ -17,6 +17,7 @@ import { useTour } from "./TourProvider";
 WebBrowser.maybeCompleteAuthSession();
 
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 export default function LoginScreen() {
   const { setIsInTour } = useTour();
@@ -44,7 +45,9 @@ export default function LoginScreen() {
   }, []);
 
   return (
-    <View style={{ height: "100%", backgroundColor: "#FFF", padding: 30 }}>
+    <View
+      style={{ flex: 1, height: "100%", backgroundColor: "#FFF", padding: 30 }}
+    >
       <View
         style={{
           display: "flex",
@@ -60,8 +63,8 @@ export default function LoginScreen() {
         />
         <Image
           style={{
-            width: 220,
-            height: 450,
+            width: screenWidth - 200,
+            height: screenHeight / 2,
             borderRadius: 20,
             borderWidth: 6,
             borderColor: "#000",
@@ -89,9 +92,17 @@ export default function LoginScreen() {
           Sustainably sourced salmon, delivered fresh to your door. Quality
           seafood you can trust.
         </Text>
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          width: "100%",
+          bottom: 30,
+          left: 30,
+        }}
+      >
         <TouchableOpacity onPress={onPress} style={styles.button}>
           <Text style={{ textAlign: "center", color: "#FFF" }}>
-            {" "}
             Let's Get Started
           </Text>
         </TouchableOpacity>
@@ -102,8 +113,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   subContainer: {
-    marginTop: -20,
-    elevation: 1,
+    marginTop: -screenHeight / 8,
     backgroundColor: "#FFF",
     paddingTop: 20,
   },
@@ -111,6 +121,5 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     padding: 16,
     borderRadius: 99,
-    marginTop: 50,
   },
 });
