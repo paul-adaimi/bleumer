@@ -13,6 +13,7 @@ import * as WebBrowser from "expo-web-browser";
 import { useOAuth } from "@clerk/clerk-expo";
 import * as Linking from "expo-linking";
 import { useTour } from "./TourProvider";
+import { useNavigation } from "expo-router";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -25,6 +26,9 @@ export default function LoginScreen() {
     setIsInTour(true);
   }, []);
   useWarmUpBrowser();
+
+  // const navigation = useNavigation();
+
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
 
   const onPress = React.useCallback(async () => {
@@ -44,6 +48,11 @@ export default function LoginScreen() {
     }
   }, []);
 
+  // const onPress = React.useCallback(async () => {
+  //   // go to phone sign in
+  //   navigation.navigate("phoneSignIn");
+  // }, [navigation]);
+
   return (
     <View
       style={{ flex: 1, height: "100%", backgroundColor: "#FFF", padding: 30 }}
@@ -59,7 +68,7 @@ export default function LoginScreen() {
             width: screenWidth - 80,
             resizeMode: "contain",
           }}
-          source={require("./../assets/images/bleumer-logo.jpg")}
+          source={require("@/assets/images/bleumer-logo.jpg")}
         />
         <Image
           style={{
@@ -69,7 +78,7 @@ export default function LoginScreen() {
             borderWidth: 6,
             borderColor: "#000",
           }}
-          source={require("./../assets/images/homepage-full.png")}
+          source={require("@/assets/images/homepage-full.png")}
         />
       </View>
       <View style={styles.subContainer}>

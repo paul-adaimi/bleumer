@@ -1,9 +1,8 @@
-import { db } from "@/configs/FirebaseConfig";
-import { collection, query, getDocs } from "firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 
 export default fetchAreas = async () => {
-  const q = query(collection(db, "Areas"));
-  const querySnapshot = await getDocs(q);
+  const areasRef = firestore().collection("Areas");
+  const querySnapshot = await areasRef.get();
 
   const areas = [];
 

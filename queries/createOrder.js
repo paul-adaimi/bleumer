@@ -1,16 +1,15 @@
-import { doc, updateDoc, arrayUnion, setDoc, getDoc } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
+import firestore from "@react-native-firebase/firestore";
 
 export default createOrder = async (userId, order) => {
-  const userRef = doc(db, "Orders", userId);
+  const userRef = firestore().collection("Orders").doc(userId);
 
   // Check if the document exists
-  const docSnap = await getDoc(userRef);
-  if (!docSnap.exists()) {
-    await setDoc(userRef, { orders: [] });
+  const docSnap = await userRef.get();
+  if (!docSnap.exists) {
+    await userRef.set({ orders: [] });
   }
 
-  await updateDoc(userRef, {
-    orders: arrayUnion(order),
+  await userRef.update({
+    orders: firestore.FieldValue.arrayUnion(order),
   });
 };

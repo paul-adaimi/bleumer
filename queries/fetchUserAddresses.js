@@ -1,11 +1,10 @@
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
+import firestore from "@react-native-firebase/firestore";
 
 export default fetchUserAddresses = async (userId) => {
-  const userRef = doc(db, "Users", userId);
-  const userSnap = await getDoc(userRef);
+  const userRef = firestore().collection("Users").doc(userId);
+  const userSnap = await userRef.get();
 
-  if (userSnap.exists()) {
+  if (userSnap.exists) {
     return userSnap.data().addresses || [];
   } else {
     throw new Error("User not found");

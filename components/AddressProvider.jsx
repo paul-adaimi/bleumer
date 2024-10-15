@@ -9,8 +9,7 @@ import { useQuery, useMutation } from "react-query";
 import { useUser } from "@clerk/clerk-expo";
 import fetchUserAddresses from "@/queries/fetchUserAddresses";
 import * as Location from "expo-location";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
+import firestore from "@react-native-firebase/firestore";
 import { useQueryClient } from "react-query";
 import updateUserAddresses from "@/queries/updateUserAddresses";
 
@@ -67,10 +66,10 @@ export const AddressProvider = ({ children }) => {
   const createAddress = useCallback(
     async (addressValues) => {
       setIsForceLoading(true);
-      const userRef = doc(db, "Users", user.id);
+      const userRef = firestore().collection("Users").doc(user.id);
 
-      await updateDoc(userRef, {
-        addresses: arrayUnion(addressValues),
+      await userRef.update({
+        addresses: firestore.FieldValue.arrayUnion(addressValues),
       });
 
       await queryClient.invalidateQueries("addresses");
@@ -86,7 +85,7 @@ export const AddressProvider = ({ children }) => {
 
       setIsForceLoading(false);
     },
-    [user.id, db]
+    [user.id]
   );
 
   const editAddress = useMutation({

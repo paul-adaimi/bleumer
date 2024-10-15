@@ -1,9 +1,8 @@
-import { db } from "@/configs/FirebaseConfig";
-import { collection, query, getDocs } from "firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 
 export default fetchSliders = async () => {
-  const q = query(collection(db, "Slider"));
-  const querySnapshot = await getDocs(q);
+  const slidersRef = firestore().collection("Slider");
+  const querySnapshot = await slidersRef.get();
 
   const sliders = [];
 

@@ -1,9 +1,8 @@
-import { db } from "@/configs/FirebaseConfig";
-import { collection, query, getDocs } from "firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 
 export default fetchProducts = async () => {
-  const q = query(collection(db, "Products"));
-  const querySnapshot = await getDocs(q);
+  const productsRef = firestore().collection("Products");
+  const querySnapshot = await productsRef.get();
 
   const products = [];
 

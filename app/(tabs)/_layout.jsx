@@ -4,18 +4,17 @@ import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../constants/Colors";
 import { useUser } from "@clerk/clerk-expo";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
+import firestore from "@react-native-firebase/firestore";
 
 export default function TabLayout() {
   const { user } = useUser();
 
   const createFirebaseUser = useCallback(async () => {
-    const userRef = doc(db, "Users", user.id);
-    const userSnap = await getDoc(userRef);
+    const userRef = firestore().collection("Users").doc(user.id);
+    const userSnap = await userRef.get();
 
-    if (!userSnap.exists()) {
-      await setDoc(doc(db, "Users", user.id), {
+    if (!userSnap.exists) {
+      await userRef.set({
         name: user.fullName,
         promoCodes: [{ code: "BLEUMER20", discount: 20 }],
         addresses: [],

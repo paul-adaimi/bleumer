@@ -1,7 +1,6 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
+import firestore from "@react-native-firebase/firestore";
 
 export default updateUserAddresses = async (userId, addresses) => {
-  const userRef = doc(db, "Users", userId);
-  await updateDoc(userRef, { addresses });
+  const userRef = firestore().collection("Users").doc(userId);
+  await userRef.update({ addresses });
 };

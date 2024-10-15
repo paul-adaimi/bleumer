@@ -1,11 +1,10 @@
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
+import firestore from "@react-native-firebase/firestore";
 
 export default fetchUserOrders = async (userId) => {
-  const userRef = doc(db, "Orders", userId);
-  const userSnap = await getDoc(userRef);
+  const userRef = firestore().collection("Orders").doc(userId);
+  const userSnap = await userRef.get();
 
-  if (userSnap.exists()) {
+  if (userSnap.exists) {
     const orders = userSnap.data().orders || [];
     return orders.reverse();
   } else {

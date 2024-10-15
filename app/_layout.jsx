@@ -10,6 +10,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 import TipProvider from "react-native-tip";
 import TourProvider from "@/components/TourProvider";
 import { UserProvider } from "@/components/UserProvider";
+import PhoneSignIn from "@/components/PhoneSignIn";
 
 const tokenCache = {
   async getToken(key) {

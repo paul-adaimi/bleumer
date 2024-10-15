@@ -7,10 +7,9 @@ import React, {
   useMemo,
 } from "react";
 import { useUser } from "@clerk/clerk-expo";
-import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
-import { db } from "@/configs/FirebaseConfig";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import fetchUser from "../queries/fetchUser";
+import firestore from "@react-native-firebase/firestore";
 
 // Create a context for user-related data
 const UserContext = createContext();
@@ -33,7 +32,7 @@ export const UserProvider = ({ children }) => {
 
   const deletePromoCode = useMutation({
     mutationFn: async (code) => {
-      const userRef = doc(db, "Users", user.id);
+      const userRef = firestore().collection("Users").doc(user.id);
 
       // Filter the promoCodes array to remove the promo code that matches the code
       const updatedPromoCodes = promoCodes.filter(
@@ -41,7 +40,7 @@ export const UserProvider = ({ children }) => {
       );
 
       // Update the Firestore document with the new array of promo codes
-      await updateDoc(userRef, {
+      await userRef.update({
         promoCodes: updatedPromoCodes,
       });
     },
