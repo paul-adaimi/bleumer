@@ -1,8 +1,14 @@
 import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
-import Header from "../../components/Home/Header";
-import Slider from "../../components/Home/Slider";
-import ProductList from "../../components/Home/ProductList";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  useLayoutEffect,
+} from "react";
+import Header from "@/components/Home/Header";
+import Slider from "@/components/Home/Slider";
+import ProductList from "@/components/Home/ProductList";
 import fetchProducts from "@/queries/fetchProducts";
 import { useQuery } from "react-query";
 import ProductListCard from "@/components/ProductList/ProductListCard";
@@ -10,8 +16,40 @@ import ProductsLoading from "@/components/Home/ProductsLoading";
 import SliderLoading from "@/components/Home/SliderLoading";
 import { showTipTour } from "react-native-tip";
 import { useTour } from "@/components/TourProvider";
+import { useUser } from "@clerk/clerk-expo";
+import firestore from "@react-native-firebase/firestore";
+import { useFocusEffect, useNavigation } from "expo-router";
 
-export default function home() {
+export default function index() {
+  const navigation = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      navigation.getParent().setOptions({
+        title: "Home",
+      });
+    }, [navigation])
+  );
+
+  const { user } = useUser();
+
+  const createFirebaseUser = useCallback(async () => {
+    const userRef = firestore().collection("Users").doc(user.id);
+    const userSnap = await userRef.get();
+
+    if (!userSnap.exists) {
+      await userRef.set({
+        name: user.fullName,
+        promoCodes: [{ code: "BLEUMER20", discount: 20 }],
+        addresses: [],
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    createFirebaseUser();
+  }, [createFirebaseUser]);
+
   const [searchText, setSearchText] = useState("");
 
   const { isInTour } = useTour();

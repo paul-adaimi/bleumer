@@ -1,7 +1,7 @@
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
-import ProductCard from "../../components/Home/ProductCard";
+import ProductCard from "@/components/Home/ProductCard";
 import { useRouter } from "expo-router";
 import { Tip } from "react-native-tip";
 import { useTour } from "../TourProvider";
@@ -48,7 +48,7 @@ export default function ProductList({
           active={false}
         >
           <TouchableOpacity
-            onPress={() => router.push("/productList/" + listName)}
+            onPress={() => router.push("/home/productList/" + listName)}
             disabled={isInTour}
           >
             <Text

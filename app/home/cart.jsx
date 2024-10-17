@@ -1,26 +1,14 @@
 import { View, FlatList, Text, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "expo-router";
-import { useCart } from "../components/CartProvider";
-import CartCard from "../components/Cart/CartCard";
+import { useCart } from "@/components/CartProvider";
+import CartCard from "@/components/Cart/CartCard";
 import { Colors } from "@/constants/Colors";
-import { useRoute } from "@react-navigation/native";
 
 export default function Cart() {
   const { cart, subTotal } = useCart();
-  const route = useRoute();
 
   const navigation = useNavigation();
-
-  const { from } = route.params;
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: "My Cart",
-      headerBackTitle: from,
-    });
-  }, []);
 
   const cartItems = Object.values(cart);
 

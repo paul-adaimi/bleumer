@@ -1,31 +1,8 @@
-import { View, Text } from "react-native";
-import React, { useCallback, useEffect } from "react";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "../../constants/Colors";
-import { useUser } from "@clerk/clerk-expo";
-import firestore from "@react-native-firebase/firestore";
+import { Colors } from "@/constants/Colors";
 
 export default function TabLayout() {
-  const { user } = useUser();
-
-  const createFirebaseUser = useCallback(async () => {
-    const userRef = firestore().collection("Users").doc(user.id);
-    const userSnap = await userRef.get();
-
-    if (!userSnap.exists) {
-      await userRef.set({
-        name: user.fullName,
-        promoCodes: [{ code: "BLEUMER20", discount: 20 }],
-        addresses: [],
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    createFirebaseUser();
-  }, [createFirebaseUser]);
-
   return (
     <Tabs
       screenOptions={{
@@ -45,6 +22,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="orders"
         options={{
+          title: "Orders",
+          headerShown: true,
           tabBarLabel: "Orders",
           tabBarIcon: ({ color }) => (
             <Ionicons name="list" size={24} color={color} />

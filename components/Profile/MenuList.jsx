@@ -3,7 +3,6 @@ import React from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
-import { Ionicons } from "@expo/vector-icons";
 import { Linking } from "react-native";
 import MenuItem from "./MenuItem";
 
@@ -16,7 +15,7 @@ export default function MenuList() {
       id: 1,
       name: "My Addresses",
       icon: "list",
-      onPress: () => router.push("/profileMenu/addresses"),
+      onPress: () => router.push("home/profileMenu/addresses"),
     },
     {
       id: 3,
@@ -31,7 +30,9 @@ export default function MenuList() {
       id: 4,
       name: "Logout",
       icon: "log-out-outline",
-      onPress: () => signOut(),
+      onPress: () => {
+        signOut();
+      },
     },
   ];
 

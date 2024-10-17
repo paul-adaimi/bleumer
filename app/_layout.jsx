@@ -1,16 +1,11 @@
 import React, { useEffect } from "react";
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
-import { Stack } from "expo-router";
-import LoginScreen from "../components/LoginScreen";
+import { ClerkProvider, SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
+import { Slot } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { CartProvider } from "@/components/CartProvider";
-import { AddressProvider } from "@/components/AddressProvider";
 import { Provider as PaperProvider } from "react-native-paper";
 import TipProvider from "react-native-tip";
 import TourProvider from "@/components/TourProvider";
-import { UserProvider } from "@/components/UserProvider";
-import PhoneSignIn from "@/components/PhoneSignIn";
 
 const tokenCache = {
   async getToken(key) {
@@ -53,28 +48,7 @@ export default function RootLayout() {
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
         <PaperProvider>
           <TourProvider>
-            <SignedIn>
-              <UserProvider>
-                <AddressProvider>
-                  <CartProvider>
-                    <Stack
-                      screenOptions={{
-                        headerBackTitle: "Home",
-                        headerShown: false,
-                      }}
-                    >
-                      <Stack.Screen
-                        name="(tabs)"
-                        options={{ headerShown: false }}
-                      />
-                    </Stack>
-                  </CartProvider>
-                </AddressProvider>
-              </UserProvider>
-            </SignedIn>
-            <SignedOut>
-              <LoginScreen />
-            </SignedOut>
+            <Slot />
           </TourProvider>
         </PaperProvider>
       </ClerkProvider>

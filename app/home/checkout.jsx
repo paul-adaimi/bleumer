@@ -2,18 +2,18 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useCallback, useState, useMemo } from "react";
 import { useNavigation } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import CheckoutCard from "../components/Cart/CheckoutCard";
-import CustomTextInput from "../components/CustomTextInput";
-import { useCart } from "../components/CartProvider";
+import CheckoutCard from "@/components/Cart/CheckoutCard";
+import CustomTextInput from "@/components/CustomTextInput";
+import { useCart } from "@/components/CartProvider";
 import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient, useMutation } from "react-query";
 import createOrder from "@/queries/createOrder";
-import { useAddress } from "../components/AddressProvider";
-import BottomModalDrawer from "../components/Modals/BottomModalDrawer";
-import AddressesModal from "../components/Modals/Addresses";
-import LoadingButton from "../components/LoadingButton";
+import { useAddress } from "@/components/AddressProvider";
+import BottomModalDrawer from "@/components/Modals/BottomModalDrawer";
+import AddressesModal from "@/components/Modals/Addresses";
+import LoadingButton from "@/components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-import { useUserContext } from "../components/UserProvider";
+import { useUserContext } from "@/components/UserProvider";
 
 export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -54,14 +54,6 @@ export default function Checkout() {
     setIsPromoInvalid(false);
     setDiscountedPrice(0);
   };
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: "Checkout",
-      headerBackTitle: "My Cart",
-    });
-  }, []);
 
   // apply the first promo code directly
   useEffect(() => {
@@ -283,10 +275,7 @@ export default function Checkout() {
         onClose={() => setIsModalVisible(false)}
         title="Choose an Address"
       >
-        <AddressesModal
-          backTitle="Checkout"
-          onClose={() => setIsModalVisible(false)}
-        />
+        <AddressesModal onClose={() => setIsModalVisible(false)} />
       </BottomModalDrawer>
     </>
   );

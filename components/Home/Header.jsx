@@ -68,10 +68,7 @@ export default function Header({
         onClose={() => setIsModalVisible(false)}
         title="Choose an Address"
       >
-        <AddressesModal
-          backTitle={title ? title : "Home"}
-          onClose={() => setIsModalVisible(false)}
-        />
+        <AddressesModal onClose={() => setIsModalVisible(false)} />
       </BottomModalDrawer>
       <View
         style={{
@@ -164,7 +161,9 @@ export default function Header({
               }}
               onPress={() => {
                 if (!isCartDisabled)
-                  navigation.navigate("cart", { from: title ? title : "Home" });
+                  navigation.navigate("cart", {
+                    from: title ? title : "Home",
+                  });
                 else showTip("cart");
               }}
             >

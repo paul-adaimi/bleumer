@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
-import AddressItem from "../../components/Address/AddressItem";
+import AddressItem from "@/components/Address/AddressItem";
 import { useRouter } from "expo-router";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useAddress } from "@/components/AddressProvider";
@@ -19,14 +19,6 @@ const AddressList = () => {
   const { addresses, isFetching } = useAddress();
 
   const navigation = useNavigation();
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: "All Addresses",
-      headerShown: true,
-      headerBackTitle: "Profile",
-    });
-  }, []);
 
   if (isFetching) {
     let loadingPage = [];
@@ -92,7 +84,7 @@ const AddressList = () => {
             padding: 16,
             borderRadius: 5,
           }}
-          onPress={() => router.push("/profileMenu/addAddress")}
+          onPress={() => router.push("home/profileMenu/addAddress")}
         >
           <Text style={{ textAlign: "center", color: "#FFF" }}>
             Add Address
