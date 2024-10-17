@@ -1,12 +1,14 @@
 import { View, Text, FlatList } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { Linking } from "react-native";
 import MenuItem from "./MenuItem";
+import MiddleModalScreen from "@/components/Modals/MiddleModalScreen";
 
 export default function MenuList() {
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
   const { signOut } = useAuth();
   const router = useRouter();
 
@@ -31,7 +33,7 @@ export default function MenuList() {
       name: "Logout",
       icon: "log-out-outline",
       onPress: () => {
-        signOut();
+        setIsDialogVisible(true);
       },
     },
   ];
@@ -58,6 +60,21 @@ export default function MenuList() {
       >
         Developed by Paul Adaimi @ 2024
       </Text>
+
+      <MiddleModalScreen
+        visible={isDialogVisible}
+        onClose={() => setIsDialogVisible(false)}
+        title="Logout"
+        button1Text="Cancel"
+        button2Text="Logout"
+        onButton1Press={() => setIsDialogVisible(false)}
+        onButton2Press={() => {
+          signOut();
+          setIsDialogVisible(false);
+        }}
+      >
+        <Text>Are you sure you want to log out?</Text>
+      </MiddleModalScreen>
     </View>
   );
 }

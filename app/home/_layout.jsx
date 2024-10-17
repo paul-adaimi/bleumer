@@ -27,7 +27,7 @@ export default function HomeLayout() {
             <Stack.Screen name="checkout" options={{ title: "Checkout" }} />
             <Stack.Screen
               name="profileMenu/addAddress"
-              options={{ title: "Add New Address" }}
+              options={{ title: "Add Address" }}
             />
             <Stack.Screen
               name="profileMenu/addresses"

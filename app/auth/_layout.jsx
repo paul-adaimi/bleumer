@@ -12,8 +12,8 @@ export default function AuthRoutesLayout() {
   return (
     <Stack>
       <Stack.Screen
-        options={{ headerShown: false, title: "Welcome" }}
         name="index"
+        options={{ headerShown: false, title: "Welcome" }}
       />
       <Stack.Screen name="login" />
     </Stack>
