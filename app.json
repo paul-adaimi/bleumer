@@ -15,7 +15,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.bleu-mer",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "app-1-27486714398-ios-8828c4ee25c212aea64c0f"
+            ]
+          }
+        ]
+      }
     },
     "android": {
       "googleServicesFile": "./google-services.json",

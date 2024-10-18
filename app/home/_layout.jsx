@@ -9,7 +9,7 @@ export default function HomeLayout() {
   const { isSignedIn } = useAuth();
 
   if (!isSignedIn) {
-    return <Redirect href={"/auth"} />;
+    return <Redirect href={"/firebaseauth"} />;
   }
 
   return (

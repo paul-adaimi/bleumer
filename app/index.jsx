@@ -8,7 +8,7 @@ export default function Index() {
         <Redirect href={"home"} />
       </SignedIn>
       <SignedOut>
-        <Redirect href={"auth"} />
+        <Redirect href={"firebaseauth"} />
       </SignedOut>
     </>
   );

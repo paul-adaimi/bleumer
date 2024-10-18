@@ -8,11 +8,11 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import { Colors } from "@/constants/Colors";
-import { useWarmUpBrowser } from "../hooks/useWarmUpBrowser";
+import { useWarmUpBrowser } from "../../../hooks/useWarmUpBrowser";
 import * as WebBrowser from "expo-web-browser";
 import { useOAuth } from "@clerk/clerk-expo";
 import * as Linking from "expo-linking";
-import { useTour } from "./TourProvider";
+import { useTour } from "../../TourProvider";
 import { useNavigation } from "expo-router";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -27,31 +27,31 @@ export default function LoginScreen() {
   }, []);
   useWarmUpBrowser();
 
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
 
-  const onPress = React.useCallback(async () => {
-    try {
-      const { createdSessionId, signIn, signUp, setActive } =
-        await startOAuthFlow({
-          redirectUrl: Linking.createURL("/dashboard", { scheme: "myapp" }),
-        });
-
-      if (createdSessionId) {
-        setActive({ session: createdSessionId });
-      } else {
-        // Use signIn or signUp for next steps such as MFA
-      }
-    } catch (err) {
-      console.error("OAuth error", err);
-    }
-  }, []);
-
   // const onPress = React.useCallback(async () => {
-  //   // go to phone sign in
-  //   navigation.navigate("phoneSignIn");
-  // }, [navigation]);
+  //   try {
+  //     const { createdSessionId, signIn, signUp, setActive } =
+  //       await startOAuthFlow({
+  //         redirectUrl: Linking.createURL("/dashboard", { scheme: "myapp" }),
+  //       });
+
+  //     if (createdSessionId) {
+  //       setActive({ session: createdSessionId });
+  //     } else {
+  //       // Use signIn or signUp for next steps such as MFA
+  //     }
+  //   } catch (err) {
+  //     console.error("OAuth error", err);
+  //   }
+  // }, []);
+
+  const onPress = React.useCallback(async () => {
+    // go to phone sign in
+    navigation.navigate("link");
+  }, [navigation]);
 
   return (
     <View

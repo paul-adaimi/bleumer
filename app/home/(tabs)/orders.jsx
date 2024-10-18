@@ -8,6 +8,7 @@ import fetchUserOrders from "@/queries/fetchUserOrders";
 import OrderLoading from "@/components/Orders/OrderLoading";
 import { Colors } from "@/constants/Colors";
 
+// TODO: Look whether I should add status or not
 export default function orders() {
   const navigation = useNavigation();
 
