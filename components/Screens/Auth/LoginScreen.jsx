@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import auth from "@react-native-firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../../constants/Colors";
@@ -19,13 +19,17 @@ export default function LoginScreen() {
   const signInWithPhoneNumber = useCallback(async () => {
     try {
       const confirmation = await auth().signInWithPhoneNumber(formattedValue);
+      const verificationItems = {
+        verificationId: confirmation._verificationId,
+        phoneNumber: formattedValue,
+      };
       await AsyncStorage.setItem(
-        "verificationId",
-        JSON.stringify(confirmation._verificationId)
+        "verificationItems",
+        JSON.stringify(verificationItems)
       );
       router.push("firebaseauth/confirmation");
     } catch (error) {
-      setError(error);
+      setError(error.message);
     }
   }, [formattedValue]);
 
@@ -66,7 +70,7 @@ export default function LoginScreen() {
         style={{
           marginTop: 10,
           paddingHorizontal: 50,
-          color: Colors.primary,
+          color: Colors.gray,
           textAlign: "center",
         }}
       >
@@ -106,13 +110,7 @@ export default function LoginScreen() {
         <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>
       ) : null}
       <TouchableOpacity
-        style={{
-          width: "100%",
-          marginTop: 20,
-          backgroundColor: Colors.primary,
-          padding: 14,
-          borderRadius: 15,
-        }}
+        style={styles.button}
         onPress={() => {
           const checkValid = phoneInput.current?.isValidNumber(value);
           if (!checkValid) {
@@ -137,3 +135,20 @@ export default function LoginScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    width: "100%",
+    marginTop: 20,
+    backgroundColor: Colors.primary,
+    padding: 14,
+    borderRadius: 15,
+    // Shadow for iOS
+    shadowColor: Colors.black,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    // Shadow for Android
+    elevation: 5,
+  },
+});
