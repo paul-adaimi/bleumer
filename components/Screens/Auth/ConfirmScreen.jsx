@@ -1,18 +1,40 @@
 import { View, TextInput, Button } from "react-native";
-import React, { useState } from "react";
-import { useAuth } from "@/components/AuthProvider";
+import React, { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import auth from "@react-native-firebase/auth";
 
 export default function ConfirmScreen() {
   // verification code (OTP - One-Time-Passcode)
   const [code, setCode] = useState("");
+  const [verificationId, setVerificationId] = useState(null);
 
-  const { confirmation } = useAuth();
+  useEffect(() => {
+    auth().signOut();
+    const loadVerificationId = async () => {
+      try {
+        const savedVerificationId = await AsyncStorage.getItem(
+          "verificationId"
+        );
+        if (savedVerificationId) {
+          setVerificationId(JSON.parse(savedVerificationId));
+        }
+      } catch (error) {
+        console.error("Failed to load verification Id:", error);
+      }
+    };
+
+    loadVerificationId();
+  }, []);
 
   async function confirmCode() {
     try {
-      await confirmation.confirm(code);
+      const credential = auth.PhoneAuthProvider.credential(
+        verificationId,
+        code
+      );
+      await auth().signInWithCredential(credential);
     } catch (error) {
-      console.log("Invalid code.");
+      console.log(error);
     }
   }
 

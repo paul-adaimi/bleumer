@@ -50,7 +50,7 @@ export default function LoginScreen() {
 
   const onPress = React.useCallback(async () => {
     // go to phone sign in
-    navigation.navigate("link");
+    navigation.navigate("login");
   }, [navigation]);
 
   return (

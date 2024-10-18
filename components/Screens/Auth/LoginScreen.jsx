@@ -1,28 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { TouchableOpacity, Text, View } from "react-native";
 import auth from "@react-native-firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../../constants/Colors";
 import PhoneInput from "react-native-phone-number-input";
-import { useAuth } from "../../AuthProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
-export default function PhoneSignIn() {
-  const { setConfirmation } = useAuth();
-
+export default function LoginScreen() {
   const [value, setValue] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
   const [error, setError] = useState("");
   const phoneInput = useRef(null);
 
+  const router = useRouter();
+
   // Handle the button press
-  async function signInWithPhoneNumber() {
+  const signInWithPhoneNumber = useCallback(async () => {
     try {
       const confirmation = await auth().signInWithPhoneNumber(formattedValue);
-      setConfirmation(confirmation);
+      await AsyncStorage.setItem(
+        "verificationId",
+        JSON.stringify(confirmation._verificationId)
+      );
+      router.push("firebaseauth/confirmation");
     } catch (error) {
       setError(error);
     }
-  }
+  }, [formattedValue]);
 
   return (
     <View style={{ display: "flex", alignItems: "center", margin: 20 }}>

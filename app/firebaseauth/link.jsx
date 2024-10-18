@@ -1,15 +1,13 @@
 import React from "react";
-import LoginScreen from "@/components/Screens/Auth/LoginScreen";
-import { useRouter } from "expo-router";
-import { useAuth } from "@/components/AuthProvider";
+import { Text } from "react-native";
+import { useRouter, useFocusEffect } from "expo-router";
 
 export default function link() {
-  const { confirmation } = useAuth();
   const router = useRouter();
 
-  if (confirmation) {
-    router.push("/firebaseauth/confirmation");
-  }
+  useFocusEffect(() => {
+    router.back();
+  });
 
-  return <LoginScreen />;
+  return <Text>Linking...</Text>;
 }

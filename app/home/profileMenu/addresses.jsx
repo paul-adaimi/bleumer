@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useNavigation } from "expo-router";
 import {
   View,
   Text,
@@ -17,8 +16,6 @@ const AddressList = () => {
   const router = useRouter();
 
   const { addresses, isFetching } = useAddress();
-
-  const navigation = useNavigation();
 
   if (isFetching) {
     let loadingPage = [];
