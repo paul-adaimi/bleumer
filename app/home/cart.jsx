@@ -4,6 +4,7 @@ import { useNavigation } from "expo-router";
 import { useCart } from "@/components/CartProvider";
 import CartCard from "@/components/Cart/CartCard";
 import { Colors } from "@/constants/Colors";
+import LoadingButton from "@/components/LoadingButton";
 
 export default function Cart() {
   const { cart, subTotal } = useCart();
@@ -72,22 +73,8 @@ export default function Cart() {
           </Text>
         </View>
       </View>
-      <View
-        style={{
-          padding: 15,
-        }}
-      >
-        <TouchableOpacity
-          onPress={handleCheckout}
-          style={{
-            backgroundColor: Colors.primary,
-            padding: 16,
-            borderRadius: 5,
-            marginBottom: 15,
-          }}
-        >
-          <Text style={{ textAlign: "center", color: "#FFF" }}>Checkout</Text>
-        </TouchableOpacity>
+      <View style={{ padding: 15, position: "relative", bottom: 15 }}>
+        <LoadingButton onPress={handleCheckout} text="Checkout" />
       </View>
     </View>
   );

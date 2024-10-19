@@ -1,16 +1,10 @@
-import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { Colors } from "@/constants/Colors";
+import React from "react";
+import { View, Text, FlatList } from "react-native";
 import AddressItem from "@/components/Address/AddressItem";
 import { useRouter } from "expo-router";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useAddress } from "@/components/AddressProvider";
+import LoadingButton from "@/components/LoadingButton";
 
 const AddressList = () => {
   const router = useRouter();
@@ -69,39 +63,14 @@ const AddressList = () => {
           <AddressItem index={index} address={item} />
         )}
       />
-      <View
-        style={{
-          padding: 15,
-          paddingBottom: 35,
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            backgroundColor: Colors.primary,
-            padding: 16,
-            borderRadius: 5,
-          }}
+      <View style={{ position: "relative", bottom: 10, padding: 15 }}>
+        <LoadingButton
           onPress={() => router.push("home/profileMenu/addAddress")}
-        >
-          <Text style={{ textAlign: "center", color: "#FFF" }}>
-            Add Address
-          </Text>
-        </TouchableOpacity>
+          text="Add Address"
+        />
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  addressContainer: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    backgroundColor: "#f9f9f9",
-  },
-  addressText: {
-    fontSize: 16,
-  },
-});
 
 export default AddressList;

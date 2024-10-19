@@ -20,6 +20,7 @@ import fetchAreas from "@/queries/fetchAreas";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import LoadingButton from "@/components/LoadingButton";
 
 const addressValidationSchema = Yup.object({
   name: Yup.string()
@@ -146,6 +147,7 @@ export default function AddressForm({
               errors,
               touched,
               setFieldValue,
+              isSubmitting,
             }) => (
               <>
                 <ScrollView
@@ -292,24 +294,12 @@ export default function AddressForm({
                     </View>
                   </View>
                 </ScrollView>
-                <View
-                  style={{
-                    position: "relative",
-                    bottom: 20,
-                  }}
-                >
-                  <TouchableOpacity
+                <View style={{ position: "relative", bottom: 10 }}>
+                  <LoadingButton
+                    isLoading={isSubmitting}
                     onPress={handleSubmit}
-                    style={{
-                      backgroundColor: Colors.primary,
-                      padding: 16,
-                      borderRadius: 5,
-                    }}
-                  >
-                    <Text style={{ textAlign: "center", color: "#FFF" }}>
-                      {buttonText}
-                    </Text>
-                  </TouchableOpacity>
+                    text={buttonText}
+                  />
                 </View>
               </>
             )}

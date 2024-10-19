@@ -11,8 +11,8 @@ export default function editAddress() {
   const { address } = route.params;
 
   const editAddressAndGoBack = useCallback(
-    (addressValues) => {
-      editAddress.mutate(addressValues);
+    async (addressValues) => {
+      await editAddress.mutateAsync(addressValues);
       navigation.goBack();
     },
     [navigation]

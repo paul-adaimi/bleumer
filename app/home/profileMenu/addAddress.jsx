@@ -10,8 +10,8 @@ export default function addAddress() {
   const { createAddress } = useAddress();
 
   const createAddressAndGoBack = useCallback(
-    (addressValues) => {
-      createAddress(addressValues);
+    async (addressValues) => {
+      await createAddress(addressValues);
       navigation.goBack();
     },
     [navigation]
