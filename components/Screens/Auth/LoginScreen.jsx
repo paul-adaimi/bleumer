@@ -5,14 +5,30 @@ import { Colors } from "../../../constants/Colors";
 import PhoneInput from "react-native-phone-number-input";
 import { useAuth } from "@/components/AuthProvider";
 import { router } from "expo-router";
+import LoadingButton from "@/components/LoadingButton";
 
 export default function LoginScreen() {
   const [value, setValue] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
   const [error, setError] = useState("");
   const phoneInput = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { signInWithPhoneNumber } = useAuth();
+
+  const onPressButton = useCallback(async () => {
+    setIsLoading(true);
+    const checkValid = phoneInput.current?.isValidNumber(value);
+    if (!checkValid) {
+      setError("Invalid phone number");
+    } else {
+      await signInWithPhoneNumber(formattedValue, {
+        onSuccess: () => router.push("firebaseauth/confirmation"),
+        onError: (error) => setError(error),
+      });
+    }
+    setIsLoading(false);
+  }, [value, formattedValue, signInWithPhoneNumber]);
 
   return (
     <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
@@ -67,7 +83,7 @@ export default function LoginScreen() {
           containerStyle={{
             width: "100%",
             fontSize: 16,
-            borderColor: Colors.primary,
+            borderColor: error ? "red" : Colors.primary,
             borderWidth: 1,
             borderRadius: 15,
           }}
@@ -90,32 +106,12 @@ export default function LoginScreen() {
       {error ? (
         <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>
       ) : null}
-      <TouchableOpacity
+      <LoadingButton
+        text="Verify Number"
+        onPress={onPressButton}
         style={styles.button}
-        onPress={() => {
-          const checkValid = phoneInput.current?.isValidNumber(value);
-          if (!checkValid) {
-            setError("Invalid phone number");
-            return;
-          } else {
-            signInWithPhoneNumber(formattedValue, {
-              onSuccess: () => router.push("firebaseauth/confirmation"),
-              onError: (error) => setError(error),
-            });
-          }
-        }}
-      >
-        <Text
-          style={{
-            textAlign: "center",
-            color: "#FFF",
-            fontSize: 16,
-            fontWeight: 600,
-          }}
-        >
-          Verify Number
-        </Text>
-      </TouchableOpacity>
+        isLoading={isLoading}
+      />
     </View>
   );
 }
@@ -124,15 +120,5 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     marginTop: 20,
-    backgroundColor: Colors.primary,
-    padding: 14,
-    borderRadius: 15,
-    // Shadow for iOS
-    shadowColor: Colors.black,
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-    // Shadow for Android
-    elevation: 5,
   },
 });

@@ -5,15 +5,17 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/components/AuthProvider";
+import LoadingButton from "@/components/LoadingButton";
 
 export default function ConfirmScreen() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
   const inputRefs = useRef([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { confirmCode, verifyingNumber } = useAuth();
 
@@ -37,6 +39,14 @@ export default function ConfirmScreen() {
       inputRefs.current[index - 1].focus();
     }
   };
+
+  handleSubmit = useCallback(async () => {
+    setIsLoading(true);
+    await confirmCode(confirmationCode, {
+      onError: () => setError("Invalid Code"),
+    });
+    setIsLoading(false);
+  }, [confirmationCode, confirmCode]);
 
   return (
     <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
@@ -101,25 +111,12 @@ export default function ConfirmScreen() {
 
       {error && <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>}
 
-      <TouchableOpacity
+      <LoadingButton
+        text="Confirm Code"
+        onPress={handleSubmit}
         style={styles.button}
-        onPress={() =>
-          confirmCode(confirmationCode, {
-            onError: () => setError("Invalid Code"),
-          })
-        }
-      >
-        <Text
-          style={{
-            textAlign: "center",
-            color: "#FFF",
-            fontSize: 16,
-            fontWeight: 600,
-          }}
-        >
-          Confirm Code
-        </Text>
-      </TouchableOpacity>
+        isLoading={isLoading}
+      />
     </View>
   );
 }
@@ -153,15 +150,5 @@ const styles = StyleSheet.create({
   button: {
     width: "95%",
     marginTop: 20,
-    backgroundColor: Colors.primary,
-    padding: 14,
-    borderRadius: 15,
-    // Shadow for iOS
-    shadowColor: Colors.black,
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-    // Shadow for Android
-    elevation: 5,
   },
 });
