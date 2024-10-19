@@ -5,47 +5,21 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import auth from "@react-native-firebase/auth";
+import React, { useState, useRef, useMemo } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function ConfirmScreen() {
-  const [verificationItems, setVerificationItems] = useState(null);
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
   const inputRefs = useRef([]);
 
-  useEffect(() => {
-    const loadVerificationItems = async () => {
-      try {
-        const savedVerificationItems = await AsyncStorage.getItem(
-          "verificationItems"
-        );
-        if (savedVerificationItems) {
-          setVerificationItems(JSON.parse(savedVerificationItems));
-        }
-      } catch (error) {
-        console.error("Failed to load verification Id:", error);
-      }
-    };
+  const { confirmCode, verifyingNumber } = useAuth();
 
-    loadVerificationItems();
-  }, []);
-
-  async function confirmCode() {
-    try {
-      const verificationCode = code.join("");
-      const credential = auth.PhoneAuthProvider.credential(
-        verificationItems.verificationId,
-        verificationCode
-      );
-      await auth().signInWithCredential(credential);
-    } catch (error) {
-      setError("The verification code is invalid.");
-    }
-  }
+  confirmationCode = useMemo(() => {
+    return code.join("");
+  }, [code]);
 
   const handleInputChange = (text, index) => {
     setError("");
@@ -107,8 +81,7 @@ export default function ConfirmScreen() {
       >
         Please enter Code sent to
         <Text style={{ fontWeight: "bold", color: Colors.primary }}>
-          {" "}
-          {verificationItems?.phoneNumber}
+          {verifyingNumber}
         </Text>
       </Text>
       <View style={styles.codeInputContainer}>
@@ -127,7 +100,14 @@ export default function ConfirmScreen() {
 
       {error && <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>}
 
-      <TouchableOpacity style={styles.button} onPress={() => confirmCode()}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          confirmCode(confirmationCode, {
+            onError: () => setError("Invalid Code"),
+          })
+        }
+      >
         <Text
           style={{
             textAlign: "center",
@@ -159,6 +139,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 50,
     color: Colors.primary,
+    borderRadius: 5,
 
     // Shadow for iOS
     shadowColor: Colors.black,

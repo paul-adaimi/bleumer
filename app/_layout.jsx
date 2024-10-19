@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Provider as PaperProvider } from "react-native-paper";
 import TipProvider from "react-native-tip";
 import TourProvider from "@/components/TourProvider";
+import AuthProvider from "@/components/AuthProvider";
 
 const tokenCache = {
   async getToken(key) {
@@ -48,7 +49,9 @@ export default function RootLayout() {
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
         <PaperProvider>
           <TourProvider>
-            <Slot />
+            <AuthProvider>
+              <Slot />
+            </AuthProvider>
           </TourProvider>
         </PaperProvider>
       </ClerkProvider>
