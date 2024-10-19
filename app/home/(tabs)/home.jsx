@@ -111,6 +111,7 @@ export default function index() {
     else
       return (
         <ScrollView
+          showsVerticalScrollIndicator={false}
           style={{
             paddingTop: 20,
           }}

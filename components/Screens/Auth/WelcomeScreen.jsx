@@ -11,6 +11,7 @@ import { Colors } from "@/constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import { useTour } from "../../TourProvider";
 import { useNavigation } from "expo-router";
+import LoadingButton from "@/components/LoadingButton";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -87,11 +88,11 @@ export default function LoginScreen() {
           left: 30,
         }}
       >
-        <TouchableOpacity onPress={onPress} style={styles.button}>
-          <Text style={{ textAlign: "center", color: "#FFF" }}>
-            Let's Get Started
-          </Text>
-        </TouchableOpacity>
+        <LoadingButton
+          text="Let's Get Started"
+          style={styles.button}
+          onPress={onPress}
+        />
       </View>
     </View>
   );
@@ -104,8 +105,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   button: {
-    backgroundColor: Colors.primary,
-    padding: 16,
     borderRadius: 99,
   },
 });

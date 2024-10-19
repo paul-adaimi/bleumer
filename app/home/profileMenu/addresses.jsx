@@ -57,6 +57,7 @@ const AddressList = () => {
         </View>
       )}
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={addresses}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (

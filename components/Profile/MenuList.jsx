@@ -41,6 +41,7 @@ export default function MenuList() {
   return (
     <View style={{ marginTop: 20 }}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={menuList}
         renderItem={({ item }) => (
           <MenuItem

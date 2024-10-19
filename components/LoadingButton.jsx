@@ -45,7 +45,7 @@ const LoadingButton = ({ onPress, isLoading, text, disabled, style }) => {
           left: 0,
           right: 0,
           bottom: 0,
-          borderRadius: 5,
+          borderRadius: style?.borderRadius ?? 5,
           overflow: "hidden",
           backgroundColor:
             isLoading || disabled ? Colors.primaryShade : Colors.primary,
@@ -79,16 +79,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     // Shadow for Android
     elevation: 5,
-  },
-  buttonBackground: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 5,
-    overflow: "hidden",
-    backgroundColor: Colors.primary,
   },
   loadingFill: {
     position: "absolute",

@@ -152,6 +152,7 @@ export default function AddressForm({
               <>
                 <ScrollView
                   ref={scrollViewRef}
+                  showsVerticalScrollIndicator={false}
                   style={{
                     flexGrow: 1,
                   }}

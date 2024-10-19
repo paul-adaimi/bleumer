@@ -47,6 +47,7 @@ export default function AddressesModal({ onClose }) {
       {!isFetching && (
         <FlatList
           data={addresses}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
             <AddressItemModal

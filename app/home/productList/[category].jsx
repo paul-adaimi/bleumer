@@ -32,6 +32,7 @@ export default function ProductListByCategory() {
     <View style={{ height: "100%" }}>
       <Header title={category} />
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={list}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ProductListCard product={item} />}

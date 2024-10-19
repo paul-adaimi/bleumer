@@ -93,6 +93,7 @@ export default function Checkout() {
   return (
     <>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         style={{
           padding: 5,
         }}

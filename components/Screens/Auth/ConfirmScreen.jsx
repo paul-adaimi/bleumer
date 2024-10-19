@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.7,
     shadowRadius: 3,
     // Shadow for Android
-    elevation: 5,
+    elevation: 0,
   },
   button: {
     width: "95%",

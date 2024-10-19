@@ -34,6 +34,7 @@ export default function Cart() {
     >
       <View>
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={{ maxHeight: "80%" }}
           data={cartItems}
           renderItem={({ item }) => <CartCard cartItem={item} key={item.id} />}
