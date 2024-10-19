@@ -1,11 +1,5 @@
 import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-  useLayoutEffect,
-} from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import Header from "@/components/Home/Header";
 import Slider from "@/components/Home/Slider";
 import ProductList from "@/components/Home/ProductList";
@@ -16,9 +10,7 @@ import ProductsLoading from "@/components/Home/ProductsLoading";
 import SliderLoading from "@/components/Home/SliderLoading";
 import { showTipTour } from "react-native-tip";
 import { useTour } from "@/components/TourProvider";
-import firestore from "@react-native-firebase/firestore";
 import { useFocusEffect, useNavigation } from "expo-router";
-import { useAuth } from "@/components/AuthProvider";
 
 export default function index() {
   const navigation = useNavigation();
@@ -30,25 +22,6 @@ export default function index() {
       });
     }, [navigation])
   );
-
-  const { currentUser } = useAuth();
-
-  const createFirebaseUser = useCallback(async () => {
-    const userRef = firestore().collection("Users").doc(currentUser.uid);
-    const userSnap = await userRef.get();
-
-    if (!userSnap.exists) {
-      await userRef.set({
-        number: currentUser.phoneNumber,
-        promoCodes: [{ code: "BLEUMER20", discount: 20 }],
-        addresses: [],
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    createFirebaseUser();
-  }, [createFirebaseUser]);
 
   const [searchText, setSearchText] = useState("");
 

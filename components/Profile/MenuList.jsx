@@ -39,7 +39,7 @@ export default function MenuList() {
   ];
 
   return (
-    <View style={{ marginTop: 50 }}>
+    <View style={{ marginTop: 20 }}>
       <FlatList
         data={menuList}
         renderItem={({ item }) => (

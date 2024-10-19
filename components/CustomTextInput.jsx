@@ -8,6 +8,7 @@ const CustomTextInput = forwardRef(
       <View style={[styles.container, containerStyle]}>
         <TextInput
           placeholder={placeholder}
+          placeholderTextColor={Colors.lightGray}
           style={[styles.input, style, error && styles.errorInput]}
           ref={ref}
           {...props}

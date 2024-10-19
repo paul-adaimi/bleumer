@@ -248,28 +248,15 @@ export default function Checkout() {
             </View>
           </CheckoutCard>
         </View>
-        <View
-          style={{
-            padding: 15,
-          }}
-        >
-          <LoadingButton
-            onPress={mutate}
-            isLoading={isLoading}
-            disabled={isAddressLoading}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                color: "#FFF",
-                fontWeight: "bold",
-              }}
-            >
-              Place Order
-            </Text>
-          </LoadingButton>
-        </View>
       </ScrollView>
+      <View style={{ padding: 15, position: "relative", bottom: 15 }}>
+        <LoadingButton
+          onPress={mutate}
+          isLoading={isLoading}
+          disabled={isAddressLoading}
+          text="Place Order"
+        />
+      </View>
       <BottomModalDrawer
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}

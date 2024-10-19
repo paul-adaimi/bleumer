@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { Colors } from "../constants/Colors";
 
-const LoadingButton = ({ onPress, isLoading, children, disabled }) => {
+const LoadingButton = ({ onPress, isLoading, text, disabled, style }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const LoadingButton = ({ onPress, isLoading, children, disabled }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={styles.buttonContainer}
+      style={[styles.buttonContainer, style]}
       disabled={isLoading || disabled}
     >
       <View
@@ -53,21 +53,32 @@ const LoadingButton = ({ onPress, isLoading, children, disabled }) => {
       >
         <View style={[styles.loadingFill, { width: `${progress}%` }]} />
       </View>
-      {children}
+      <Text
+        style={{
+          textAlign: "center",
+          color: "#FFF",
+          fontWeight: "bold",
+        }}
+      >
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    marginBottom: 15,
     borderRadius: 5,
-    overflow: "hidden",
-    position: "relative",
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginBottom: 15,
+    // Shadow for iOS
+    shadowColor: Colors.black,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    // Shadow for Android
+    elevation: 5,
   },
   buttonBackground: {
     position: "absolute",

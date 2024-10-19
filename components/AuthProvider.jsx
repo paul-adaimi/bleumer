@@ -7,6 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
 // Create the context
 const AuthContext = createContext();
@@ -17,12 +18,31 @@ export default AuthProvider = ({ children }) => {
   const [confirmation, setConfirmation] = useState(null);
   const [verifyingNumber, setVerifyingNumber] = useState(false);
 
+  const createFirebaseUser = useCallback(async () => {
+    const userRef = firestore().collection("Users").doc(currentUser.uid);
+    const userSnap = await userRef.get();
+
+    if (!userSnap.exists) {
+      await userRef.set({
+        number: currentUser.phoneNumber,
+        promoCodes: [{ code: "BLEUMER20", discount: 20 }],
+        addresses: [],
+      });
+    }
+  }, [currentUser]);
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
       setCurrentUser(user);
     });
     return subscriber;
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      createFirebaseUser();
+    }
+  }, [createFirebaseUser]);
 
   const isSignedIn = useMemo(() => !!currentUser, [currentUser]);
 
@@ -56,6 +76,20 @@ export default AuthProvider = ({ children }) => {
     await auth().signOut();
   }, []);
 
+  const updateName = useCallback(
+    async (name) => {
+      try {
+        await currentUser.updateProfile({ displayName: name });
+        setCurrentUser(auth().currentUser);
+        const userRef = firestore().collection("Users").doc(currentUser.uid);
+        await userRef.update({ fullName: name });
+      } catch (error) {
+        throw error;
+      }
+    },
+    [currentUser]
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -65,6 +99,7 @@ export default AuthProvider = ({ children }) => {
         confirmCode,
         isSignedIn,
         signOut,
+        updateName,
       }}
     >
       {children}
