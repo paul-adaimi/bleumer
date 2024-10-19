@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useAuth } from "@clerk/clerk-expo";
+import React from "react";
 import { Redirect, Stack } from "expo-router";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function AuthRoutesLayout() {
   const { isSignedIn } = useAuth();

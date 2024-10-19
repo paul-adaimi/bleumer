@@ -5,7 +5,6 @@ import { Colors } from "@/constants/Colors";
 import CheckoutCard from "@/components/Cart/CheckoutCard";
 import CustomTextInput from "@/components/CustomTextInput";
 import { useCart } from "@/components/CartProvider";
-import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient, useMutation } from "react-query";
 import createOrder from "@/queries/createOrder";
 import { useAddress } from "@/components/AddressProvider";
@@ -14,6 +13,7 @@ import AddressesModal from "@/components/Modals/Addresses";
 import LoadingButton from "@/components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useUserContext } from "@/components/UserProvider";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -24,10 +24,10 @@ export default function Checkout() {
 
   const navigation = useNavigation();
   const { cart, subTotal, emptyCart } = useCart();
-  const { user } = useUser();
   const queryClient = useQueryClient();
   const { currentAddress, isFetching: isAddressLoading } = useAddress();
 
+  const { currentUser } = useAuth();
   const { promoCodes, deletePromoCode } = useUserContext();
 
   const totalPrice = useMemo(
@@ -70,7 +70,7 @@ export default function Checkout() {
 
   const { isLoading, mutate } = useMutation(
     () =>
-      createOrder(user.id, {
+      createOrder(currentUser.uid, {
         cart,
         orderTime: new Date().toISOString(),
         expectedDeliveryTime: expectedDeliveryTime.toISOString(),

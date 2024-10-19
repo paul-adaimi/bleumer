@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useCallback,
+  useMemo,
 } from "react";
 import auth from "@react-native-firebase/auth";
 
@@ -12,16 +13,18 @@ const AuthContext = createContext();
 
 // Create the provider component
 export default AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(auth().currentUser);
   const [confirmation, setConfirmation] = useState(null);
   const [verifyingNumber, setVerifyingNumber] = useState(false);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) =>
-      setCurrentUser(user)
-    );
+    const subscriber = auth().onAuthStateChanged((user) => {
+      setCurrentUser(user);
+    });
     return subscriber;
   }, []);
+
+  const isSignedIn = useMemo(() => !!currentUser, [currentUser]);
 
   const signInWithPhoneNumber = useCallback(
     async (phoneNumber, { onSuccess, onError }) => {
@@ -49,14 +52,19 @@ export default AuthProvider = ({ children }) => {
     [confirmation]
   );
 
+  const signOut = useCallback(async () => {
+    await auth().signOut();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
         currentUser,
-        setCurrentUser,
         verifyingNumber,
         signInWithPhoneNumber,
         confirmCode,
+        isSignedIn,
+        signOut,
       }}
     >
       {children}

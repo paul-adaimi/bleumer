@@ -2,15 +2,15 @@ import { View, Text, FlatList } from "react-native";
 import React, { useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
 import { Linking } from "react-native";
 import MenuItem from "./MenuItem";
 import MiddleModalScreen from "@/components/Modals/MiddleModalScreen";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function MenuList() {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
-  const { signOut } = useAuth();
   const router = useRouter();
+  const { signOut } = useAuth();
 
   const menuList = [
     {

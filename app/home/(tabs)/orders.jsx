@@ -3,10 +3,10 @@ import React, { useMemo, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "expo-router";
 import OrderList from "@/components/Orders/OrderList";
 import { useQuery } from "react-query";
-import { useUser } from "@clerk/clerk-expo";
 import fetchUserOrders from "@/queries/fetchUserOrders";
 import OrderLoading from "@/components/Orders/OrderLoading";
 import { Colors } from "@/constants/Colors";
+import { useAuth } from "@/components/AuthProvider";
 
 // TODO: Look whether I should add status or not
 export default function orders() {
@@ -20,13 +20,13 @@ export default function orders() {
     }, [navigation])
   );
 
-  const { user } = useUser();
+  const { currentUser } = useAuth();
 
   const {
     data: orders,
     error,
     isFetching,
-  } = useQuery("orders", async () => fetchUserOrders(user.id));
+  } = useQuery("orders", async () => fetchUserOrders(currentUser.uid));
 
   const orderContent = useMemo(() => {
     if (isFetching) return <OrderLoading />;

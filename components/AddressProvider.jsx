@@ -6,12 +6,12 @@ import React, {
   useCallback,
 } from "react";
 import { useQuery, useMutation } from "react-query";
-import { useUser } from "@clerk/clerk-expo";
 import fetchUserAddresses from "@/queries/fetchUserAddresses";
 import * as Location from "expo-location";
 import firestore from "@react-native-firebase/firestore";
 import { useQueryClient } from "react-query";
 import updateUserAddresses from "@/queries/updateUserAddresses";
+import { useAuth } from "@/components/AuthProvider";
 
 // Create a context for the address
 const AddressContext = createContext();
@@ -23,13 +23,13 @@ export const AddressProvider = ({ children }) => {
   const [currentAddress, setCurrentAddress] = useState(null);
 
   const queryClient = useQueryClient();
-  const { user } = useUser();
+  const { currentUser } = useAuth();
 
   const {
     data: addresses,
     error,
     isFetching,
-  } = useQuery("addresses", async () => fetchUserAddresses(user.id));
+  } = useQuery("addresses", async () => fetchUserAddresses(currentUser.uid));
 
   const getLocation = useCallback(async () => {
     setIsLocationLoading(true);
@@ -66,7 +66,7 @@ export const AddressProvider = ({ children }) => {
   const createAddress = useCallback(
     async (addressValues) => {
       setIsForceLoading(true);
-      const userRef = firestore().collection("Users").doc(user.id);
+      const userRef = firestore().collection("Users").doc(currentUser.uid);
 
       await userRef.update({
         addresses: firestore.FieldValue.arrayUnion(addressValues),
@@ -85,7 +85,7 @@ export const AddressProvider = ({ children }) => {
 
       setIsForceLoading(false);
     },
-    [user.id]
+    [currentUser.uid]
   );
 
   const editAddress = useMutation({
@@ -95,7 +95,7 @@ export const AddressProvider = ({ children }) => {
         (item) => item.id !== addressValues.id
       );
       newAddresses.push(addressValues);
-      await updateUserAddresses(user.id, newAddresses);
+      await updateUserAddresses(currentUser.uid, newAddresses);
       if (currentAddress.id === addressValues.id) setCurrentAddress(null);
     },
     onSuccess: () => {
@@ -110,7 +110,7 @@ export const AddressProvider = ({ children }) => {
     mutationFn: async (address) => {
       setIsForceLoading(true);
       const newAddresses = addresses.filter((item) => item !== address);
-      await updateUserAddresses(user.id, newAddresses);
+      await updateUserAddresses(currentUser.uid, newAddresses);
       if (currentAddress === address) setCurrentAddress(null);
     },
     onSuccess: () => {

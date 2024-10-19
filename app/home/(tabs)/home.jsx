@@ -16,9 +16,9 @@ import ProductsLoading from "@/components/Home/ProductsLoading";
 import SliderLoading from "@/components/Home/SliderLoading";
 import { showTipTour } from "react-native-tip";
 import { useTour } from "@/components/TourProvider";
-import { useUser } from "@clerk/clerk-expo";
 import firestore from "@react-native-firebase/firestore";
 import { useFocusEffect, useNavigation } from "expo-router";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function index() {
   const navigation = useNavigation();
@@ -31,15 +31,15 @@ export default function index() {
     }, [navigation])
   );
 
-  const { user } = useUser();
+  const { currentUser } = useAuth();
 
   const createFirebaseUser = useCallback(async () => {
-    const userRef = firestore().collection("Users").doc(user.id);
+    const userRef = firestore().collection("Users").doc(currentUser.uid);
     const userSnap = await userRef.get();
 
     if (!userSnap.exists) {
       await userRef.set({
-        name: user.fullName,
+        number: currentUser.phoneNumber,
         promoCodes: [{ code: "BLEUMER20", discount: 20 }],
         addresses: [],
       });

@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { useUser } from "@clerk/clerk-expo";
 import { Colors } from "@/constants/Colors";
 import { Image } from "react-native-expo-image-cache";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function UserIntro() {
-  const { user } = useUser();
+  const { currentUser } = useAuth();
   return (
     <View
       style={{
@@ -16,7 +16,7 @@ export default function UserIntro() {
       }}
     >
       <Image
-        uri={user?.imageUrl}
+        uri={currentUser?.photoURL}
         style={{
           width: 100,
           height: 100,
@@ -26,10 +26,10 @@ export default function UserIntro() {
         }}
       />
       <Text style={{ fontWeight: "bold", fontSize: 20, color: Colors.primary }}>
-        {user.fullName}
+        {currentUser.displayName}
       </Text>
       <Text style={{ fontSize: 16, color: Colors.primary }}>
-        {user?.primaryEmailAddress.emailAddress}
+        {currentUser.phoneNumber}
       </Text>
     </View>
   );

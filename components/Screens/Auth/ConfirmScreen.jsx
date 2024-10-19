@@ -94,6 +94,7 @@ export default function ConfirmScreen() {
             maxLength={1}
             keyboardType="number-pad"
             style={styles.input}
+            autoFocus={index === 0}
           />
         ))}
       </View>

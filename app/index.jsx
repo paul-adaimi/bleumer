@@ -1,15 +1,10 @@
 import { Redirect } from "expo-router";
-import { SignedIn, SignedOut } from "@clerk/clerk-expo";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function Index() {
-  return (
-    <>
-      <SignedIn>
-        <Redirect href={"home"} />
-      </SignedIn>
-      <SignedOut>
-        <Redirect href={"firebaseauth"} />
-      </SignedOut>
-    </>
-  );
+  const { isSignedIn } = useAuth();
+  if (isSignedIn) {
+    return <Redirect href={"home"} />;
+  }
+  return <Redirect href={"firebaseauth"} />;
 }

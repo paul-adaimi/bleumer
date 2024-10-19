@@ -30,8 +30,8 @@ const addressValidationSchema = Yup.object({
     .min(5, "Must be between 5 characters or more")
     .required("This field is required"),
   number: Yup.string()
-    .min(8, "Must be 8 exactly 8 digits")
-    .max(8, "Must be 8 exactly 8 digits")
+    .min(8, "Must be exactly 8 digits")
+    .max(8, "Must be exactly 8 digits")
     .required("This field is required"),
   city: Yup.object().required("This field is required"),
   coordinates: Yup.object().required("Must place the marker on the map"),

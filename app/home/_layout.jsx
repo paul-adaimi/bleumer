@@ -3,7 +3,7 @@ import { Stack, Redirect } from "expo-router";
 import { UserProvider } from "@/components/UserProvider";
 import { CartProvider } from "@/components/CartProvider";
 import { AddressProvider } from "@/components/AddressProvider";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function HomeLayout() {
   const { isSignedIn } = useAuth();
