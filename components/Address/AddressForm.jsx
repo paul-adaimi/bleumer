@@ -244,7 +244,7 @@ export default function AddressForm({
                                 fontSize: 15,
                               }}
                             >
-                              This order might take up to
+                              This order might take up to{" "}
                               {values.city.businessDays} business days to
                               deliver.
                             </Text>

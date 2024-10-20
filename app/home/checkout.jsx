@@ -14,6 +14,7 @@ import LoadingButton from "@/components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useUserContext } from "@/components/UserProvider";
 import { useAuth } from "@/components/AuthProvider";
+import * as Crypto from "expo-crypto";
 
 export default function Checkout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -79,6 +80,7 @@ export default function Checkout() {
         subTotal: subTotal,
         total: totalPrice,
         status: "pending",
+        orderId: Crypto.randomUUID(),
       }),
     {
       onSuccess: () => {

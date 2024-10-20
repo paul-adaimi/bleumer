@@ -7,8 +7,8 @@ import fetchUserOrders from "@/queries/fetchUserOrders";
 import OrderLoading from "@/components/Orders/OrderLoading";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/components/AuthProvider";
+import useUserOrders from "@/hooks/useUserOrders";
 
-// TODO: Look whether I should add status or not
 export default function orders() {
   const navigation = useNavigation();
 
@@ -22,14 +22,10 @@ export default function orders() {
 
   const { currentUser } = useAuth();
 
-  const {
-    data: orders,
-    error,
-    isFetching,
-  } = useQuery("orders", async () => fetchUserOrders(currentUser.uid));
+  const { orders, error, isLoading } = useUserOrders(currentUser.uid);
 
   const orderContent = useMemo(() => {
-    if (isFetching) return <OrderLoading />;
+    if (isLoading) return <OrderLoading />;
     else if (orders?.length) return <OrderList orders={orders} />;
     else
       return (
@@ -44,7 +40,7 @@ export default function orders() {
           You haven't placed any orders yet.
         </Text>
       );
-  }, [isFetching, orders, orders?.length]);
+  }, [isLoading, orders, orders?.length]);
 
   return (
     <View

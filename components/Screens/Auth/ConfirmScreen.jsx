@@ -91,6 +91,7 @@ export default function ConfirmScreen() {
       >
         Please enter Code sent to
         <Text style={{ fontWeight: "bold", color: Colors.primary }}>
+          {" "}
           {verifyingNumber}
         </Text>
       </Text>

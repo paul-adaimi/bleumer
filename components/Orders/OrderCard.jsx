@@ -77,6 +77,15 @@ export default function OrderCard({
         >
           Ordered on: {formattedDate}
         </Text>
+        <Text
+          style={{
+            marginTop: 5,
+            fontSize: 13,
+            color: Colors.primaryLight,
+          }}
+        >
+          Status: {order.status}
+        </Text>
         <View
           style={{
             marginTop: 10,

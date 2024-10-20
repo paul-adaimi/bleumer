@@ -1,7 +1,6 @@
 import { View, Text } from "react-native";
 import React, { useMemo } from "react";
 import { Colors } from "@/constants/Colors";
-import { Image } from "react-native-expo-image-cache";
 import { useAuth } from "@/components/AuthProvider";
 
 export default function UserIntro() {
