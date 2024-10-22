@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useNavigation, useFocusEffect } from "expo-router";
-import ProfileScreen from "@/components/Screens/Home/Tabs/ProfileScreen";
+import ProfileScreen from "@/screens/Home/Tabs/ProfileScreen";
 
 export default function profile() {
   const navigation = useNavigation();

@@ -1,7 +1,7 @@
 import { View, FlatList } from "react-native";
 import React from "react";
 import OrderCard from "./OrderCard";
-import { useCart } from "../CartProvider";
+import { useCart } from "@/components/CartProvider";
 
 export default function OrderList({ orders }) {
   const { cart, addToCart, updateItemCount } = useCart();

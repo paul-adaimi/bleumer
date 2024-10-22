@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import React from "react";
-import { useAddress } from "../AddressProvider";
+import { useAddress } from "@/components/AddressProvider";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import AddressItemModal from "../Address/AddressItemModal";
+import AddressItemModal from "@/components/Address/AddressItemModal";
 
 export default function AddressesModal({ onClose }) {
   const { addresses, currentAddress, setCurrentAddress, isFetching } =

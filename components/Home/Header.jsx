@@ -2,14 +2,14 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import React, { useMemo, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { useCart } from "../CartProvider";
+import { useCart } from "@/components/CartProvider";
 import { useNavigation } from "expo-router";
-import { useAddress } from "../AddressProvider";
-import BottomModalDrawer from "../Modals/BottomModalDrawer";
-import AddressesModal from "../Modals/Addresses";
+import { useAddress } from "@/components/AddressProvider";
+import BottomModalDrawer from "@/components/Modals/BottomModalDrawer";
+import AddressesModal from "@/components/Modals/Addresses";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";
-import { useTour } from "../TourProvider";
+import { useTour } from "@/components/TourProvider";
 
 // TODO: fix click on the search bar
 

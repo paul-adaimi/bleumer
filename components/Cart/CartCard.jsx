@@ -1,8 +1,8 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
-import NumericInput from "../NumericInput";
-import { useCart } from "../CartProvider";
+import NumericInput from "@/components/NumericInput";
+import { useCart } from "@/components/CartProvider";
 import { Image } from "react-native-expo-image-cache";
 
 export default function CartCard({ cartItem }) {

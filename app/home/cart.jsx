@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigation } from "expo-router";
 import { useCart } from "@/components/CartProvider";
-import CartScreen from "@/components/Screens/Home/CartScreen";
+import CartScreen from "@/screens/Home/CartScreen";
 
 export default function Cart() {
   const { cart } = useCart();

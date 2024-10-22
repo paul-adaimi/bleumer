@@ -13,7 +13,7 @@ import { Colors } from "@/constants/Colors";
 import MapView, { Marker } from "react-native-maps";
 import CustomTextInput from "@/components/CustomTextInput";
 import * as Location from "expo-location";
-import CustomPicker from "../CustomPicker";
+import CustomPicker from "@/components/CustomPicker";
 import { useQuery } from "react-query";
 import fetchAreas from "@/queries/fetchAreas";
 import { Ionicons } from "@expo/vector-icons";

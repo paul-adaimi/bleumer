@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useNavigation, useFocusEffect, Redirect } from "expo-router";
 import { useAuth } from "@/components/AuthProvider";
-import EnterNameScreen from "@/components/Screens/Home/EnterNameScreen";
+import EnterNameScreen from "@/screens/Home/EnterNameScreen";
 
 export default function enterName() {
   const navigation = useNavigation();

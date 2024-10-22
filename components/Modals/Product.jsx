@@ -2,8 +2,8 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Image } from "react-native-expo-image-cache";
 import { Colors } from "@/constants/Colors";
-import NumericInput from "../NumericInput";
-import { useCart } from "../CartProvider";
+import NumericInput from "@/components/NumericInput";
+import { useCart } from "@/components/CartProvider";
 
 export default function Product({ product }) {
   const { cart, updateItemCount, addToCart } = useCart();

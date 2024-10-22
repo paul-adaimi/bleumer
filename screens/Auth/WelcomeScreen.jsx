@@ -2,7 +2,7 @@ import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
 import React, { useEffect, useCallback } from "react";
 import { Colors } from "@/constants/Colors";
 import * as WebBrowser from "expo-web-browser";
-import { useTour } from "../../TourProvider";
+import { useTour } from "@/components/TourProvider";
 import { useNavigation } from "expo-router";
 import LoadingButton from "@/components/LoadingButton";
 

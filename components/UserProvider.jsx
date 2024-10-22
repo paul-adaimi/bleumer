@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import fetchUser from "../queries/fetchUser";
+import fetchUser from "@/queries/fetchUser";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "@/components/AuthProvider";
 

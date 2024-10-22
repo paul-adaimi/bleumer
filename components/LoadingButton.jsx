@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
-import { Colors } from "../constants/Colors";
+import { Colors } from "@/constants/Colors";
 
 const LoadingButton = ({ onPress, isLoading, text, disabled, style }) => {
   const [progress, setProgress] = useState(0);

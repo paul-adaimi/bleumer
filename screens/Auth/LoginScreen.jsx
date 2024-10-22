@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "@/constants/Colors";
 import PhoneInput from "react-native-phone-number-input";
 import { useAuth } from "@/components/AuthProvider";
 import { router } from "expo-router";

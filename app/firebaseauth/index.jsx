@@ -1,4 +1,4 @@
-import WelcomeScreen from "@/components/Screens/Auth/WelcomeScreen";
+import WelcomeScreen from "@/screens/Auth/WelcomeScreen";
 
 export default function index() {
   return <WelcomeScreen />;

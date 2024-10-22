@@ -1,4 +1,4 @@
-import AddAddressScreen from "@/components/Screens/Home/ProfileMenu/AddAddressScreen";
+import AddAddressScreen from "@/screens/Home/ProfileMenu/AddAddressScreen";
 
 export default function addAddress() {
   return <AddAddressScreen />;

@@ -1,4 +1,4 @@
-import ConfirmScreen from "../../components/Screens/Auth/ConfirmScreen";
+import ConfirmScreen from "@/screens/Auth/ConfirmScreen";
 
 export default function confirmation() {
   return <ConfirmScreen />;

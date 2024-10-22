@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
-import { useCart } from "../CartProvider";
-import NumericInput from "../NumericInput";
+import { useCart } from "@/components/CartProvider";
+import NumericInput from "@/components/NumericInput";
 import { Tip } from "react-native-tip";
-import { useTour } from "../TourProvider";
+import { useTour } from "@/components/TourProvider";
 import { Image } from "react-native-expo-image-cache";
 
 export default function ProductCard({ product, index, listIndex }) {

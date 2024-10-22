@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 import ProductCard from "@/components/Home/ProductCard";
 import { useRouter } from "expo-router";
 import { Tip } from "react-native-tip";
-import { useTour } from "../TourProvider";
+import { useTour } from "@/components/TourProvider";
 
 export default function ProductList({
   listName,

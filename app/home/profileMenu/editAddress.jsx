@@ -1,6 +1,6 @@
 import React from "react";
 import { useRoute } from "@react-navigation/native";
-import EditAddressScreen from "@/components/Screens/Home/ProfileMenu/EditAddressScreen";
+import EditAddressScreen from "@/screens/Home/ProfileMenu/EditAddressScreen";
 
 export default function editAddress() {
   const route = useRoute();

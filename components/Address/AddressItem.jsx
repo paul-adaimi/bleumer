@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "expo-router";
-import { useAddress } from "../AddressProvider";
+import { useAddress } from "@/components/AddressProvider";
 import { Colors } from "@/constants/Colors";
-import MiddleModalScreen from "../Modals/MiddleModalScreen";
+import MiddleModalScreen from "@/components/Modals/MiddleModalScreen";
 
 const AddressItem = ({ address }) => {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
