@@ -1,29 +1,10 @@
-import React, { useCallback } from "react";
-import { useNavigation } from "expo-router";
-import AddressForm from "@/components/Address/AddressForm";
+import React from "react";
 import { useRoute } from "@react-navigation/native";
-import { useAddress } from "@/components/AddressProvider";
+import EditAddressScreen from "@/components/Screens/Home/ProfileMenu/EditAddressScreen";
 
 export default function editAddress() {
   const route = useRoute();
-  const navigation = useNavigation();
-  const { editAddress } = useAddress();
   const { address } = route.params;
 
-  const editAddressAndGoBack = useCallback(
-    async (addressValues) => {
-      await editAddress.mutateAsync(addressValues);
-      navigation.goBack();
-    },
-    [navigation, editAddress]
-  );
-
-  return (
-    <AddressForm
-      title="Edit Address"
-      buttonText="Edit Address"
-      initialValues={address}
-      onSubmit={editAddressAndGoBack}
-    />
-  );
+  return <EditAddressScreen address={address} />;
 }

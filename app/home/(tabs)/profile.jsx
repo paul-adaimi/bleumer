@@ -1,8 +1,6 @@
-import { View } from "react-native";
 import React, { useCallback } from "react";
-import UserIntro from "@/components/Profile/UserIntro";
-import MenuList from "@/components/Profile/MenuList";
 import { useNavigation, useFocusEffect } from "expo-router";
+import ProfileScreen from "@/components/Screens/Home/Tabs/ProfileScreen";
 
 export default function profile() {
   const navigation = useNavigation();
@@ -15,14 +13,5 @@ export default function profile() {
     }, [navigation])
   );
 
-  return (
-    <View
-      style={{
-        padding: 20,
-      }}
-    >
-      <UserIntro />
-      <MenuList />
-    </View>
-  );
+  return <ProfileScreen />;
 }
