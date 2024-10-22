@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
+import { View, Text, ScrollView, FlatList } from "react-native";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import Header from "@/components/Home/Header";
 import Slider from "@/components/Home/Slider";
@@ -77,7 +77,7 @@ export default function index() {
     if (productList && isInTour) {
       showTipTour(tour);
     }
-  }, [productList]);
+  }, [productList, isInTour]);
 
   // Filter productList based on searchText
   const filteredProducts = productList?.filter(
@@ -144,7 +144,15 @@ export default function index() {
           )}
         </ScrollView>
       );
-  }, [isFetchingProducts, filteredProducts, productList, searchText]);
+  }, [
+    isFetchingProducts,
+    filteredProducts,
+    productList,
+    searchText,
+    bundles,
+    freshProducts,
+    frozenProducts,
+  ]);
 
   return (
     <View

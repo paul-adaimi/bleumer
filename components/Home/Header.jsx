@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import React, { useMemo, useEffect, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useMemo, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "../CartProvider";
@@ -16,6 +10,8 @@ import AddressesModal from "../Modals/Addresses";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";
 import { useTour } from "../TourProvider";
+
+// TODO: fix click on the search bar
 
 export default function Header({
   searchText,
@@ -42,7 +38,8 @@ export default function Header({
   }, [totalItemCount]);
 
   const isCartDisabled = useMemo(
-    () => !totalItemCount || !currentAddress || isAddressLoading
+    () => !totalItemCount || !currentAddress || isAddressLoading,
+    [totalItemCount, currentAddress, isAddressLoading]
   );
 
   const cartTipBody = useMemo(() => {
@@ -50,7 +47,7 @@ export default function Header({
     else if (isAddressLoading) return "Please wait for address to be loaded";
     else if (!currentAddress) return "Add an Address before accessing cart";
     else return "Add items to cart before accessing cart";
-  });
+  }, [isInTour, isAddressLoading, currentAddress]);
 
   return (
     <View

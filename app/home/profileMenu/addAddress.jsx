@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { useNavigation } from "expo-router";
 import AddressForm from "@/components/Address/AddressForm";
 import { useAddress } from "@/components/AddressProvider";
@@ -14,7 +14,7 @@ export default function addAddress() {
       await createAddress(addressValues);
       navigation.goBack();
     },
-    [navigation]
+    [navigation, createAddress]
   );
 
   return (

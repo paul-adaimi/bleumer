@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+import React, { useState, useRef, useCallback } from "react";
+import { Text, View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../../constants/Colors";
 import PhoneInput from "react-native-phone-number-input";
@@ -24,7 +24,7 @@ export default function LoginScreen() {
     } else {
       await signInWithPhoneNumber(formattedValue, {
         onSuccess: () => router.push("firebaseauth/confirmation"),
-        onError: (error) => setError(error),
+        onError: (error) => setError(error.message),
       });
     }
     setIsLoading(false);

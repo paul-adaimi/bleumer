@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React, { useCallback, useState } from "react";
 import { useNavigation, useFocusEffect, Redirect } from "expo-router";
 import { useAuth } from "@/components/AuthProvider";

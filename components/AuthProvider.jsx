@@ -9,27 +9,18 @@ import React, {
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
+// TODO: change float
+// TODO: Cancel order
+
 // Create the context
 const AuthContext = createContext();
 
+// TODO: Reduce file (remove pics and unnecessary imports)
 // Create the provider component
 export default AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(auth().currentUser);
   const [confirmation, setConfirmation] = useState(null);
   const [verifyingNumber, setVerifyingNumber] = useState(false);
-
-  const createFirebaseUser = useCallback(async () => {
-    const userRef = firestore().collection("Users").doc(currentUser.uid);
-    const userSnap = await userRef.get();
-
-    if (!userSnap.exists) {
-      await userRef.set({
-        number: currentUser.phoneNumber,
-        promoCodes: [{ code: "BLEUMER20", discount: 20 }],
-        addresses: [],
-      });
-    }
-  }, [currentUser]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
@@ -37,12 +28,6 @@ export default AuthProvider = ({ children }) => {
     });
     return subscriber;
   }, []);
-
-  useEffect(() => {
-    if (currentUser) {
-      createFirebaseUser();
-    }
-  }, [createFirebaseUser]);
 
   const isSignedIn = useMemo(() => !!currentUser, [currentUser]);
 

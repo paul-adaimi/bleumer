@@ -61,7 +61,7 @@ export const AddressProvider = ({ children }) => {
     if (!currentAddress) {
       loadAddressData();
     }
-  }, [getLocation]);
+  }, [getLocation, currentAddress]);
 
   const createAddress = useCallback(
     async (addressValues) => {
@@ -85,7 +85,7 @@ export const AddressProvider = ({ children }) => {
 
       setIsForceLoading(false);
     },
-    [currentUser.uid]
+    [currentUser.uid, queryClient]
   );
 
   const editAddress = useMutation({

@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import fetchUser from "../queries/fetchUser";
 import firestore from "@react-native-firebase/firestore";

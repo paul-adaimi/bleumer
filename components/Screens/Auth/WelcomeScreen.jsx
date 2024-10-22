@@ -1,12 +1,5 @@
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import React, { useEffect } from "react";
+import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
+import React, { useEffect, useCallback } from "react";
 import { Colors } from "@/constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import { useTour } from "../../TourProvider";
@@ -26,7 +19,7 @@ export default function LoginScreen() {
 
   const navigation = useNavigation();
 
-  const onPress = React.useCallback(async () => {
+  const onPress = useCallback(async () => {
     // go to phone sign in
     navigation.navigate("login");
   }, [navigation]);

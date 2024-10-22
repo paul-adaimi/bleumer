@@ -2,8 +2,6 @@ import { View, Text } from "react-native";
 import React, { useMemo, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "expo-router";
 import OrderList from "@/components/Orders/OrderList";
-import { useQuery } from "react-query";
-import fetchUserOrders from "@/queries/fetchUserOrders";
 import OrderLoading from "@/components/Orders/OrderLoading";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/components/AuthProvider";

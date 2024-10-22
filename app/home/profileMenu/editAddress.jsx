@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { useNavigation } from "expo-router";
 import AddressForm from "@/components/Address/AddressForm";
 import { useRoute } from "@react-navigation/native";
@@ -15,7 +15,7 @@ export default function editAddress() {
       await editAddress.mutateAsync(addressValues);
       navigation.goBack();
     },
-    [navigation]
+    [navigation, editAddress]
   );
 
   return (

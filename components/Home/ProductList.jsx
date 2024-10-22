@@ -1,5 +1,5 @@
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Colors } from "@/constants/Colors";
 import ProductCard from "@/components/Home/ProductCard";
 import { useRouter } from "expo-router";

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Slot } from "expo-router";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider as PaperProvider } from "react-native-paper";
 import TipProvider from "react-native-tip";
 import TourProvider from "@/components/TourProvider";

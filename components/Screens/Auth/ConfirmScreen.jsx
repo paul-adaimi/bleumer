@@ -1,10 +1,4 @@
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from "react-native";
+import { View, TextInput, StyleSheet, Text } from "react-native";
 import React, { useState, useRef, useMemo, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";

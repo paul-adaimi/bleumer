@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useCallback } from "react";
 import UserIntro from "@/components/Profile/UserIntro";
 import MenuList from "@/components/Profile/MenuList";

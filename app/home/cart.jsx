@@ -1,4 +1,4 @@
-import { View, FlatList, Text, TouchableOpacity } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import React, { useEffect } from "react";
 import { useNavigation } from "expo-router";
 import { useCart } from "@/components/CartProvider";

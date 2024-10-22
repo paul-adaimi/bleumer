@@ -3,7 +3,7 @@ import { Redirect, Stack } from "expo-router";
 import { useAuth } from "@/components/AuthProvider";
 
 export default function AuthRoutesLayout() {
-  const { isSignedIn, currentUser } = useAuth();
+  const { isSignedIn } = useAuth();
 
   if (isSignedIn) {
     return <Redirect href={"/home"} />;
