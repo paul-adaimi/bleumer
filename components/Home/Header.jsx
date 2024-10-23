@@ -11,8 +11,6 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";
 import { useTour } from "@/components/TourProvider";
 
-// TODO: fix click on the search bar
-
 export default function Header({
   searchText,
   setSearchText,
@@ -234,6 +232,7 @@ export default function Header({
               onChangeText={(value) => setSearchText(value)}
               style={{
                 fontSize: 16,
+                flex: 1,
               }}
               placeholder="Search..."
               placeholderTextColor={Colors.lightGray}

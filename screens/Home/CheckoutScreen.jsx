@@ -40,7 +40,8 @@ export default function CheckoutScreen() {
     (appliedCode) => {
       const code = promoCodes.find((promo) => promo.code === appliedCode);
       if (code) {
-        setDiscountedPrice((code.discount / 100) * subTotal);
+        const discountAmount = (code.discount / 100) * subTotal;
+        setDiscountedPrice(parseFloat(discountAmount.toFixed(2)));
         setIsPromoApplied(true);
       } else {
         setIsPromoInvalid(true);

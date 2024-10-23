@@ -9,7 +9,6 @@ import React, {
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
-// TODO: change float
 // TODO: Cancel order
 
 // Create the context

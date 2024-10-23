@@ -136,10 +136,11 @@ export default function OrderCard({
               onRemoveItems(order);
             },
             style: {
-              backgroundColor: Colors.primaryLight,
+              backgroundColor: Colors.primary,
             },
             labelStyle: {
-              color: Colors.white,
+              color: Colors.primaryShade,
+              fontSize: 16,
             },
           }}
         >
