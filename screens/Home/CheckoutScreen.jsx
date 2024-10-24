@@ -14,7 +14,6 @@ import LoadingButton from "@/components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useUserContext } from "@/components/UserProvider";
 import { useAuth } from "@/components/AuthProvider";
-import * as Crypto from "expo-crypto";
 
 export default function CheckoutScreen() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -29,7 +28,7 @@ export default function CheckoutScreen() {
   const { currentAddress, isFetching: isAddressLoading } = useAddress();
 
   const { currentUser } = useAuth();
-  const { promoCodes, deletePromoCode } = useUserContext();
+  const { promoCodes } = useUserContext();
 
   const totalPrice = useMemo(
     () => subTotal - discountedPrice,
@@ -71,21 +70,18 @@ export default function CheckoutScreen() {
   );
 
   const { isLoading, mutate } = useMutation(
-    () =>
-      createOrder(currentUser.uid, {
+    async () => {
+      const idToken = await currentUser.getIdToken();
+
+      await createOrder(idToken, {
         cart,
-        orderTime: new Date().toISOString(),
-        expectedDeliveryTime: expectedDeliveryTime.toISOString(),
-        address: currentAddress,
+        addressId: currentAddress.id,
         promoCode: promoCode,
-        subTotal: subTotal,
-        total: totalPrice,
-        status: "pending",
-        orderId: Crypto.randomUUID(),
-      }),
+      });
+    },
     {
       onSuccess: () => {
-        deletePromoCode(promoCode);
+        queryClient.invalidateQueries("userData");
         queryClient.invalidateQueries("orders");
         emptyCart();
         navigation.navigate("orders");

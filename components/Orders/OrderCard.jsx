@@ -1,26 +1,44 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Snackbar, Portal } from "react-native-paper";
+import MiddleModalScreen from "@/components/Modals/MiddleModalScreen";
 
 export default function OrderCard({
   order,
   onReorder,
   onRemoveItems,
+  onCancelOrder,
   isFirst,
 }) {
-  const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
+  const [reorderSnackbarVisible, setReorderSnackbarVisible] = useState(false);
+  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [isCanceling, setIsCanceling] = useState(false);
+  const [dots, setDots] = useState("");
+
+  useEffect(() => {
+    let interval;
+    if (isCanceling) {
+      interval = setInterval(() => {
+        setDots((prev) => (prev.length < 3 ? prev + "." : ""));
+      }, 500);
+    } else {
+      setDots("");
+    }
+
+    return () => clearInterval(interval);
+  }, [isCanceling]);
 
   const date = new Date(order.orderTime);
   const options = {
-    weekday: "long", // Full day name
+    weekday: "long",
     year: "numeric",
-    month: "short", // Short month name (e.g., "Sep")
+    month: "short",
     day: "2-digit",
     hour: "numeric",
     minute: "2-digit",
-    hour12: true, // 12-hour format
+    hour12: true,
   };
 
   const formattedDate = date.toLocaleDateString("en-US", options);
@@ -46,6 +64,64 @@ export default function OrderCard({
   const allItemsCount = useMemo(
     () => orderItems.reduce((total, item) => (total += item.count), 0),
     [orderItems]
+  );
+
+  const confirmCancelOrder = () => {
+    setIsConfirmModalVisible(true);
+  };
+
+  const reorderAction = (
+    <TouchableOpacity
+      onPress={() => {
+        setReorderSnackbarVisible(true);
+        onReorder(order);
+      }}
+      style={{
+        alignSelf: "flex-start",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 3,
+      }}
+    >
+      <Text
+        style={{
+          color: Colors.primary,
+        }}
+      >
+        Add to cart
+      </Text>
+      <Ionicons
+        name="refresh-circle-outline"
+        size={24}
+        color={Colors.primary}
+      />
+    </TouchableOpacity>
+  );
+
+  const cancelAction = (
+    <TouchableOpacity
+      onPress={() => {
+        confirmCancelOrder();
+      }}
+      disabled={isCanceling}
+      style={{
+        alignSelf: "flex-start",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 3,
+      }}
+    >
+      <Text
+        style={{
+          color: isCanceling ? "#B86566" : "red",
+        }}
+      >
+        {isCanceling ? `Cancelling Order ${dots}` : "Cancel Order"}
+      </Text>
+      {!isCanceling && <Ionicons name="ban" size={20} color={"red"} />}
+    </TouchableOpacity>
   );
 
   return (
@@ -84,7 +160,19 @@ export default function OrderCard({
             color: Colors.primaryLight,
           }}
         >
-          Status: {order.status}
+          Status:{" "}
+          <Text
+            style={{
+              color:
+                order.status === "Pending"
+                  ? "orange"
+                  : order.status === "Cancelled"
+                  ? "red"
+                  : Colors.primary,
+            }}
+          >
+            {order.status}
+          </Text>
         </Text>
         <View
           style={{
@@ -95,41 +183,16 @@ export default function OrderCard({
         </View>
         <Text style={{ marginTop: 10 }}>Total: $ {order.total}</Text>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          setPortalSnackbarVisible(true);
-          onReorder(order);
-        }}
-        style={{
-          alignSelf: "flex-start",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 3,
-        }}
-      >
-        <Text
-          style={{
-            color: Colors.primary,
-          }}
-        >
-          Add to cart
-        </Text>
-        <Ionicons
-          name="refresh-circle-outline"
-          size={24}
-          color={Colors.primary}
-        />
-      </TouchableOpacity>
+      {order.status === "Pending" ? cancelAction : reorderAction}
 
       <Portal>
         <Snackbar
           style={{
             backgroundColor: Colors.primary,
           }}
-          visible={portalSnackbarVisible}
-          onDismiss={() => setPortalSnackbarVisible(false)}
-          onIconPress={() => setPortalSnackbarVisible(false)}
+          visible={reorderSnackbarVisible}
+          onDismiss={() => setReorderSnackbarVisible(false)}
+          onIconPress={() => setReorderSnackbarVisible(false)}
           action={{
             label: "undo",
             onPress: () => {
@@ -154,6 +217,27 @@ export default function OrderCard({
           </Text>
         </Snackbar>
       </Portal>
+      <MiddleModalScreen
+        visible={isConfirmModalVisible}
+        onClose={() => setIsConfirmModalVisible(false)}
+        title="Cancel Order"
+        button1Text="Back"
+        button2Text="Cancel Order"
+        button2Style={{ backgroundColor: "#FF3B30" }}
+        onButton1Press={() => setIsConfirmModalVisible(false)}
+        onButton2Press={async () => {
+          setIsCanceling(true);
+          setIsConfirmModalVisible(false);
+          try {
+            await onCancelOrder(order);
+          } catch (error) {
+            console.error("Error cancelling order:", error);
+          }
+          setIsCanceling(false);
+        }}
+      >
+        <Text>Are you sure you want to cancel your order?</Text>
+      </MiddleModalScreen>
     </View>
   );
 }

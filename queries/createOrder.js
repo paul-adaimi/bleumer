@@ -1,15 +1,35 @@
 import firestore from "@react-native-firebase/firestore";
 
-export default createOrder = async (userId, order) => {
-  const userRef = firestore().collection("Orders").doc(userId);
+// TDOO put this in firebase functions
+export default createOrder = async (
+  userIdToken,
+  { cart, addressId, promoCode }
+) => {
+  const simplifiedCart = Object.keys(cart).reduce((acc, productId) => {
+    acc[productId] = cart[productId].count;
+    return acc;
+  }, {});
 
-  // Check if the document exists
-  const docSnap = await userRef.get();
-  if (!docSnap.exists) {
-    await userRef.set({ orders: [] });
+  try {
+    // Call the Firebase function 'createOrder'
+    const response = await fetch(
+      "https://europe-west1-bleumer-d477c.cloudfunctions.net/createOrder",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userIdToken}`,
+        },
+        body: JSON.stringify({
+          cart: simplifiedCart, // Send only the count for each product
+          addressId, // Send address id
+          promoCode, // Send promo code
+        }),
+      }
+    );
+
+    // await response.json();
+  } catch (error) {
+    console.error("Error creating order:", error);
   }
-
-  await userRef.update({
-    orders: firestore.FieldValue.arrayUnion(order),
-  });
 };

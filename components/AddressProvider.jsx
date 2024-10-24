@@ -32,6 +32,7 @@ export const AddressProvider = ({ children }) => {
   } = useQuery("addresses", async () => fetchUserAddresses(currentUser.uid));
 
   const getLocation = useCallback(async () => {
+    console.log(addresses);
     setIsLocationLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -96,10 +97,8 @@ export const AddressProvider = ({ children }) => {
       );
       newAddresses.push(addressValues);
       await updateUserAddresses(currentUser.uid, newAddresses);
+      await queryClient.invalidateQueries("addresses");
       if (currentAddress.id === addressValues.id) setCurrentAddress(null);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries("addresses");
     },
     onSettled: () => {
       setIsForceLoading(false);
@@ -111,10 +110,8 @@ export const AddressProvider = ({ children }) => {
       setIsForceLoading(true);
       const newAddresses = addresses.filter((item) => item !== address);
       await updateUserAddresses(currentUser.uid, newAddresses);
+      await queryClient.invalidateQueries("addresses");
       if (currentAddress === address) setCurrentAddress(null);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries("addresses");
     },
     onSettled: () => {
       setIsForceLoading(false);
