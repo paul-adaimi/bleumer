@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo } from "react";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import fetchUser from "@/queries/fetchUser";
 import { useAuth } from "@/components/AuthProvider";
 

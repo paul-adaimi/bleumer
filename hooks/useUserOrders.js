@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 
-// TODO: update firebase rules orders and user
+// TODO: update firebase rules for user
 export default function useUserOrders(userId) {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const ordersRef = firestore().collection(`Orders/${userId}/orders`);
+    const ordersRef = firestore()
+      .collection(`Orders/${userId}/orders`)
+      .orderBy("orderTime", "desc");
 
     const unsubscribe = ordersRef.onSnapshot(
       (querySnapshot) => {
@@ -21,7 +23,7 @@ export default function useUserOrders(userId) {
           });
         });
 
-        setOrders(fetchedOrders.reverse()); // Reverse to show the latest orders first
+        setOrders(fetchedOrders); // Reverse to show the latest orders first
         setIsLoading(false);
       },
       (err) => {

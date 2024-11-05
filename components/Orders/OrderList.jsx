@@ -24,6 +24,7 @@ export default function OrderList({ orders }) {
     }
   };
 
+  // TODO: Handle error + test
   const onCancelOrder = async (order) => {
     try {
       // Get the current user and their ID token
