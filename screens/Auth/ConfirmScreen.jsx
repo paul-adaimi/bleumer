@@ -19,17 +19,36 @@ export default function ConfirmScreen() {
 
   const handleInputChange = (text, index) => {
     setError("");
-    const newCode = [...code];
-    newCode[index] = text;
-    setCode(newCode);
 
-    // Move to the next input when a digit is entered
-    if (text.length === 1 && index < 5) {
-      inputRefs.current[index + 1].focus();
+    // Check if the pasted text is the entire code
+    if (text.length === 6) {
+      console.log("Pasted text", text);
+      const newCode = text.split("");
+      setCode(newCode);
+
+      // Move focus to the last input after paste
+      inputRefs.current[5].focus();
+    } else if (text.length > 1) {
+      return;
+    } else {
+      // Handle single character input
+      const newCode = [...code];
+      newCode[index] = text;
+      setCode(newCode);
+
+      // Move to the next input if a digit is entered
+      if (text.length === 1 && index < 5) {
+        inputRefs.current[index + 1].focus();
+      }
     }
+  };
 
-    // Move back to the previous input on delete
-    if (text.length === 0 && index > 0) {
+  const handleKeyPress = (e, index) => {
+    if (e.nativeEvent.key === "Backspace" && code[index] === "" && index > 0) {
+      // Clear the previous field and move focus back
+      const newCode = [...code];
+      newCode[index - 1] = "";
+      setCode(newCode);
       inputRefs.current[index - 1].focus();
     }
   };
@@ -96,8 +115,9 @@ export default function ConfirmScreen() {
             ref={(ref) => (inputRefs.current[index] = ref)}
             value={digit}
             onChangeText={(text) => handleInputChange(text, index)}
-            maxLength={1}
+            onKeyPress={(e) => handleKeyPress(e, index)}
             keyboardType="number-pad"
+            textContentType="oneTimeCode"
             style={styles.input}
             autoFocus={index === 0}
           />
