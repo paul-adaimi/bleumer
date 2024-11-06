@@ -53,10 +53,10 @@ export default function HomeScreen() {
       },
       {
         id: "view-all-0",
-        nextId: "cart",
+        nextId: "cart-home",
       },
       {
-        id: "cart",
+        id: "cart-home",
       },
     ],
     []
@@ -150,6 +150,7 @@ export default function HomeScreen() {
       }}
     >
       <Header
+        id="home"
         isLoading={isFetchingProducts}
         searchText={searchText}
         setSearchText={setSearchText}

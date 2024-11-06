@@ -12,6 +12,7 @@ import firestore from "@react-native-firebase/firestore";
 // Create the context
 const AuthContext = createContext();
 
+// TODO: make pasting from messages available
 // TODO: Reduce file (remove pics and unnecessary imports)
 // Create the provider component
 export default AuthProvider = ({ children }) => {

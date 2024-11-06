@@ -16,6 +16,7 @@ export default function Header({
   setSearchText,
   title,
   isLoading,
+  id,
 }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { isInTour, setIsInTour } = useTour();
@@ -127,7 +128,7 @@ export default function Header({
         )}
         {!isLoading && (
           <Tip
-            id="cart"
+            id={`cart-${id}`}
             title="Cart"
             body={cartTipBody}
             showItemPulseAnimation
@@ -159,7 +160,7 @@ export default function Header({
                   navigation.navigate("cart", {
                     from: title ? title : "Home",
                   });
-                else showTip("cart");
+                else showTip(`cart-${id}`);
               }}
             >
               <View

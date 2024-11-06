@@ -31,8 +31,7 @@ const addressValidationSchema = Yup.object({
     .required("This field is required"),
   number: Yup.string()
     .min(8, "Must be exactly 8 digits")
-    .max(8, "Must be exactly 8 digits")
-    .required("This field is required"),
+    .max(8, "Must be exactly 8 digits"),
   city: Yup.object().required("This field is required"),
   coordinates: Yup.object().required("Must place the marker on the map"),
 });
@@ -277,7 +276,7 @@ export default function AddressForm({
                             name="number"
                             keyboardType="numeric"
                             value={values.number}
-                            placeholder="Phone Number"
+                            placeholder="Phone Number (optional)"
                             onChangeText={handleChange("number")}
                             onFocus={() => scrollToInput(3)}
                             onBlur={handleBlur("number")}

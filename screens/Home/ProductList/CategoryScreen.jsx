@@ -18,7 +18,7 @@ export default function CategoryScreen({ category }) {
 
   return (
     <View style={{ height: "100%" }}>
-      <Header title={category} />
+      <Header id="category" title={category} />
       <FlatList
         showsVerticalScrollIndicator={false}
         data={list}

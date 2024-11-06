@@ -21,7 +21,7 @@ export default function MenuList() {
     },
     {
       id: 3,
-      name: "Call",
+      name: "Contact Us",
       icon: "call-outline",
       onPress: () => {
         const phoneNumber = "+96171740227";
