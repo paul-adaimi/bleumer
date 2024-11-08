@@ -67,11 +67,10 @@ export const AddressProvider = ({ children }) => {
   const createAddress = useCallback(
     async (addressValues) => {
       setIsForceLoading(true);
-      const userRef = firestore().collection("Users").doc(currentUser.uid);
-
-      await userRef.update({
-        addresses: firestore.FieldValue.arrayUnion(addressValues),
-      });
+      console.log(addressValues);
+      newAddresses = [...addresses, addressValues];
+      const idToken = await currentUser.getIdToken();
+      await updateUserAddresses(idToken, { addresses: newAddresses });
 
       await queryClient.invalidateQueries("addresses");
       const updatedAddresses = queryClient.getQueryData("addresses");
@@ -86,7 +85,7 @@ export const AddressProvider = ({ children }) => {
 
       setIsForceLoading(false);
     },
-    [currentUser.uid, queryClient]
+    [currentUser, queryClient, addresses]
   );
 
   const editAddress = useMutation({
@@ -96,7 +95,8 @@ export const AddressProvider = ({ children }) => {
         (item) => item.id !== addressValues.id
       );
       newAddresses.push(addressValues);
-      await updateUserAddresses(currentUser.uid, newAddresses);
+      const idToken = await currentUser.getIdToken();
+      await updateUserAddresses(idToken, { addresses: newAddresses });
       await queryClient.invalidateQueries("addresses");
       if (currentAddress.id === addressValues.id) setCurrentAddress(null);
     },
@@ -109,7 +109,8 @@ export const AddressProvider = ({ children }) => {
     mutationFn: async (address) => {
       setIsForceLoading(true);
       const newAddresses = addresses.filter((item) => item !== address);
-      await updateUserAddresses(currentUser.uid, newAddresses);
+      const idToken = await currentUser.getIdToken();
+      await updateUserAddresses(idToken, { addresses: newAddresses });
       await queryClient.invalidateQueries("addresses");
       if (currentAddress === address) setCurrentAddress(null);
     },

@@ -1,6 +1,3 @@
-import firestore from "@react-native-firebase/firestore";
-
-// TDOO put this in firebase functions
 // TODO: hanlde errors + test
 export default createOrder = async (
   userIdToken,

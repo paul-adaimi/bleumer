@@ -7,13 +7,11 @@ import React, {
   useMemo,
 } from "react";
 import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
+import updateUserName from "@/queries/updateUserName";
 
 // Create the context
 const AuthContext = createContext();
 
-// TODO: make pasting from messages available
-// TODO: Reduce file (remove pics and unnecessary imports)
 // Create the provider component
 export default AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(auth().currentUser);
@@ -64,8 +62,8 @@ export default AuthProvider = ({ children }) => {
       try {
         await currentUser.updateProfile({ displayName: name });
         setCurrentUser(auth().currentUser);
-        const userRef = firestore().collection("Users").doc(currentUser.uid);
-        await userRef.update({ fullName: name });
+        const idToken = await currentUser.getIdToken();
+        updateUserName(idToken, { userName: name });
       } catch (error) {
         throw error;
       }

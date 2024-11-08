@@ -32,7 +32,7 @@ export default function OrderList({ orders }) {
 
       // Call the Firebase function 'cancelOrder'
       const response = await fetch(
-        "https://us-central1-bleumer-d477c.cloudfunctions.net/cancelOrder",
+        "https://europe-west1-bleumer-d477c.cloudfunctions.net/cancelOrder",
         {
           method: "POST",
           headers: {

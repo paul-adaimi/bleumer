@@ -1,6 +1,13 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
+// TODO: fix button in addressForm
+// TODO: add Ok for bundles
+// TODO: Fix empty address font to empty order's font
+// TODO: Fix number hiding iin cart
+// TODO: Fix contact us number
+// TODO: Invalidate all data on login
+// TODO: Fix queries (Remove)
 // TODO: fix this
 class ErrorBoundary extends React.Component {
   constructor(props) {

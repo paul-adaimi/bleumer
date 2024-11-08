@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 
-// TODO: update firebase rules for user
 export default function useUserOrders(userId) {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
