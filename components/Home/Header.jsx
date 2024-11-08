@@ -167,7 +167,7 @@ export default function Header({
                 style={{
                   backgroundColor: Colors.gray,
                   position: "absolute",
-                  paddingHorizontal: 3,
+                  paddingHorizontal: 1,
                   paddingVertical: 2,
                   right: countBadgeRight,
                   borderRadius: 10,

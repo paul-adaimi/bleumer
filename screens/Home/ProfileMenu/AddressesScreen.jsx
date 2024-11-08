@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useAddress } from "@/components/AddressProvider";
 import LoadingButton from "@/components/LoadingButton";
+import { Colors } from "@/constants/Colors";
 
 export default function AddressesScreen() {
   const router = useRouter();
@@ -53,7 +54,15 @@ export default function AddressesScreen() {
             alignItems: "center",
           }}
         >
-          <Text>No addresses found.</Text>
+          <Text
+            style={{
+              fontSize: 16,
+              color: Colors.darkGray,
+              textAlign: "center",
+            }}
+          >
+            No addresses found.
+          </Text>
         </View>
       )}
       <FlatList

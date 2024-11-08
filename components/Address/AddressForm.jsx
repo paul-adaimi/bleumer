@@ -70,7 +70,7 @@ export default function AddressForm({
     const input = inputRefs.current[index];
 
     const scrollToFocusedInput = (keyboardHeight) => {
-      const availableSpace = screenHeight - (keyboardHeight + 130); // 100 is for the navigation header
+      const availableSpace = screenHeight - (keyboardHeight + 210); // 100 is for the navigation header
 
       input.measureLayout(scrollViewRef.current, (x, y, width, height) => {
         scrollViewRef.current.scrollTo({
@@ -120,6 +120,7 @@ export default function AddressForm({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
       style={{
         flex: 1,
       }}

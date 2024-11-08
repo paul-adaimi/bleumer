@@ -24,7 +24,7 @@ export default function MenuList() {
       name: "Contact Us",
       icon: "call-outline",
       onPress: () => {
-        const phoneNumber = "+96171740227";
+        const phoneNumber = "+96171235020";
         Linking.openURL(`tel:${phoneNumber}`);
       },
     },
