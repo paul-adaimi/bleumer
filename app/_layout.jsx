@@ -12,9 +12,9 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
   return (
-    <PaperProvider>
-      <SnackbarProvider>
-        <ErrorBoundary>
+    <ErrorBoundary>
+      <PaperProvider>
+        <SnackbarProvider>
           <QueryClientProvider client={queryClient}>
             <TourProvider>
               <AuthProvider>
@@ -41,8 +41,8 @@ export default function RootLayout() {
               prevNextButtonStyle={{}}
             />
           </QueryClientProvider>
-        </ErrorBoundary>
-      </SnackbarProvider>
-    </PaperProvider>
+        </SnackbarProvider>
+      </PaperProvider>
+    </ErrorBoundary>
   );
 }

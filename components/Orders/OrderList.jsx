@@ -26,7 +26,6 @@ export default function OrderList({ orders }) {
     }
   };
 
-  // TODO: Handle error + test
   const onCancelOrder = async (order) => {
     try {
       // Get the current user and their ID token
@@ -47,11 +46,14 @@ export default function OrderList({ orders }) {
         }
       );
 
-      await response.json();
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
+      }
       setCancelSnackbarVisible(true);
     } catch (error) {
       setSnackbarData({
-        message: "Failed to cancel order",
+        message: error.message,
       });
     }
   };

@@ -65,10 +65,10 @@ export default AuthProvider = ({ children }) => {
         await currentUser.updateProfile({ displayName: name });
         setCurrentUser(auth().currentUser);
         const idToken = await currentUser.getIdToken();
-        updateUserName(idToken, { userName: name });
+        await updateUserName(idToken, { userName: name });
       } catch (error) {
         setSnackbarData({
-          message: "Failed to update name",
+          message: error.message,
         });
       }
     },

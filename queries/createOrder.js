@@ -1,4 +1,3 @@
-// TODO: hanlde errors + test
 export default createOrder = async (
   userIdToken,
   { cart, addressId, promoCode }
@@ -26,8 +25,11 @@ export default createOrder = async (
       }
     );
 
-    // await response.json();
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
   } catch (error) {
-    console.error("Error creating order:", error);
+    throw error;
   }
 };

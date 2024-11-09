@@ -1,4 +1,3 @@
-// TODO: hanlde errors + test
 export default updateUserName = async (userIdToken, { userName }) => {
   try {
     const response = await fetch(
@@ -15,8 +14,11 @@ export default updateUserName = async (userIdToken, { userName }) => {
       }
     );
 
-    // await response.json();
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
   } catch (error) {
-    console.error("Error updaing user name", error);
+    throw error;
   }
 };

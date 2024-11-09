@@ -14,8 +14,10 @@ import LoadingButton from "@/components/LoadingButton";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useUserContext } from "@/components/UserProvider";
 import { useAuth } from "@/components/AuthProvider";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 export default function CheckoutScreen() {
+  const { setSnackbarData } = useSnackbar();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [isPromoApplied, setIsPromoApplied] = useState(false);
@@ -82,6 +84,11 @@ export default function CheckoutScreen() {
       onSuccess: () => {
         emptyCart();
         navigation.navigate("orders");
+      },
+      onError: (error) => {
+        setSnackbarData({
+          message: error.message,
+        });
       },
     }
   );
