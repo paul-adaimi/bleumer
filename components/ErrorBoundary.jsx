@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
-// TODO: add number many in bundles
 // TODO: Make sure contact us number is right
 // TODO: fix this
 class ErrorBoundary extends React.Component {
