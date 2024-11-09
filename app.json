@@ -56,6 +56,14 @@
             "useFrameworks": "static"
           }
         }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "bleumer",
+          "project": "react-native",
+          "url": "https://sentry.io/"
+        }
       ]
     ],
     "experiments": {

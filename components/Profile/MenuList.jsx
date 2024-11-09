@@ -24,6 +24,8 @@ export default function MenuList() {
       name: "Contact Us",
       icon: "call-outline",
       onPress: () => {
+        // TODO: Remove
+        throw new Error("My first Sentry error!");
         const phoneNumber = "+96171235020";
         Linking.openURL(`tel:${phoneNumber}`);
       },
