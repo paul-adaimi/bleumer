@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
-import { useQuery } from "react-query";
-import fetchUser from "@/queries/fetchUser";
 import { useAuth } from "@/components/AuthProvider";
+import useUser from "../hooks/useUser";
 
 // Create a context for user-related data
 const UserContext = createContext();
@@ -10,21 +9,17 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const { currentUser } = useAuth();
 
-  const {
-    data: userData,
-    error,
-    isFetching,
-  } = useQuery("userData", async () => fetchUser(currentUser.uid));
+  const { user } = useUser(currentUser.uid);
 
   // Fetch promo codes for the user
   const promoCodes = useMemo(() => {
-    return userData?.promoCodes || [];
-  }, [userData]);
+    return user?.promoCodes || [];
+  }, [user]);
 
   return (
     <UserContext.Provider
       value={{
-        userData,
+        user,
         promoCodes,
       }}
     >

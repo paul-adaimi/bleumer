@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Colors";
 import CheckoutCard from "@/components/Cart/CheckoutCard";
 import CustomTextInput from "@/components/CustomTextInput";
 import { useCart } from "@/components/CartProvider";
-import { useQueryClient, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import createOrder from "@/queries/createOrder";
 import { useAddress } from "@/components/AddressProvider";
 import BottomModalDrawer from "@/components/Modals/BottomModalDrawer";
@@ -24,7 +24,6 @@ export default function CheckoutScreen() {
 
   const navigation = useNavigation();
   const { cart, subTotal, emptyCart } = useCart();
-  const queryClient = useQueryClient();
   const { currentAddress, isFetching: isAddressLoading } = useAddress();
 
   const { currentUser } = useAuth();
@@ -81,7 +80,6 @@ export default function CheckoutScreen() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("userData");
         emptyCart();
         navigation.navigate("orders");
       },
