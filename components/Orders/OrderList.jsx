@@ -4,8 +4,10 @@ import OrderCard from "./OrderCard";
 import { useCart } from "@/components/CartProvider";
 import { Portal, Snackbar } from "react-native-paper";
 import { useAuth } from "@/components/AuthProvider";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 export default function OrderList({ orders }) {
+  const { setSnackbarData } = useSnackbar();
   const [cancelSnackbarVisible, setCancelSnackbarVisible] = useState(false);
   const { cart, addToCart, updateItemCount } = useCart();
 
@@ -48,7 +50,9 @@ export default function OrderList({ orders }) {
       await response.json();
       setCancelSnackbarVisible(true);
     } catch (error) {
-      console.error("Error cancelling order:", error);
+      setSnackbarData({
+        message: "Failed to cancel order",
+      });
     }
   };
 

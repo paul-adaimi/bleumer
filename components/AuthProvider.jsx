@@ -8,12 +8,14 @@ import React, {
 } from "react";
 import auth from "@react-native-firebase/auth";
 import updateUserName from "@/queries/updateUserName";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 // Create the context
 const AuthContext = createContext();
 
 // Create the provider component
 export default AuthProvider = ({ children }) => {
+  const { setSnackbarData } = useSnackbar();
   const [currentUser, setCurrentUser] = useState(auth().currentUser);
   const [confirmation, setConfirmation] = useState(null);
   const [verifyingNumber, setVerifyingNumber] = useState(false);
@@ -65,7 +67,9 @@ export default AuthProvider = ({ children }) => {
         const idToken = await currentUser.getIdToken();
         updateUserName(idToken, { userName: name });
       } catch (error) {
-        throw error;
+        setSnackbarData({
+          message: "Failed to update name",
+        });
       }
     },
     [currentUser]

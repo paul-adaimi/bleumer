@@ -11,7 +11,6 @@ export default function useUser(userId) {
 
     const unsubscribe = userRef.onSnapshot(
       (querySnapshot) => {
-        console.log("changed");
         setUser(querySnapshot.data());
         setIsLoading(false);
       },

@@ -228,11 +228,7 @@ export default function OrderCard({
         onButton2Press={async () => {
           setIsCanceling(true);
           setIsConfirmModalVisible(false);
-          try {
-            await onCancelOrder(order);
-          } catch (error) {
-            console.error("Error cancelling order:", error);
-          }
+          await onCancelOrder(order);
           setIsCanceling(false);
         }}
       >

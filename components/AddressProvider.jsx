@@ -9,12 +9,14 @@ import * as Location from "expo-location";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "@/components/AuthProvider";
 import useUserAddresses from "@/hooks/useUserAddresses";
+import { useSnackbar } from "@/components/SnackbarProvider";
 
 // Create a context for the address
 const AddressContext = createContext();
 
 // Create a provider component
 export const AddressProvider = ({ children }) => {
+  const { setSnackbarData } = useSnackbar();
   const [isForceLoading, setIsForceLoading] = useState(false);
   const [isLocationLoading, setIsLocationLoading] = useState(false);
 
@@ -46,7 +48,10 @@ export const AddressProvider = ({ children }) => {
       try {
         await getLocation();
       } catch (error) {
-        console.error("Failed to load address data:", error);
+        setSnackbarData({
+          message: "Failed to load address data",
+          backgroundColor: "red",
+        });
       }
     };
 

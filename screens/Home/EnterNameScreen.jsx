@@ -19,11 +19,7 @@ export default function EnterNameScreen() {
 
   const onSubmit = async (values) => {
     setIsLoading(true);
-    try {
-      await updateName(values.name);
-    } catch (error) {
-      console.log(error);
-    }
+    await updateName(values.name);
     setIsLoading(false);
   };
 
