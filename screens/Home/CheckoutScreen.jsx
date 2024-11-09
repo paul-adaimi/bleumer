@@ -82,7 +82,6 @@ export default function CheckoutScreen() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("userData");
-        queryClient.invalidateQueries("orders");
         emptyCart();
         navigation.navigate("orders");
       },

@@ -46,7 +46,10 @@ export default function AddressForm({
     data: areas,
     error,
     isFetching,
-  } = useQuery("areas", async () => fetchAreas());
+  } = useQuery("areas", async () => fetchAreas(), {
+    staleTime: 1000 * 60 * 60 * 24,
+    cacheTime: 1000 * 60 * 60 * 24,
+  });
 
   const options = useMemo(
     () =>

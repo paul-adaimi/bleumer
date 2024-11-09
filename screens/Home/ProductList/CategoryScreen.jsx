@@ -10,7 +10,10 @@ export default function CategoryScreen({ category }) {
     data: productList,
     error,
     isFetching,
-  } = useQuery("products", async () => fetchProducts());
+  } = useQuery("products", async () => fetchProducts(), {
+    staleTime: 1000 * 60 * 60 * 24,
+    cacheTime: 1000 * 60 * 60 * 24,
+  });
 
   const list = productList?.filter(
     (product) => product.category === category.toLowerCase()

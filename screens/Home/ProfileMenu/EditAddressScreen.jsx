@@ -3,13 +3,14 @@ import { useNavigation } from "expo-router";
 import AddressForm from "@/components/Address/AddressForm";
 import { useAddress } from "@/components/AddressProvider";
 
+// TODO: Check the promo code functionality again
 export default function EditAddressScreen({ address }) {
   const navigation = useNavigation();
   const { editAddress } = useAddress();
 
   const editAddressAndGoBack = useCallback(
     async (addressValues) => {
-      await editAddress.mutateAsync(addressValues);
+      await editAddress(addressValues);
       navigation.goBack();
     },
     [navigation, editAddress]

@@ -27,7 +27,6 @@ export default function AddAddressScreen() {
         street: "",
         number: "",
         coordinates: null,
-        id: Crypto.randomUUID(),
       }}
       onSubmit={createAddressAndGoBack}
     />

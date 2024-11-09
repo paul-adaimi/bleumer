@@ -5,13 +5,10 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { useQuery, useMutation } from "react-query";
-import fetchUserAddresses from "@/queries/fetchUserAddresses";
 import * as Location from "expo-location";
 import firestore from "@react-native-firebase/firestore";
-import { useQueryClient } from "react-query";
-import updateUserAddresses from "@/queries/updateUserAddresses";
 import { useAuth } from "@/components/AuthProvider";
+import useUserAddresses from "@/hooks/useUserAddresses";
 
 // Create a context for the address
 const AddressContext = createContext();
@@ -20,19 +17,13 @@ const AddressContext = createContext();
 export const AddressProvider = ({ children }) => {
   const [isForceLoading, setIsForceLoading] = useState(false);
   const [isLocationLoading, setIsLocationLoading] = useState(false);
-  const [currentAddress, setCurrentAddress] = useState(null);
 
-  const queryClient = useQueryClient();
   const { currentUser } = useAuth();
 
-  const {
-    data: addresses,
-    error,
-    isFetching,
-  } = useQuery("addresses", async () => fetchUserAddresses(currentUser.uid));
+  const { addresses, error, isLoading, currentAddress, setCurrentAddress } =
+    useUserAddresses(currentUser.uid);
 
   const getLocation = useCallback(async () => {
-    console.log(addresses);
     setIsLocationLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -64,60 +55,41 @@ export const AddressProvider = ({ children }) => {
     }
   }, [getLocation, currentAddress]);
 
-  const createAddress = useCallback(
-    async (addressValues) => {
+  const createAddress = useCallback(async (addressValues) => {
+    setIsForceLoading(true);
+    const addressesRef = firestore().collection(
+      `Users/${currentUser.uid}/addresses`
+    );
+    await addressesRef.add(addressValues);
+    setIsForceLoading(false);
+  }, []);
+
+  const editAddress = useCallback(async (addressValues) => {
+    setIsForceLoading(true);
+    const addressesRef = firestore().collection(
+      `Users/${currentUser.uid}/addresses`
+    );
+    // this is the addressValues without id field
+    newAddressValues = { ...addressValues };
+    delete newAddressValues.id;
+    await addressesRef.doc(addressValues.id).update(newAddressValues);
+    setIsForceLoading(false);
+  }, []);
+
+  const deleteAddress = useCallback(
+    async (address) => {
       setIsForceLoading(true);
-      console.log(addressValues);
-      newAddresses = [...addresses, addressValues];
-      const idToken = await currentUser.getIdToken();
-      await updateUserAddresses(idToken, { addresses: newAddresses });
-
-      await queryClient.invalidateQueries("addresses");
-      const updatedAddresses = queryClient.getQueryData("addresses");
-
-      const newCurrentAddress = updatedAddresses.find(
-        (address) => address.id === addressValues.id
+      const addressesRef = firestore().collection(
+        `Users/${currentUser.uid}/addresses`
       );
-
-      if (newCurrentAddress) {
-        setCurrentAddress(newCurrentAddress);
+      await addressesRef.doc(address.id).delete();
+      if (currentAddress.id === address.id) {
+        setCurrentAddress(null);
       }
-
       setIsForceLoading(false);
     },
-    [currentUser, queryClient, addresses]
+    [currentAddress]
   );
-
-  const editAddress = useMutation({
-    mutationFn: async (addressValues) => {
-      setIsForceLoading(true);
-      const newAddresses = addresses.filter(
-        (item) => item.id !== addressValues.id
-      );
-      newAddresses.push(addressValues);
-      const idToken = await currentUser.getIdToken();
-      await updateUserAddresses(idToken, { addresses: newAddresses });
-      await queryClient.invalidateQueries("addresses");
-      if (currentAddress.id === addressValues.id) setCurrentAddress(null);
-    },
-    onSettled: () => {
-      setIsForceLoading(false);
-    },
-  });
-
-  const deleteAddress = useMutation({
-    mutationFn: async (address) => {
-      setIsForceLoading(true);
-      const newAddresses = addresses.filter((item) => item !== address);
-      const idToken = await currentUser.getIdToken();
-      await updateUserAddresses(idToken, { addresses: newAddresses });
-      await queryClient.invalidateQueries("addresses");
-      if (currentAddress === address) setCurrentAddress(null);
-    },
-    onSettled: () => {
-      setIsForceLoading(false);
-    },
-  });
 
   return (
     <AddressContext.Provider
@@ -128,7 +100,7 @@ export const AddressProvider = ({ children }) => {
         createAddress,
         editAddress,
         deleteAddress,
-        isFetching: isLocationLoading || isFetching || isForceLoading,
+        isFetching: isLocationLoading || isLoading || isForceLoading,
       }}
     >
       {children}

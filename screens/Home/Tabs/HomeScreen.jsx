@@ -18,7 +18,11 @@ export default function HomeScreen() {
 
   const { data: productList, isFetching: isFetchingProducts } = useQuery(
     "products",
-    async () => fetchProducts()
+    async () => fetchProducts(),
+    {
+      staleTime: 1000 * 60 * 60 * 24,
+      cacheTime: 1000 * 60 * 60 * 24,
+    }
   );
 
   const frozenProducts = useMemo(() => {

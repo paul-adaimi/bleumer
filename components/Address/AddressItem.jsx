@@ -40,7 +40,7 @@ const AddressItem = ({ address }) => {
         button2Text="Delete"
         onButton1Press={() => setIsDialogVisible(false)}
         onButton2Press={() => {
-          deleteAddress.mutate(address);
+          deleteAddress(address);
           setIsDialogVisible(false);
         }}
         button2Style={{ backgroundColor: "#FF3B30" }}

@@ -1,10 +1,9 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
+// TODO: Promo codes query
 // TODO: add number many in bundles
 // TODO: Make sure contact us number is right
-// TODO: Invalidate all data on login
-// TODO: Fix queries (Remove)
 // TODO: fix this
 class ErrorBoundary extends React.Component {
   constructor(props) {
