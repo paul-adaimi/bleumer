@@ -3,8 +3,6 @@ import { View, Text, Button, StyleSheet } from "react-native";
 
 // TODO: Make sure contact us number is right
 // TODO: look into notifications
-// TODO: look into crashlytics
-// TODO: fix this
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);

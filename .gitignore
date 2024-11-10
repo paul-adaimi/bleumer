@@ -12,7 +12,9 @@ web-build/
 .env
 
 GoogleService-Info.plist
+ios/bleumer/GoogleService-Info.plist
 google-services.json
+android/app/google-services.json
 
 # macOS
 .DS_Store
