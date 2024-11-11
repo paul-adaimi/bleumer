@@ -5,6 +5,7 @@ import { useCart } from "@/components/CartProvider";
 import { Portal, Snackbar } from "react-native-paper";
 import { useAuth } from "@/components/AuthProvider";
 import { useSnackbar } from "@/components/SnackbarProvider";
+import * as Sentry from "@sentry/react-native";
 
 export default function OrderList({ orders }) {
   const { setSnackbarData } = useSnackbar();
@@ -52,6 +53,7 @@ export default function OrderList({ orders }) {
       }
       setCancelSnackbarVisible(true);
     } catch (error) {
+      Sentry.captureException(error);
       setSnackbarData({
         message: error.message,
       });

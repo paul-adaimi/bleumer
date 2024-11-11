@@ -10,6 +10,7 @@ import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "@/components/AuthProvider";
 import useUserAddresses from "@/hooks/useUserAddresses";
 import { useSnackbar } from "@/components/SnackbarProvider";
+import * as Sentry from "@sentry/react-native";
 
 // Create a context for the address
 const AddressContext = createContext();
@@ -48,6 +49,7 @@ export const AddressProvider = ({ children }) => {
       try {
         await getLocation();
       } catch (error) {
+        Sentry.captureException(error);
         setSnackbarData({
           message: "Failed to load address data",
           backgroundColor: "red",

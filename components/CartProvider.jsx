@@ -6,6 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Sentry from "@sentry/react-native";
 
 // Create a context for the cart
 const CartContext = createContext();
@@ -23,6 +24,7 @@ export const CartProvider = ({ children }) => {
           setCart(JSON.parse(savedCart));
         }
       } catch (error) {
+        Sentry.captureException(error);
         console.error("Failed to load cart data:", error);
       }
     };
@@ -36,6 +38,7 @@ export const CartProvider = ({ children }) => {
       try {
         await AsyncStorage.setItem("cart", JSON.stringify(cart));
       } catch (error) {
+        Sentry.captureException(error);
         console.error("Failed to save cart data:", error);
       }
     };

@@ -9,6 +9,7 @@ import React, {
 import auth from "@react-native-firebase/auth";
 import updateUserName from "@/queries/updateUserName";
 import { useSnackbar } from "@/components/SnackbarProvider";
+import * as Sentry from "@sentry/react-native";
 
 // Create the context
 const AuthContext = createContext();
@@ -67,6 +68,7 @@ export default AuthProvider = ({ children }) => {
         const idToken = await currentUser.getIdToken();
         await updateUserName(idToken, { userName: name });
       } catch (error) {
+        Sentry.captureException(error);
         setSnackbarData({
           message: error.message,
         });
