@@ -68,7 +68,7 @@ export default AuthProvider = ({ children }) => {
         const idToken = await currentUser.getIdToken();
         await updateUserName(idToken, { userName: name });
       } catch (error) {
-        Sentry.captureException(error);
+        if (!__DEV__) Sentry.captureException(error);
         setSnackbarData({
           message: error.message,
         });

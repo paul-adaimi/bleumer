@@ -15,6 +15,7 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useUserContext } from "@/components/UserProvider";
 import { useAuth } from "@/components/AuthProvider";
 import { useSnackbar } from "@/components/SnackbarProvider";
+import * as Sentry from "@sentry/react-native";
 
 export default function CheckoutScreen() {
   const { setSnackbarData } = useSnackbar();
@@ -86,6 +87,7 @@ export default function CheckoutScreen() {
         navigation.navigate("orders");
       },
       onError: (error) => {
+        if (!__DEV__) Sentry.captureException(error);
         setSnackbarData({
           message: error.message,
         });

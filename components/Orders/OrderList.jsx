@@ -53,7 +53,7 @@ export default function OrderList({ orders }) {
       }
       setCancelSnackbarVisible(true);
     } catch (error) {
-      Sentry.captureException(error);
+      if (!__DEV__) Sentry.captureException(error);
       setSnackbarData({
         message: error.message,
       });

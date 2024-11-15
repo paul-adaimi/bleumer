@@ -24,7 +24,7 @@ export const CartProvider = ({ children }) => {
           setCart(JSON.parse(savedCart));
         }
       } catch (error) {
-        Sentry.captureException(error);
+        if (!__DEV__) Sentry.captureException(error);
         console.error("Failed to load cart data:", error);
       }
     };
@@ -38,7 +38,7 @@ export const CartProvider = ({ children }) => {
       try {
         await AsyncStorage.setItem("cart", JSON.stringify(cart));
       } catch (error) {
-        Sentry.captureException(error);
+        if (!__DEV__) Sentry.captureException(error);
         console.error("Failed to save cart data:", error);
       }
     };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 
 export default function useUser(userId) {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 

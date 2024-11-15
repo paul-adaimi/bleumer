@@ -12,10 +12,11 @@ web-build/
 .env
 
 GoogleService-Info.plist
-ios/bleumer/GoogleService-Info.plist
 google-services.json
-android/app/google-services.json
 bleumer-d477c-firebase-adminsdk-ekfee-ed8ac3eb06.json
+
+ios/
+android/
 
 # macOS
 .DS_Store

@@ -49,7 +49,7 @@ export const AddressProvider = ({ children }) => {
       try {
         await getLocation();
       } catch (error) {
-        Sentry.captureException(error);
+        if (!__DEV__) Sentry.captureException(error);
         setSnackbarData({
           message: "Failed to load address data",
           backgroundColor: "red",
@@ -64,34 +64,58 @@ export const AddressProvider = ({ children }) => {
 
   const createAddress = useCallback(async (addressValues) => {
     setIsForceLoading(true);
-    const addressesRef = firestore().collection(
-      `Users/${currentUser.uid}/addresses`
-    );
-    await addressesRef.add(addressValues);
+    try {
+      const addressesRef = firestore().collection(
+        `Users/${currentUser.uid}/addresses`
+      );
+      await addressesRef.add(addressValues);
+    } catch (error) {
+      if (!__DEV__) Sentry.captureException(error);
+      setSnackbarData({
+        message: "Failed to create Address",
+        backgroundColor: "red",
+      });
+    }
     setIsForceLoading(false);
   }, []);
 
   const editAddress = useCallback(async (addressValues) => {
     setIsForceLoading(true);
-    const addressesRef = firestore().collection(
-      `Users/${currentUser.uid}/addresses`
-    );
-    // this is the addressValues without id field
-    newAddressValues = { ...addressValues };
-    delete newAddressValues.id;
-    await addressesRef.doc(addressValues.id).update(newAddressValues);
+    try {
+      const addressesRef = firestore().collection(
+        `Users/${currentUser.uid}/addresses`
+      );
+      // this is the addressValues without id field
+      newAddressValues = { ...addressValues };
+      delete newAddressValues.id;
+      await addressesRef.doc(addressValues.id).update(newAddressValues);
+    } catch (error) {
+      if (!__DEV__) Sentry.captureException(error);
+      setSnackbarData({
+        message: "Failed to edit Address",
+        backgroundColor: "red",
+      });
+    }
     setIsForceLoading(false);
   }, []);
 
   const deleteAddress = useCallback(
     async (address) => {
       setIsForceLoading(true);
-      const addressesRef = firestore().collection(
-        `Users/${currentUser.uid}/addresses`
-      );
-      await addressesRef.doc(address.id).delete();
-      if (currentAddress.id === address.id) {
-        setCurrentAddress(null);
+      try {
+        const addressesRef = firestore().collection(
+          `Users/${currentUser.uid}/addresses`
+        );
+        await addressesRef.doc(address.id).delete();
+        if (currentAddress.id === address.id) {
+          setCurrentAddress(null);
+        }
+      } catch (error) {
+        if (!__DEV__) Sentry.captureException(error);
+        setSnackbarData({
+          message: "Failed to delete Address",
+          backgroundColor: "red",
+        });
       }
       setIsForceLoading(false);
     },

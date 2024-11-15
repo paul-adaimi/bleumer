@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext, useMemo, useEffect } from "react";
+import { Platform } from "react-native";
 import { useAuth } from "@/components/AuthProvider";
 import useUser from "../hooks/useUser";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useSnackbar } from "@/components/SnackbarProvider";
 import * as Sentry from "@sentry/react-native";
+import updateNotificationToken from "@/queries/updateNotificationToken";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -21,7 +22,6 @@ const UserContext = createContext();
 // Create the UserProvider component
 export const UserProvider = ({ children }) => {
   const { currentUser } = useAuth();
-  const { setSnackbarData } = useSnackbar();
 
   const { user } = useUser(currentUser.uid);
 
@@ -30,22 +30,23 @@ export const UserProvider = ({ children }) => {
     return user?.promoCodes || [];
   }, [user]);
 
-  useEffect(async () => {
-    try {
-      if (!user) return;
-      const notificationToken = await registerForPushNotificationsAsync();
-      if (notificationToken) {
-        const idToken = await currentUser.getIdToken();
-        if (user.notificationToken !== notificationToken) {
-          updateNotificationToken(idToken, { notificationToken });
+  useEffect(() => {
+    const updateTokenFirebase = async () => {
+      try {
+        if (!user || !currentUser) return;
+        const notificationToken = await registerForPushNotificationsAsync();
+        if (notificationToken) {
+          const idToken = await currentUser.getIdToken();
+          if (user.notificationToken !== notificationToken) {
+            updateNotificationToken(idToken, { notificationToken });
+          }
         }
+      } catch (error) {
+        if (!__DEV__) Sentry.captureException(error);
       }
-    } catch (error) {
-      Sentry.captureException(error);
-      setSnackbarData({
-        message: error.message,
-      });
-    }
+    };
+
+    updateTokenFirebase();
   }, [user, currentUser]);
 
   return (

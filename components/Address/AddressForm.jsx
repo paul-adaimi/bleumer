@@ -21,6 +21,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import LoadingButton from "@/components/LoadingButton";
 
+// TODO: change logo (in notification as well)
+
 const addressValidationSchema = Yup.object({
   name: Yup.string()
     .min(3, "Must be between 3 and 15 characters")
