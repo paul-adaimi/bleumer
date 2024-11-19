@@ -1,20 +1,16 @@
 {
+  "cli": {
+    "appVersionSource": "remote"
+  },
   "build": {
     "production": {
-      "android": {
-        "buildType": "app-bundle"
-      },
+      "autoIncrement": true,
       "ios": {
-        "distribution": "internal"
+        "distribution": "store"
       }
     },
     "preview": {
-      "android": {
-        "buildType": "apk"
-      },
-      "ios": {
-        "simulator": true
-      }
+      "distribution": "internal"
     }
   }
 }

@@ -1,6 +1,6 @@
 export default {
   expo: {
-    name: "bleu-mer",
+    name: "Bleumer",
     slug: "bleu-mer",
     version: "1.0.0",
     orientation: "portrait",
@@ -13,9 +13,10 @@ export default {
       backgroundColor: "#ffffff",
     },
     ios: {
-      supportsTablet: true,
+      supportsTablet: false,
       bundleIdentifier: "com.bleu-mer",
-      googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
+      googleServicesFile:
+        process.env.GOOGLE_SERVICES_PLIST ?? "./GoogleService-Info.plist",
       infoPlist: {
         CFBundleURLTypes: [
           {
@@ -24,6 +25,10 @@ export default {
             ],
           },
         ],
+        NSLocationWhenInUseUsageDescription:
+          "This app uses your location to determine accurate delivery addresses and improve delivery services.",
+        NSUserTrackingUsageDescription:
+          "This app uses notifications to send updates about delivery statuses and exclusive offers.",
       },
     },
     android: {

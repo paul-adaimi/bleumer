@@ -1,0 +1,31 @@
+{
+  "configVersion": 0,
+
+  "apple": {
+    "copyright": "© 2024 Paul Adaimi",
+    "version": "1.0.0",
+    "categories": ["FOOD_AND_DRINK", "SHOPPING"],
+    "release": { "automaticRelease": true },
+    "info": {
+      "en-US": {
+        "title": "Bleumer",
+        "subtitle": "A Salmon Delivery App",
+        "description": "Enjoy premium salmon products delivered straight to your doorstep with ease. From smoked salmon to fresh fillets and gourmet specialties, our app makes it simple to place your order. Once confirmed, delivery is automatically scheduled to ensure you receive the freshest products without any extra effort. Quality salmon, conveniently delivered!",
+        "keywords": ["bleumer", "bleu", "mer", "salmon", "saumon"],
+        "promoText": "Your Ultimate Salmon Delivery Application",
+        "privacyPolicyUrl": "https://paul-adaimi.github.io/bleu-mer/privacy-policy",
+        "releaseNotes": "Welcome to the first release of Bleumer! 🎉\n\n- Deliver premium salmon products straight to your doorstep.\n- Automatic scheduling ensures fresh and timely deliveries.\n- Explore a variety of options, including smoked salmon, fresh fillets, and more."
+      }
+    },
+    "review": {
+      "firstName": "Paul",
+      "lastName": "Adaimi",
+      "email": "paul@adaimi.com",
+      "phone": "+1 781-975-3812",
+      "demoRequired": true,
+      "demoUsername": "+1 650-555-1234",
+      "demoPassword": "123456",
+      "notes": "This app requires phone auth so the demoUsername is just the phone number and the password is the test OTP"
+    }
+  }
+}
