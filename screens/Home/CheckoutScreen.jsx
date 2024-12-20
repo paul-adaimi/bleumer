@@ -21,7 +21,7 @@ export default function CheckoutScreen() {
   const { setSnackbarData } = useSnackbar();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [promoCode, setPromoCode] = useState("");
-  const [isPromoApplied, setIsPromoApplied] = useState(false);
+  const [appliedPromo, setAppliedPromo] = useState("");
   const [isPromoInvalid, setIsPromoInvalid] = useState(false);
   const [discountedPrice, setDiscountedPrice] = useState(0);
 
@@ -37,13 +37,15 @@ export default function CheckoutScreen() {
     [subTotal, discountedPrice]
   );
 
+  const isPromoApplied = !!appliedPromo;
+
   const checkAndApplyPromoCode = useCallback(
     (appliedCode) => {
       const code = promoCodes.find((promo) => promo.code === appliedCode);
       if (code) {
         const discountAmount = (code.discount / 100) * subTotal;
         setDiscountedPrice(parseFloat(discountAmount.toFixed(2)));
-        setIsPromoApplied(true);
+        setAppliedPromo(appliedCode);
       } else {
         setIsPromoInvalid(true);
       }
@@ -53,7 +55,7 @@ export default function CheckoutScreen() {
 
   const onChangePromo = (text) => {
     setPromoCode(text);
-    setIsPromoApplied(false);
+    setAppliedPromo("");
     setIsPromoInvalid(false);
     setDiscountedPrice(0);
   };
@@ -78,7 +80,7 @@ export default function CheckoutScreen() {
       await createOrder(idToken, {
         cart,
         addressId: currentAddress.id,
-        promoCode: promoCode,
+        promoCode: appliedPromo,
       });
     },
     {

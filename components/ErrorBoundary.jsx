@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
-// TODO: Make sure contact us number is right
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);

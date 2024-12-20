@@ -18,7 +18,6 @@ const AuthContext = createContext();
 export default AuthProvider = ({ children }) => {
   const { setSnackbarData } = useSnackbar();
   const [currentUser, setCurrentUser] = useState(auth().currentUser);
-  const [confirmation, setConfirmation] = useState(null);
   const [verifyingNumber, setVerifyingNumber] = useState(false);
 
   useEffect(() => {
@@ -33,10 +32,21 @@ export default AuthProvider = ({ children }) => {
   const signInWithPhoneNumber = useCallback(
     async (phoneNumber, { onSuccess, onError }) => {
       try {
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        setConfirmation(confirmation);
+        const response = await fetch(
+          "https://europe-west1-bleumer-d477c.cloudfunctions.net/verifyUser",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phoneNumber, action: "send" }),
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) {
+          onError?.(new Error(data.message));
+          return;
+        }
         setVerifyingNumber(phoneNumber);
-        onSuccess?.(confirmation);
+        onSuccess?.();
       } catch (error) {
         onError?.(error);
       }
@@ -47,13 +57,34 @@ export default AuthProvider = ({ children }) => {
   const confirmCode = useCallback(
     async (code, { onSuccess, onError }) => {
       try {
-        const user = await confirmation.confirm(code);
-        onSuccess?.(user);
+        const response = await fetch(
+          "https://europe-west1-bleumer-d477c.cloudfunctions.net/verifyUser",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              phoneNumber: verifyingNumber,
+              code,
+              action: "verify",
+            }),
+          }
+        );
+
+        const data = await response.json();
+        if (!response.ok) {
+          onError?.(new Error(data.message));
+          return;
+        }
+
+        const { token } = data;
+
+        await auth().signInWithCustomToken(token);
+        onSuccess?.();
       } catch (error) {
         onError?.(error);
       }
     },
-    [confirmation]
+    [verifyingNumber]
   );
 
   const signOut = useCallback(async () => {

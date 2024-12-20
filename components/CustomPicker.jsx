@@ -42,7 +42,11 @@ const CustomPicker = forwardRef(
           <Text
             style={selectedValue ? styles.selectedText : styles.placeholder}
           >
-            {selectedValue ? selectedValue.name : placeholder}
+            {selectedValue
+              ? selectedValue.name
+                ? selectedValue.name
+                : selectedValue
+              : placeholder}
           </Text>
           {!selectedValue && (
             <Ionicons name="caret-down" size={24} color="#a9a9a9" />

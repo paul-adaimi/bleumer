@@ -20,8 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import LoadingButton from "@/components/LoadingButton";
-
-// TODO: change logo (in notification as well)
+import { useAddress } from "../AddressProvider";
 
 const addressValidationSchema = Yup.object({
   name: Yup.string()
@@ -64,11 +63,31 @@ export default function AddressForm({
     [areas]
   );
 
+  const addressNameOptions = useMemo(
+    () => [
+      {
+        label: "Home",
+        value: "Home",
+      },
+      {
+        label: "Office",
+        value: "Office",
+      },
+      {
+        label: "Other",
+        value: "Other",
+      },
+    ],
+    []
+  );
+
   const [initialRegion, setInitialRegion] = useState(null);
   const [screenHeight] = useState(Dimensions.get("window").height);
 
   const scrollViewRef = useRef(null);
   const inputRefs = useRef([]);
+
+  const { userLocation } = useAddress();
 
   // Function to scroll to the TextInput when it is focused
   const scrollToInput = (index) => {
@@ -108,7 +127,10 @@ export default function AddressForm({
           return;
         }
 
-        let location = await Location.getCurrentPositionAsync({});
+        const location = userLocation;
+        if (!location) {
+          location = await Location.getCurrentPositionAsync({});
+        }
 
         setInitialRegion({
           latitude: location.coords.latitude,
@@ -207,14 +229,14 @@ export default function AddressForm({
                         </Text>
                       )}
                       <View style={{ display: "flex", marginTop: 10 }}>
-                        <CustomTextInput
+                        <CustomPicker
                           name="name"
-                          value={values.name}
                           placeholder="Address Name"
-                          onChangeText={handleChange("name")}
-                          onFocus={() => scrollToInput(0)}
-                          onBlur={handleBlur("name")}
-                          ref={(el) => (inputRefs.current[0] = el)}
+                          items={addressNameOptions}
+                          selectedValue={values.name}
+                          onValueChange={(value) => {
+                            setFieldValue("name", value);
+                          }}
                           error={touched.name && errors.name}
                         />
                         <CustomPicker
@@ -257,7 +279,7 @@ export default function AddressForm({
                           id="name"
                           name="name"
                           value={values.street}
-                          placeholder="Street / Building / Floor"
+                          placeholder="Address Details (Street / Building / Floor)"
                           onChangeText={handleChange("street")}
                           onBlur={handleBlur("street")}
                           onFocus={() => scrollToInput(2)}

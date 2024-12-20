@@ -20,6 +20,7 @@ export const AddressProvider = ({ children }) => {
   const { setSnackbarData } = useSnackbar();
   const [isForceLoading, setIsForceLoading] = useState(false);
   const [isLocationLoading, setIsLocationLoading] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
   const { currentUser } = useAuth();
 
@@ -27,7 +28,6 @@ export const AddressProvider = ({ children }) => {
     useUserAddresses(currentUser.uid);
 
   const getLocation = useCallback(async () => {
-    setIsLocationLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       setCurrentAddress(addresses?.[0]);
@@ -36,16 +36,17 @@ export const AddressProvider = ({ children }) => {
     }
 
     let location = await Location.getCurrentPositionAsync({});
+    setUserLocation(location);
     const closestAddress = findClosestAddress(addresses ?? [], {
       longitude: location.coords.longitude,
       latitude: location.coords.latitude,
     });
     setCurrentAddress(closestAddress);
-    setIsLocationLoading(false);
   }, [addresses]);
 
   useEffect(() => {
     const loadAddressData = async () => {
+      setIsLocationLoading(true);
       try {
         await getLocation();
       } catch (error) {
@@ -54,6 +55,8 @@ export const AddressProvider = ({ children }) => {
           message: "Failed to load address data",
           backgroundColor: "red",
         });
+      } finally {
+        setIsLocationLoading(false);
       }
     };
 
@@ -126,6 +129,7 @@ export const AddressProvider = ({ children }) => {
     <AddressContext.Provider
       value={{
         addresses,
+        userLocation,
         currentAddress,
         setCurrentAddress,
         createAddress,

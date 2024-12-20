@@ -1,5 +1,17 @@
-import { View, TextInput, StyleSheet, Text } from "react-native";
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/components/AuthProvider";
@@ -10,8 +22,16 @@ export default function ConfirmScreen() {
   const [error, setError] = useState("");
   const inputRefs = useRef([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [countdown, setCountdown] = useState(30);
 
-  const { confirmCode, verifyingNumber } = useAuth();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const { signInWithPhoneNumber, confirmCode, verifyingNumber } = useAuth();
 
   confirmationCode = useMemo(() => {
     return code.join("");
@@ -56,7 +76,7 @@ export default function ConfirmScreen() {
   handleSubmit = useCallback(async () => {
     setIsLoading(true);
     await confirmCode(confirmationCode, {
-      onError: () => setError("Invalid Code"),
+      onError: (error) => setError(error.message),
     });
     setIsLoading(false);
   }, [confirmationCode, confirmCode]);
@@ -132,6 +152,31 @@ export default function ConfirmScreen() {
         style={styles.button}
         isLoading={isLoading}
       />
+
+      <TouchableOpacity
+        style={{
+          marginTop: 20,
+        }}
+        disabled={countdown != 0}
+        onPress={async () => {
+          if (countdown == 0) {
+            setCountdown(30);
+            await signInWithPhoneNumber(verifyingNumber, {
+              onError: (error) => setError(error.message),
+            });
+          }
+        }}
+      >
+        <Text
+          style={{
+            color: countdown == 0 ? Colors.primary : Colors.primaryShade,
+            fontWeight: 700,
+          }}
+        >
+          Didn't receive the code? Resend Code{" "}
+          {countdown != 0 ? `(in ${countdown} seconds)` : ""}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
