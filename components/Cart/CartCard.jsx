@@ -86,9 +86,28 @@ export default function CartCard({ cartItem }) {
       <View
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-between",
         }}
       >
+        <View
+          style={{
+            alignSelf: "flex-end",
+            borderRadius: 3,
+            paddingHorizontal: 5,
+            paddingVertical: 3,
+            backgroundColor: Colors[cartItem.category],
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 15,
+              color: Colors.white,
+            }}
+          >
+            {cartItem.category.charAt(0).toUpperCase() +
+              cartItem.category.slice(1)}
+          </Text>
+        </View>
         <NumericInput
           value={productCount}
           onIncrement={handleIncrement}

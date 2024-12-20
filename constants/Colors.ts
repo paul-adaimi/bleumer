@@ -31,4 +31,7 @@ export const Colors = {
   gray: "#8F8F8F",
   darkGray: "#636363",
   white: "#FFF",
+  fresh: "#539fcf",
+  frozen: "#89CFF0",
+  bundle: "#115d8c",
 };

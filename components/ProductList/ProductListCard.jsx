@@ -72,14 +72,28 @@ export default function ProductListCard({ product }) {
         >
           {product.name}
         </Text>
-        <Text
-          style={{
-            fontSize: 15,
-            color: Colors.gray,
-          }}
-        >
-          {product.about}
-        </Text>
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <Text style={{ fontSize: 15, color: Colors.gray }}>Type: </Text>
+          <View
+            style={{
+              borderRadius: 3,
+              paddingHorizontal: 3,
+              paddingVertical: 1,
+              backgroundColor:
+                product.category === "fresh" ? Colors.fresh : Colors.frozen,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                color: Colors.white,
+              }}
+            >
+              {product.category.charAt(0).toUpperCase() +
+                product.category.slice(1)}
+            </Text>
+          </View>
+        </View>
         <Text
           style={{
             color: Colors.gray,

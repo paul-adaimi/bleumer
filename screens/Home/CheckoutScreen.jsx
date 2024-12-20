@@ -136,12 +136,13 @@ export default function CheckoutScreen() {
             )}
 
             <TouchableOpacity
-              disabled={isAddressLoading}
+              disabled={isAddressLoading || isLoading}
               onPress={() => setIsModalVisible(true)}
               style={{
-                backgroundColor: isAddressLoading
-                  ? Colors.primaryShade
-                  : Colors.primary,
+                backgroundColor:
+                  isAddressLoading || isLoading
+                    ? Colors.primaryShade
+                    : Colors.primary,
                 marginTop: 20,
                 height: 25,
                 borderRadius: 5,
@@ -174,12 +175,13 @@ export default function CheckoutScreen() {
                 containerStyle={{ flex: 1 }}
               />
               <TouchableOpacity
-                disabled={isPromoApplied}
+                disabled={isPromoApplied || isLoading}
                 onPress={() => checkAndApplyPromoCode(promoCode)}
                 style={{
-                  backgroundColor: isPromoApplied
-                    ? Colors.primaryShade
-                    : Colors.primary,
+                  backgroundColor:
+                    isPromoApplied || isLoading
+                      ? Colors.primaryShade
+                      : Colors.primary,
                   height: 53,
                   marginLeft: 5,
                   padding: 10,
