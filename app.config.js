@@ -27,7 +27,7 @@ export default {
         ],
         NSLocationWhenInUseUsageDescription:
           "This app uses your location to determine accurate delivery addresses and improve delivery services.",
-        NSUserTrackingUsageDescription:
+        NSPushNotificationUsageDescription:
           "This app uses notifications to send updates about delivery statuses and exclusive offers.",
       },
     },
