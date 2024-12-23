@@ -85,7 +85,7 @@ export default function Header({
         )}
         {!isAddressLoading && (
           <Tip
-            id="address"
+            id={`address-${id}`}
             title="Address"
             body="Please sign in to access addresses"
             showItemPulseAnimation
@@ -98,7 +98,7 @@ export default function Header({
               onPress={() => {
                 if (!isAddressDisabled) {
                   setIsModalVisible(true);
-                } else showTip(`address`);
+                } else showTip(`address-${id}`);
               }}
               style={{
                 display: "flex",
