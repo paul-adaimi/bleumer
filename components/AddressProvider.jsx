@@ -25,7 +25,7 @@ export const AddressProvider = ({ children }) => {
   const { currentUser } = useAuth();
 
   const { addresses, error, isLoading, currentAddress, setCurrentAddress } =
-    useUserAddresses(currentUser.uid);
+    useUserAddresses(currentUser?.uid);
 
   const getLocation = useCallback(async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();

@@ -15,7 +15,6 @@ export default function AuthRoutesLayout() {
         name="index"
         options={{ headerShown: false, title: "Welcome" }}
       />
-      <Stack.Screen name="link" options={{ title: "Sign Up" }} />
       <Stack.Screen name="login" options={{ title: "Sign Up" }} />
       <Stack.Screen name="confirmation" options={{ title: "Confirmation" }} />
     </Stack>

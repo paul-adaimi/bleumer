@@ -13,6 +13,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
+          title: "Home",
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <Ionicons name="home" size={24} color={color} />
@@ -33,6 +34,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
+          title: "Profile",
           tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
             <Ionicons name="people" size={24} color={color} />

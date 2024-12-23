@@ -6,11 +6,11 @@ import { AddressProvider } from "@/components/AddressProvider";
 import { useAuth } from "@/components/AuthProvider";
 
 export default function HomeLayout() {
-  const { isSignedIn } = useAuth();
+  // const { isSignedIn } = useAuth();
 
-  if (!isSignedIn) {
-    return <Redirect href={"/firebaseauth"} />;
-  }
+  // if (!isSignedIn) {
+  //   return <Redirect href={"/firebaseauth"} />;
+  // }
 
   return (
     <UserProvider>

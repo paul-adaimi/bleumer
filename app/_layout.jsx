@@ -7,10 +7,16 @@ import TourProvider from "@/components/TourProvider";
 import AuthProvider from "@/components/AuthProvider";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import SnackbarProvider from "@/components/SnackbarProvider";
+import * as Sentry from "@sentry/react-native";
+
+Sentry.init({
+  dsn: "https://ae163507f254b1908acad4edb47f4f61@o4508269603979264.ingest.de.sentry.io/4508269606994000",
+  debug: true,
+});
 
 const queryClient = new QueryClient();
 
-export default function RootLayout() {
+function RootLayout() {
   return (
     <ErrorBoundary>
       <PaperProvider>
@@ -46,3 +52,5 @@ export default function RootLayout() {
     </ErrorBoundary>
   );
 }
+
+export default Sentry.wrap(RootLayout);

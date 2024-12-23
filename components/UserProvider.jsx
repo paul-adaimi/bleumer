@@ -23,7 +23,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const { currentUser } = useAuth();
 
-  const { user } = useUser(currentUser.uid);
+  const { user } = useUser(currentUser?.uid);
 
   // Fetch promo codes for the user
   const promoCodes = useMemo(() => {
