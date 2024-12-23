@@ -2,7 +2,6 @@ import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
 import React, { useEffect, useCallback } from "react";
 import { Colors } from "@/constants/Colors";
 import * as WebBrowser from "expo-web-browser";
-import { useTour } from "@/components/TourProvider";
 import { useNavigation } from "expo-router";
 import LoadingButton from "@/components/LoadingButton";
 
@@ -12,11 +11,6 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export default function LoginScreen() {
-  const { setIsInTour } = useTour();
-  useEffect(() => {
-    setIsInTour(true);
-  }, []);
-
   const navigation = useNavigation();
 
   const onPress = useCallback(async () => {

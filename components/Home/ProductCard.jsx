@@ -3,13 +3,10 @@ import React from "react";
 import { Colors } from "@/constants/Colors";
 import { useCart } from "@/components/CartProvider";
 import NumericInput from "@/components/NumericInput";
-import { Tip } from "react-native-tip";
-import { useTour } from "@/components/TourProvider";
 import { Image } from "react-native-expo-image-cache";
 
 export default function ProductCard({ product, index, listIndex }) {
   const { cart, addToCart, updateItemCount } = useCart();
-  const { isInTour } = useTour();
 
   const isFirst = index == 0;
 
@@ -82,25 +79,13 @@ export default function ProductCard({ product, index, listIndex }) {
           >
             ${product.price} / {product.weight}
           </Text>
-          <Tip
-            id={`numeric-input-${listIndex}-${index}`}
-            title="Add or Remove Items"
-            body="Use the +/- buttons to adjust the quantity of items in your cart."
-            showItemPulseAnimation
-            pulseColor={Colors.primary}
-            dismissable={false}
-            onPressItem={() => {}}
-            active={false}
-          >
-            <View>
-              <NumericInput
-                value={productCount}
-                onIncrement={handleIncrement}
-                onDecrement={handleDecrement}
-                disabled={isInTour}
-              />
-            </View>
-          </Tip>
+          <View>
+            <NumericInput
+              value={productCount}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
+            />
+          </View>
         </View>
       </View>
     </View>

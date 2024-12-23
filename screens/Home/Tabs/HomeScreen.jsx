@@ -8,13 +8,9 @@ import { useQuery } from "react-query";
 import ProductListCard from "@/components/ProductList/ProductListCard";
 import ProductsLoading from "@/components/Home/ProductsLoading";
 import SliderLoading from "@/components/Home/SliderLoading";
-import { showTipTour } from "react-native-tip";
-import { useTour } from "@/components/TourProvider";
 
 export default function HomeScreen() {
   const [searchText, setSearchText] = useState("");
-
-  const { isInTour } = useTour();
 
   const { data: productList, isFetching: isFetchingProducts } = useQuery(
     "products",
@@ -40,37 +36,6 @@ export default function HomeScreen() {
   const bundles = useMemo(() => {
     return productList?.filter((product) => product.category === "bundle");
   }, [productList]);
-
-  const tour = useMemo(
-    () => [
-      {
-        id: "address",
-        nextId: "search",
-      },
-      {
-        id: "search",
-        nextId: "numeric-input-0-0",
-      },
-      {
-        id: "numeric-input-0-0",
-        nextId: "view-all-0",
-      },
-      {
-        id: "view-all-0",
-        nextId: "cart-home",
-      },
-      {
-        id: "cart-home",
-      },
-    ],
-    []
-  );
-
-  useEffect(() => {
-    if (productList && isInTour) {
-      showTipTour(tour);
-    }
-  }, [productList, isInTour]);
 
   // Filter productList based on searchText
   const filteredProducts = productList?.filter(

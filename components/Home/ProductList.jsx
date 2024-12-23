@@ -3,8 +3,6 @@ import React from "react";
 import { Colors } from "@/constants/Colors";
 import ProductCard from "@/components/Home/ProductCard";
 import { useRouter } from "expo-router";
-import { Tip } from "react-native-tip";
-import { useTour } from "@/components/TourProvider";
 
 export default function ProductList({
   listName,
@@ -12,8 +10,6 @@ export default function ProductList({
   index: listIndex,
 }) {
   const router = useRouter();
-
-  const { isInTour } = useTour();
 
   return (
     <View>
@@ -37,29 +33,18 @@ export default function ProductList({
         >
           {listName}
         </Text>
-        <Tip
-          id={`view-all-${listIndex}`}
-          title="View All"
-          body="Tap here to explore all available products."
-          showItemPulseAnimation
-          pulseColor={Colors.primary}
-          dismissable={false}
-          onPressItem={() => {}}
-          active={false}
+
+        <TouchableOpacity
+          onPress={() => router.push("/home/productList/" + listName)}
         >
-          <TouchableOpacity
-            onPress={() => router.push("/home/productList/" + listName)}
-            disabled={isInTour}
+          <Text
+            style={{
+              color: Colors.primary,
+            }}
           >
-            <Text
-              style={{
-                color: Colors.primary,
-              }}
-            >
-              View All
-            </Text>
-          </TouchableOpacity>
-        </Tip>
+            View All
+          </Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         style={{ overflow: "visible" }}

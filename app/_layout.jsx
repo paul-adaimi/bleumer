@@ -3,7 +3,6 @@ import { Slot } from "expo-router";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider as PaperProvider } from "react-native-paper";
 import TipProvider from "react-native-tip";
-import TourProvider from "@/components/TourProvider";
 import AuthProvider from "@/components/AuthProvider";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import SnackbarProvider from "@/components/SnackbarProvider";
@@ -22,13 +21,11 @@ function RootLayout() {
       <PaperProvider>
         <SnackbarProvider>
           <QueryClientProvider client={queryClient}>
-            <TourProvider>
-              <AuthProvider>
-                <Slot />
-              </AuthProvider>
-            </TourProvider>
+            <AuthProvider>
+              <Slot />
+            </AuthProvider>
             <TipProvider
-              overlayOpacity={0.8}
+              overlayOpacity={0.9}
               titleStyle={{
                 fontWeight: "bold",
                 fontSize: 18,

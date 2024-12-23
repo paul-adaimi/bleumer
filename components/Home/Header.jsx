@@ -9,7 +9,7 @@ import BottomModalDrawer from "@/components/Modals/BottomModalDrawer";
 import AddressesModal from "@/components/Modals/Addresses";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { Tip, showTip, closeTip } from "react-native-tip";
-import { useTour } from "@/components/TourProvider";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function Header({
   searchText,
@@ -19,8 +19,8 @@ export default function Header({
   id,
 }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { isInTour, setIsInTour } = useTour();
 
+  const { isSignedIn } = useAuth();
   const { totalItemCount } = useCart();
   const navigation = useNavigation();
   const { currentAddress, isFetching: isAddressLoading } = useAddress();
@@ -37,16 +37,18 @@ export default function Header({
   }, [totalItemCount]);
 
   const isCartDisabled = useMemo(
-    () => !totalItemCount || !currentAddress || isAddressLoading,
-    [totalItemCount, currentAddress, isAddressLoading]
+    () => !totalItemCount || !currentAddress || isAddressLoading || !isSignedIn,
+    [totalItemCount, currentAddress, isAddressLoading, isSignedIn]
   );
 
+  const isAddressDisabled = useMemo(() => !isSignedIn, [isSignedIn]);
+
   const cartTipBody = useMemo(() => {
-    if (isInTour) return "Tap here to view the items in your cart.";
+    if (!isSignedIn) return "Please sign in to access cart";
     else if (isAddressLoading) return "Please wait for address to be loaded";
     else if (!currentAddress) return "Add an Address before accessing cart";
     else return "Add items to cart before accessing cart";
-  }, [isInTour, isAddressLoading, currentAddress]);
+  }, [isAddressLoading, currentAddress, isSignedIn]);
 
   return (
     <View
@@ -84,23 +86,26 @@ export default function Header({
         {!isAddressLoading && (
           <Tip
             id="address"
-            title="Add Address"
-            body="Tap here to add or update your address."
+            title="Address"
+            body="Please sign in to access addresses"
             showItemPulseAnimation
             pulseColor={Colors.primary}
-            dismissable={false}
+            dismissable={true}
+            onDismiss={() => closeTip()}
             onPressItem={() => {}}
-            active={false}
           >
             <TouchableOpacity
-              onPress={() => setIsModalVisible(true)}
+              onPress={() => {
+                if (!isAddressDisabled) {
+                  setIsModalVisible(true);
+                } else showTip(`address`);
+              }}
               style={{
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
                 gap: 5,
               }}
-              disabled={isInTour}
             >
               <Ionicons
                 style={{
@@ -134,14 +139,10 @@ export default function Header({
             showItemPulseAnimation
             pulseColor={Colors.primary}
             dismissable={true}
-            onDismiss={() => {
-              setIsInTour(false);
-              closeTip();
-            }}
+            onDismiss={() => closeTip()}
             onPressItem={() => {}}
           >
             <TouchableOpacity
-              disabled={isInTour}
               style={{
                 marginRight: 10,
                 display: "flex",
@@ -203,43 +204,31 @@ export default function Header({
         </View>
       )}
       {setSearchText && !isLoading && (
-        <Tip
-          id="search"
-          title="Search"
-          body="Find your favorite items by searching here."
-          showItemPulseAnimation
-          pulseColor={Colors.primary}
-          dismissable={false}
-          active={false}
-          onPressItem={() => {}}
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 10,
+            alignItems: "center",
+            backgroundColor: "#FFF",
+            padding: 10,
+            marginVertical: 10,
+            marginTop: 15,
+            borderRadius: 8,
+          }}
         >
-          <View
+          <Ionicons name="search" size={24} color={Colors.primary} />
+          <TextInput
+            value={searchText || ""}
+            onChangeText={(value) => setSearchText(value)}
             style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 10,
-              alignItems: "center",
-              backgroundColor: "#FFF",
-              padding: 10,
-              marginVertical: 10,
-              marginTop: 15,
-              borderRadius: 8,
+              fontSize: 16,
+              flex: 1,
             }}
-          >
-            <Ionicons name="search" size={24} color={Colors.primary} />
-            <TextInput
-              editable={!isInTour}
-              value={searchText || ""}
-              onChangeText={(value) => setSearchText(value)}
-              style={{
-                fontSize: 16,
-                flex: 1,
-              }}
-              placeholder="Search..."
-              placeholderTextColor={Colors.lightGray}
-            />
-          </View>
-        </Tip>
+            placeholder="Search..."
+            placeholderTextColor={Colors.lightGray}
+          />
+        </View>
       )}
       {title && !isLoading && (
         <View
