@@ -4,6 +4,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import React, {
   useState,
@@ -82,102 +84,104 @@ export default function ConfirmScreen() {
   }, [confirmationCode, confirmCode]);
 
   return (
-    <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
-      <View
-        style={{
-          padding: 15,
-          backgroundColor: Colors.primaryShade,
-          borderRadius: 100,
-        }}
-      >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
         <View
           style={{
             padding: 15,
-            backgroundColor: Colors.primary,
+            backgroundColor: Colors.primaryShade,
             borderRadius: 100,
           }}
         >
-          <Ionicons
-            name="shield-checkmark-outline"
-            size={100}
-            color={Colors.white}
-          />
+          <View
+            style={{
+              padding: 15,
+              backgroundColor: Colors.primary,
+              borderRadius: 100,
+            }}
+          >
+            <Ionicons
+              name="shield-checkmark-outline"
+              size={100}
+              color={Colors.white}
+            />
+          </View>
         </View>
-      </View>
-      <Text
-        style={{
-          marginTop: 20,
-          fontSize: 20,
-          fontWeight: "bold",
-          color: Colors.primary,
-        }}
-      >
-        Verification Code
-      </Text>
-      <Text
-        style={{
-          marginTop: 10,
-          paddingHorizontal: 50,
-          color: Colors.gray,
-          textAlign: "center",
-        }}
-      >
-        Please enter Code sent to
-        <Text style={{ fontWeight: "bold", color: Colors.primary }}>
-          {" "}
-          {verifyingNumber}
-        </Text>
-      </Text>
-      <View style={styles.codeInputContainer}>
-        {code.map((digit, index) => (
-          <TextInput
-            key={index}
-            ref={(ref) => (inputRefs.current[index] = ref)}
-            value={digit}
-            onChangeText={(text) => handleInputChange(text, index)}
-            onKeyPress={(e) => handleKeyPress(e, index)}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            style={styles.input}
-            autoFocus={index === 0}
-          />
-        ))}
-      </View>
-
-      {error && <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>}
-
-      <LoadingButton
-        text="Confirm Code"
-        onPress={handleSubmit}
-        style={styles.button}
-        isLoading={isLoading}
-      />
-
-      <TouchableOpacity
-        style={{
-          marginTop: 20,
-        }}
-        disabled={countdown != 0}
-        onPress={async () => {
-          if (countdown == 0) {
-            setCountdown(30);
-            await signInWithPhoneNumber(verifyingNumber, {
-              onError: (error) => setError(error.message),
-            });
-          }
-        }}
-      >
         <Text
           style={{
-            color: countdown == 0 ? Colors.primary : Colors.primaryShade,
-            fontWeight: 700,
+            marginTop: 20,
+            fontSize: 20,
+            fontWeight: "bold",
+            color: Colors.primary,
           }}
         >
-          Didn't receive the code? Resend Code{" "}
-          {countdown != 0 ? `(in ${countdown} seconds)` : ""}
+          Verification Code
         </Text>
-      </TouchableOpacity>
-    </View>
+        <Text
+          style={{
+            marginTop: 10,
+            paddingHorizontal: 50,
+            color: Colors.gray,
+            textAlign: "center",
+          }}
+        >
+          Please enter Code sent to
+          <Text style={{ fontWeight: "bold", color: Colors.primary }}>
+            {" "}
+            {verifyingNumber}
+          </Text>
+        </Text>
+        <View style={styles.codeInputContainer}>
+          {code.map((digit, index) => (
+            <TextInput
+              key={index}
+              ref={(ref) => (inputRefs.current[index] = ref)}
+              value={digit}
+              onChangeText={(text) => handleInputChange(text, index)}
+              onKeyPress={(e) => handleKeyPress(e, index)}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              style={styles.input}
+              autoFocus={index === 0}
+            />
+          ))}
+        </View>
+
+        {error && <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>}
+
+        <LoadingButton
+          text="Confirm Code"
+          onPress={handleSubmit}
+          style={styles.button}
+          isLoading={isLoading}
+        />
+
+        <TouchableOpacity
+          style={{
+            marginTop: 20,
+          }}
+          disabled={countdown != 0}
+          onPress={async () => {
+            if (countdown == 0) {
+              setCountdown(30);
+              await signInWithPhoneNumber(verifyingNumber, {
+                onError: (error) => setError(error.message),
+              });
+            }
+          }}
+        >
+          <Text
+            style={{
+              color: countdown == 0 ? Colors.primary : Colors.primaryShade,
+              fontWeight: 700,
+            }}
+          >
+            Didn't receive the code? Resend Code{" "}
+            {countdown != 0 ? `(in ${countdown} seconds)` : ""}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -1,5 +1,11 @@
 import React, { useState, useRef, useCallback } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import PhoneInput from "react-native-phone-number-input";
@@ -31,88 +37,90 @@ export default function LoginScreen() {
   }, [value, formattedValue, signInWithPhoneNumber]);
 
   return (
-    <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
-      <View
-        style={{
-          padding: 15,
-          backgroundColor: Colors.primaryShade,
-          borderRadius: 100,
-        }}
-      >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
         <View
           style={{
             padding: 15,
-            backgroundColor: Colors.primary,
+            backgroundColor: Colors.primaryShade,
             borderRadius: 100,
           }}
         >
-          <Ionicons
-            name="phone-portrait-outline"
-            size={100}
-            color={Colors.white}
+          <View
+            style={{
+              padding: 15,
+              backgroundColor: Colors.primary,
+              borderRadius: 100,
+            }}
+          >
+            <Ionicons
+              name="phone-portrait-outline"
+              size={100}
+              color={Colors.white}
+            />
+          </View>
+        </View>
+        <Text
+          style={{
+            marginTop: 20,
+            fontSize: 20,
+            fontWeight: "bold",
+            color: Colors.primary,
+          }}
+        >
+          Hi There!
+        </Text>
+        <Text
+          style={{
+            marginTop: 10,
+            paddingHorizontal: 50,
+            color: Colors.gray,
+            textAlign: "center",
+          }}
+        >
+          To start working with the app, we need you to verify your phone
+          number. We will send you a verification code.
+        </Text>
+        <View style={{ marginTop: 20 }}>
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={value}
+            defaultCode="LB"
+            layout="first"
+            containerStyle={{
+              width: "100%",
+              fontSize: 16,
+              borderColor: error ? "red" : Colors.primary,
+              borderWidth: 1,
+              borderRadius: 15,
+            }}
+            textContainerStyle={{
+              borderRadius: 15,
+            }}
+            onChangeText={(text) => {
+              setError("");
+              setValue(text);
+            }}
+            onChangeFormattedText={(text) => {
+              setError("");
+              setFormattedValue(text);
+            }}
+            withDarkTheme
+            withShadow
+            autoFocus
           />
         </View>
-      </View>
-      <Text
-        style={{
-          marginTop: 20,
-          fontSize: 20,
-          fontWeight: "bold",
-          color: Colors.primary,
-        }}
-      >
-        Hi There!
-      </Text>
-      <Text
-        style={{
-          marginTop: 10,
-          paddingHorizontal: 50,
-          color: Colors.gray,
-          textAlign: "center",
-        }}
-      >
-        To start working with the app, we need you to verify your phone number.
-        We will send you a verification code.
-      </Text>
-      <View style={{ marginTop: 20 }}>
-        <PhoneInput
-          ref={phoneInput}
-          defaultValue={value}
-          defaultCode="LB"
-          layout="first"
-          containerStyle={{
-            width: "100%",
-            fontSize: 16,
-            borderColor: error ? "red" : Colors.primary,
-            borderWidth: 1,
-            borderRadius: 15,
-          }}
-          textContainerStyle={{
-            borderRadius: 15,
-          }}
-          onChangeText={(text) => {
-            setError("");
-            setValue(text);
-          }}
-          onChangeFormattedText={(text) => {
-            setError("");
-            setFormattedValue(text);
-          }}
-          withDarkTheme
-          withShadow
-          autoFocus
+        {error ? (
+          <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>
+        ) : null}
+        <LoadingButton
+          text="Verify Number"
+          onPress={onPressButton}
+          style={styles.button}
+          isLoading={isLoading}
         />
       </View>
-      {error ? (
-        <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>
-      ) : null}
-      <LoadingButton
-        text="Verify Number"
-        onPress={onPressButton}
-        style={styles.button}
-        isLoading={isLoading}
-      />
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

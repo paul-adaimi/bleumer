@@ -7,6 +7,10 @@
       "autoIncrement": true,
       "ios": {
         "distribution": "store"
+      },
+      "android": {
+        "distribution": "store",
+        "buildType": "app-bundle"
       }
     },
     "preview": {

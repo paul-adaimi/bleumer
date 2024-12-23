@@ -32,6 +32,7 @@ export default {
       },
     },
     android: {
+      supportsTablet: false,
       googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
