@@ -115,7 +115,7 @@ export default function OrderCard({
     >
       <Text
         style={{
-          color: isCanceling ? "#B86566" : "red",
+          color: isCanceling ? Colors.red : "red",
         }}
       >
         {isCanceling ? `Cancelling Order ${dots}` : "Cancel Order"}
@@ -223,7 +223,7 @@ export default function OrderCard({
         title="Cancel Order"
         button1Text="Back"
         button2Text="Cancel Order"
-        button2Style={{ backgroundColor: "#FF3B30" }}
+        windowColor={Colors.red}
         onButton1Press={() => setIsConfirmModalVisible(false)}
         onButton2Press={async () => {
           setIsCanceling(true);

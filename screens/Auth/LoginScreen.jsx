@@ -79,8 +79,12 @@ export default function LoginScreen() {
             textAlign: "center",
           }}
         >
-          To start working with the app, we need you to verify your phone
-          number. We will send you a verification code.
+          To login to the app, we need you to verify your phone number. We will
+          send you a verification code{" "}
+          <Text style={{ color: "green", fontWeight: "bold" }}>
+            via Whatsapp
+          </Text>
+          .
         </Text>
         <View style={{ marginTop: 20 }}>
           <PhoneInput

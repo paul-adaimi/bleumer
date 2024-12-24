@@ -34,4 +34,5 @@ export const Colors = {
   fresh: "#539fcf",
   frozen: "#89CFF0",
   bundle: "#115d8c",
+  red: "#B86566",
 };

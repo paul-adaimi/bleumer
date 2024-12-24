@@ -38,7 +38,6 @@ const AddressItemModal = ({ address, isSelected, onClick }) => {
         </Text>
         <Text style={styles.address}>{address.street}</Text>
       </View>
-      <View style={styles.actionsContainer}></View>
     </TouchableOpacity>
   );
 };
@@ -50,19 +49,6 @@ const styles = StyleSheet.create({
   },
   address: {
     color: Colors.gray,
-    fontSize: 16,
-  },
-  actionsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  editButton: {
-    color: "teal",
-    marginRight: 20,
-    fontSize: 16,
-  },
-  deleteButton: {
-    color: "red",
     fontSize: 16,
   },
 });

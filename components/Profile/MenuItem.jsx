@@ -3,7 +3,7 @@ import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function MenuItem({ onPress, title, iconName }) {
+export default function MenuItem({ onPress, title, iconName, color }) {
   return (
     <TouchableOpacity
       style={{
@@ -17,7 +17,7 @@ export default function MenuItem({ onPress, title, iconName }) {
         borderWidth: 1,
         margin: 10,
         backgroundColor: "#FFF",
-        borderColor: Colors.primary,
+        borderColor: color,
       }}
       onPress={onPress}
     >
@@ -25,7 +25,7 @@ export default function MenuItem({ onPress, title, iconName }) {
         style={{
           borderRadius: 5,
           padding: 5,
-          backgroundColor: Colors.primary,
+          backgroundColor: color,
         }}
       >
         <Ionicons name={iconName} size={40} color={Colors.white}></Ionicons>
@@ -35,7 +35,7 @@ export default function MenuItem({ onPress, title, iconName }) {
           fontSize: 17,
           fontWeight: "700",
           flex: 1,
-          color: Colors.primary,
+          color: color,
         }}
       >
         {title}

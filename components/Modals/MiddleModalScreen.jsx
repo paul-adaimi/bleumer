@@ -10,7 +10,7 @@ const MiddleModalScreen = ({
   button2Text = "Button 2", // Default text for the second button
   onButton1Press,
   onButton2Press,
-  button2Style,
+  windowColor,
   children,
   title,
 }) => {
@@ -24,7 +24,12 @@ const MiddleModalScreen = ({
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
+          <View
+            style={{
+              ...styles.modalHeader,
+              backgroundColor: windowColor || Colors.primary,
+            }}
+          >
             <Text style={styles.titleText}>{title}</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
               <MaterialIcons name="close" color="#fff" size={22} />
@@ -46,7 +51,10 @@ const MiddleModalScreen = ({
 
               {onButton2Press && (
                 <TouchableOpacity
-                  style={[styles.button2, button2Style]}
+                  style={{
+                    ...styles.button2,
+                    backgroundColor: windowColor || Colors.primary,
+                  }}
                   onPress={onButton2Press}
                 >
                   <Text style={styles.buttonText}>{button2Text}</Text>
@@ -76,7 +84,6 @@ const styles = StyleSheet.create({
   modalHeader: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.primary,
     padding: 10,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -113,7 +120,6 @@ const styles = StyleSheet.create({
   },
   button2: {
     flex: 1,
-    backgroundColor: Colors.primary,
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 5,

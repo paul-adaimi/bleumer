@@ -46,7 +46,6 @@ export default function ConfirmScreen() {
 
     // Check if the pasted text is the entire code
     if (text.length === 6) {
-      console.log("Pasted text", text);
       const newCode = text.split("");
       setCode(newCode);
 
@@ -140,6 +139,10 @@ export default function ConfirmScreen() {
           <Text style={{ fontWeight: "bold", color: Colors.primary }}>
             {" "}
             {verifyingNumber}
+          </Text>
+          <Text style={{ color: "green", fontWeight: "bold" }}>
+            {" "}
+            via Whatsapp
           </Text>
         </Text>
         <View style={styles.codeInputContainer}>

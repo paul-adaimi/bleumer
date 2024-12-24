@@ -43,7 +43,7 @@ const AddressItem = ({ address }) => {
           deleteAddress(address);
           setIsDialogVisible(false);
         }}
-        button2Style={{ backgroundColor: "#FF3B30" }}
+        windowColor={Colors.red}
       >
         <Text>Are you sure you want to delete this address?</Text>
       </MiddleModalScreen>
