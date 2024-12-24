@@ -65,42 +65,48 @@ export const AddressProvider = ({ children }) => {
     }
   }, [getLocation, currentAddress]);
 
-  const createAddress = useCallback(async (addressValues) => {
-    setIsForceLoading(true);
-    try {
-      const addressesRef = firestore().collection(
-        `Users/${currentUser.uid}/addresses`
-      );
-      await addressesRef.add(addressValues);
-    } catch (error) {
-      if (!__DEV__) Sentry.captureException(error);
-      setSnackbarData({
-        message: "Failed to create Address",
-        backgroundColor: "red",
-      });
-    }
-    setIsForceLoading(false);
-  }, []);
+  const createAddress = useCallback(
+    async (addressValues) => {
+      setIsForceLoading(true);
+      try {
+        const addressesRef = firestore().collection(
+          `Users/${currentUser.uid}/addresses`
+        );
+        await addressesRef.add(addressValues);
+      } catch (error) {
+        if (!__DEV__) Sentry.captureException(error);
+        setSnackbarData({
+          message: "Failed to create Address",
+          backgroundColor: "red",
+        });
+      }
+      setIsForceLoading(false);
+    },
+    [currentUser?.uid]
+  );
 
-  const editAddress = useCallback(async (addressValues) => {
-    setIsForceLoading(true);
-    try {
-      const addressesRef = firestore().collection(
-        `Users/${currentUser.uid}/addresses`
-      );
-      // this is the addressValues without id field
-      newAddressValues = { ...addressValues };
-      delete newAddressValues.id;
-      await addressesRef.doc(addressValues.id).update(newAddressValues);
-    } catch (error) {
-      if (!__DEV__) Sentry.captureException(error);
-      setSnackbarData({
-        message: "Failed to edit Address",
-        backgroundColor: "red",
-      });
-    }
-    setIsForceLoading(false);
-  }, []);
+  const editAddress = useCallback(
+    async (addressValues) => {
+      setIsForceLoading(true);
+      try {
+        const addressesRef = firestore().collection(
+          `Users/${currentUser.uid}/addresses`
+        );
+        // this is the addressValues without id field
+        newAddressValues = { ...addressValues };
+        delete newAddressValues.id;
+        await addressesRef.doc(addressValues.id).update(newAddressValues);
+      } catch (error) {
+        if (!__DEV__) Sentry.captureException(error);
+        setSnackbarData({
+          message: "Failed to edit Address",
+          backgroundColor: "red",
+        });
+      }
+      setIsForceLoading(false);
+    },
+    [currentUser?.uid]
+  );
 
   const deleteAddress = useCallback(
     async (address) => {
@@ -122,7 +128,7 @@ export const AddressProvider = ({ children }) => {
       }
       setIsForceLoading(false);
     },
-    [currentAddress]
+    [currentAddress, currentUser?.uid]
   );
 
   return (

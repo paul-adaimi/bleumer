@@ -78,8 +78,8 @@ export default AuthProvider = ({ children }) => {
 
         const { token } = data;
 
-        await auth().signInWithCustomToken(token);
-        onSuccess?.();
+        const user = await auth().signInWithCustomToken(token);
+        onSuccess?.(user);
       } catch (error) {
         onError?.(error);
       }

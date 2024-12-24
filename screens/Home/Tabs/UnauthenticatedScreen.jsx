@@ -95,7 +95,9 @@ export default function UnauthenticatedScreen({ page }) {
             width: "100%",
             borderRadius: 99,
           }}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("login");
+          }}
         >
           <View
             style={{

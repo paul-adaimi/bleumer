@@ -1,17 +1,10 @@
 import React from "react";
-import { Stack, Redirect } from "expo-router";
+import { Stack } from "expo-router";
 import { UserProvider } from "@/components/UserProvider";
 import { CartProvider } from "@/components/CartProvider";
 import { AddressProvider } from "@/components/AddressProvider";
-import { useAuth } from "@/components/AuthProvider";
 
 export default function HomeLayout() {
-  // const { isSignedIn } = useAuth();
-
-  // if (!isSignedIn) {
-  //   return <Redirect href={"/firebaseauth"} />;
-  // }
-
   return (
     <UserProvider>
       <AddressProvider>
@@ -40,6 +33,11 @@ export default function HomeLayout() {
             <Stack.Screen
               name="productList/[category]"
               options={{ headerShown: false }}
+            />
+            <Stack.Screen name="login" options={{ title: "Sign Up" }} />
+            <Stack.Screen
+              name="confirmation"
+              options={{ title: "Confirmation" }}
             />
           </Stack>
         </CartProvider>

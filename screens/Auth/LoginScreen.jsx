@@ -10,7 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import PhoneInput from "react-native-phone-number-input";
 import { useAuth } from "@/components/AuthProvider";
-import { router } from "expo-router";
+import { useNavigation } from "expo-router";
 import LoadingButton from "@/components/LoadingButton";
 
 export default function LoginScreen() {
@@ -19,6 +19,7 @@ export default function LoginScreen() {
   const [error, setError] = useState("");
   const phoneInput = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const navigation = useNavigation();
 
   const { signInWithPhoneNumber } = useAuth();
 
@@ -29,7 +30,7 @@ export default function LoginScreen() {
       setError("Invalid phone number");
     } else {
       await signInWithPhoneNumber(formattedValue, {
-        onSuccess: () => router.push("firebaseauth/confirmation"),
+        onSuccess: () => navigation.replace("confirmation"),
         onError: (error) => setError(error.message),
       });
     }

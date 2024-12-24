@@ -16,7 +16,7 @@ export default function enterName() {
   );
 
   if (currentUser.displayName) {
-    return <Redirect href={"/home/home"} />;
+    return navigation.goBack();
   }
 
   return <EnterNameScreen />;

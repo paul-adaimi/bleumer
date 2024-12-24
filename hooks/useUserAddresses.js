@@ -8,6 +8,13 @@ export default function useUserAddresses(userId) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!userId) {
+      setAddresses([]);
+      setCurrentAddress(null);
+      setError(null);
+      setIsLoading(false);
+      return;
+    }
     const addressesRef = firestore()
       .collection(`Users/${userId}/addresses`)
       .orderBy("name", "desc");

@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
-import { useNavigation, useFocusEffect } from "expo-router";
+import { useNavigation, useFocusEffect, Redirect } from "expo-router";
 import ProfileScreen from "@/screens/Home/Tabs/ProfileScreen";
 import UnauthenticatedScreen from "@/screens/Home/Tabs/UnauthenticatedScreen";
 import { useAuth } from "@/components/AuthProvider";
 
 export default function profile() {
   const navigation = useNavigation();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, currentUser } = useAuth();
 
   useFocusEffect(
     useCallback(() => {
@@ -16,9 +16,11 @@ export default function profile() {
     }, [navigation])
   );
 
-  if (isSignedIn) {
-    <ProfileScreen />;
+  if (isSignedIn && currentUser?.displayName) {
+    return <ProfileScreen />;
+  } else if (isSignedIn) {
+    return <Redirect href={"/home/enterName"} />;
+  } else {
+    return <UnauthenticatedScreen page="profile" />;
   }
-
-  return <UnauthenticatedScreen page="profile" />;
 }

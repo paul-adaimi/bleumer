@@ -18,6 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/components/AuthProvider";
 import LoadingButton from "@/components/LoadingButton";
+import { useNavigation } from "expo-router";
 
 export default function ConfirmScreen() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -25,6 +26,7 @@ export default function ConfirmScreen() {
   const inputRefs = useRef([]);
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(30);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,9 +81,18 @@ export default function ConfirmScreen() {
     setIsLoading(true);
     await confirmCode(confirmationCode, {
       onError: (error) => setError(error.message),
+      onSuccess: ({ user }) => {
+        if (!user?.displayName) {
+          console.log("User has no display name");
+          navigation.replace("enterName");
+        } else {
+          console.log("user has display name");
+          navigation.goBack();
+        }
+      },
     });
     setIsLoading(false);
-  }, [confirmationCode, confirmCode]);
+  }, [confirmationCode, confirmCode, navigation]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
