@@ -14,6 +14,7 @@ export default function MenuList() {
   const router = useRouter();
   const { signOut, currentUser } = useAuth();
   const { setSnackbarData } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
 
   const menuList = [
     {
@@ -65,9 +66,12 @@ export default function MenuList() {
           button1Text: "Cancel",
           button2Text: "Delete",
           windowColor: Colors.red,
+          shadeColor: Colors.redShade,
+          lightColor: Colors.redLight,
           onButton1Press: () => setDialogDetails(null),
           onButton2Press: async () => {
             const idToken = await currentUser.getIdToken();
+            setIsLoading(true);
             try {
               await deleteAccount(idToken);
               signOut();
@@ -79,6 +83,7 @@ export default function MenuList() {
                 message: error.message,
               });
             } finally {
+              setIsLoading(false);
               setDialogDetails(null);
             }
           },
@@ -121,6 +126,9 @@ export default function MenuList() {
         onButton1Press={() => setDialogDetails(null)}
         onButton2Press={dialogDetails?.onButton2Press}
         windowColor={dialogDetails?.windowColor}
+        shadeColor={dialogDetails?.shadeColor}
+        lightColor={dialogDetails?.lightColor}
+        isLoading={isLoading}
       >
         <Text>{dialogDetails?.content}</Text>
       </MiddleModalScreen>

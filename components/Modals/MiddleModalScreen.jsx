@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Colors } from "@/constants/Colors";
+import LoadingButton from "../LoadingButton";
 
 const MiddleModalScreen = ({
   visible,
@@ -11,8 +12,11 @@ const MiddleModalScreen = ({
   onButton1Press,
   onButton2Press,
   windowColor,
+  shadeColor,
+  lightColor,
   children,
   title,
+  isLoading = false,
 }) => {
   const areButtonsVisible = onButton1Press || onButton2Press;
   return (
@@ -31,7 +35,11 @@ const MiddleModalScreen = ({
             }}
           >
             <Text style={styles.titleText}>{title}</Text>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <TouchableOpacity
+              disabled={isLoading}
+              onPress={onClose}
+              style={styles.closeButton}
+            >
               <MaterialIcons name="close" color="#fff" size={22} />
             </TouchableOpacity>
           </View>
@@ -44,21 +52,22 @@ const MiddleModalScreen = ({
                 <TouchableOpacity
                   style={styles.button1}
                   onPress={onButton1Press}
+                  disabled={isLoading}
                 >
                   <Text style={styles.buttonText}>{button1Text}</Text>
                 </TouchableOpacity>
               )}
 
               {onButton2Press && (
-                <TouchableOpacity
-                  style={{
-                    ...styles.button2,
-                    backgroundColor: windowColor || Colors.primary,
-                  }}
+                <LoadingButton
+                  style={styles.button2}
                   onPress={onButton2Press}
-                >
-                  <Text style={styles.buttonText}>{button2Text}</Text>
-                </TouchableOpacity>
+                  isLoading={isLoading}
+                  text={button2Text}
+                  mainColor={windowColor}
+                  shadeColor={shadeColor}
+                  lightColor={lightColor}
+                ></LoadingButton>
               )}
             </View>
           )}
@@ -117,6 +126,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 5,
     alignItems: "center",
+
+    // Shadow for iOS
+    shadowColor: Colors.black,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    // Shadow for Android
+    elevation: 5,
   },
   button2: {
     flex: 1,

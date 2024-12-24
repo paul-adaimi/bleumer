@@ -9,6 +9,9 @@ const LoadingButton = ({
   disabled,
   style,
   children,
+  mainColor = Colors.primary,
+  shadeColor = Colors.primaryShade,
+  lightColor = Colors.primaryLight,
 }) => {
   const [progress, setProgress] = useState(0);
 
@@ -54,11 +57,16 @@ const LoadingButton = ({
           bottom: 0,
           borderRadius: style?.borderRadius ?? 5,
           overflow: "hidden",
-          backgroundColor:
-            isLoading || disabled ? Colors.primaryShade : Colors.primary,
+          backgroundColor: isLoading || disabled ? shadeColor : mainColor,
         }}
       >
-        <View style={[styles.loadingFill, { width: `${progress}%` }]} />
+        <View
+          style={{
+            ...styles.loadingFill,
+            backgroundColor: lightColor,
+            width: `${progress}%`,
+          }}
+        />
       </View>
       {children ? (
         children
@@ -94,7 +102,6 @@ const styles = StyleSheet.create({
   loadingFill: {
     position: "absolute",
     height: "100%",
-    backgroundColor: Colors.primaryLight,
     opacity: 0.5,
   },
   buttonText: {

@@ -35,4 +35,6 @@ export const Colors = {
   frozen: "#89CFF0",
   bundle: "#115d8c",
   red: "#B86566",
+  redShade: "#D9A8A6",
+  redLight: "#9E504F",
 };
