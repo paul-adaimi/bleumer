@@ -2,6 +2,10 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+Download on the [App Store](https://apps.apple.com/vn/app/bleumer/id6738310999)
+
+Download on the [Play Store](https://play.google.com/store/apps/details?id=com.anonymous.bleumer&hl=en_US)
+
 <div style="display:flex">
    <img src="assets/images/homepage-full.png" alt="drawing" width="200"/>
    <img src="assets/images/frozen.PNG" alt="drawing" width="200"/>
