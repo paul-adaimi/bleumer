@@ -2,10 +2,12 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-<img src="assets/images/homepage-full.png" alt="drawing" width="200"/>
-<img src="assets/images/frozen.PNG" alt="drawing" width="200"/>
-<img src="assets/images/checkout.PNG" alt="drawing" width="200"/>
-<img src="assets/images/profile.jpeg" alt="drawing" width="200"/>
+<div style="display:flex">
+   <img src="assets/images/homepage-full.png" alt="drawing" width="200"/>
+   <img src="assets/images/frozen.PNG" alt="drawing" width="200"/>
+   <img src="assets/images/checkout.PNG" alt="drawing" width="200"/>
+   <img src="assets/images/profile.jpeg" alt="drawing" width="200"/>
+</div>
 
 ## Get started
 
